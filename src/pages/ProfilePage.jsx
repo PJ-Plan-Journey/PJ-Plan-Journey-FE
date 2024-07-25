@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ProfileContainer, ProfileForm, Input, Button } from '@styles/Profile.styles';
 import axios from '@axios/api';
-import useBearStore from '@zustands/bearStore';
+import useBearStore from '@zustands/bearStore'; // 경로가 맞다면 수정할 필요 없음
 import DeleteAccountButton from '@components/DeleteAccountButton';
 import LogoutButton from '@components/LogoutButton';
 
