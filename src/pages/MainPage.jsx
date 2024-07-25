@@ -11,11 +11,15 @@ const MainContainer = styled.div`
   width: 100%;
 `;
 
+const ContainerWrapper = styled.div`
+  display: flex;
+  gap: 1.5cm; /* 초기 간격 */
+`;
+
 const MainPage = () => {
   return (
     <MainContainer>
       <Header />
-      <BrandSection />
       <Containers />
     </MainContainer>
   );

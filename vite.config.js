@@ -16,7 +16,7 @@ export default defineConfig({
       '@styles': resolve(__dirname, 'src/styles'),
       '@zustands': resolve(__dirname, 'src/zustands'),
       '@axios': resolve(__dirname, 'src/axios'),
-      '@assets': resolve(__dirname, 'src/assets'), /**assets 추가 */
+      '@assets': resolve(__dirname, 'src/assets'), // assets 별칭 추가
       '@': resolve(__dirname, 'src'),
     },
   },

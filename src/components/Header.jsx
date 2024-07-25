@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FaUser, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
-import logo from '@assets/logo.jpg';
+import logo from '@assets/Logo.jpg';
 
 const HeaderWrapper = styled.header`
   display: flex;
@@ -25,6 +25,7 @@ const HeaderWrapper = styled.header`
 
 const Logo = styled.img`
   height: 40px; /* 로고 크기 조정 */
+  margin-right: 2rem;
 `;
 
 const Nav = styled.nav`
@@ -46,14 +47,10 @@ const Header = () => {
     <HeaderWrapper>
       <Logo src={logo} alt="Logo" />
       <Nav>
-        <NavLink href="/login">
-          <FaSignInAlt /> 로그인
-        </NavLink>
-        <NavLink href="/signup">
-          <FaUserPlus /> 회원가입
-        </NavLink>
+        <NavLink href="/login">로그인</NavLink>
+        <NavLink href="/signup">회원가입</NavLink>
         <NavLink href="/mypage">
-          <FaUser /> 마이페이지
+          <FaUser />
         </NavLink>
       </Nav>
     </HeaderWrapper>

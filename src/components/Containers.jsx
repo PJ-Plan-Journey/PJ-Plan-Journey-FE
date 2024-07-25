@@ -1,193 +1,246 @@
 import React from 'react';
 import styled from 'styled-components';
-import busanImage from '@assets/busan.jpg';
-import { FaSearch } from 'react-icons/fa';
+import { FaHome, FaInfo, FaUserAlt } from 'react-icons/fa';
+import {
+  IoIosArrowDropleftCircle,
+  IoIosArrowDroprightCircle,
+} from 'react-icons/io';
+import AliceCarousel from 'react-alice-carousel';
+import 'react-alice-carousel/lib/alice-carousel.css';
 
 const SectionWrapper = styled.div`
-  width: calc(100% - 14cm); /* 양쪽 마진 7cm 적용 */
-  margin: 0 auto;
+  width: calc(100% - 3cm); /* 왼쪽 마진 3cm 적용 */
+  margin-left: 3cm;
   padding: 2rem 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start; /* 왼쪽 정렬 */
+  transition: transform 2.5s ease; /* 부드러운 전환 효과 추가 */
 
-  @media (max-width: 1200px) {
-    width: calc(100% - 10cm); /* 화면이 작아지면 마진을 줄임 */
+  & > * {
+    margin-bottom: 2rem; /* 각 자식 요소 간의 간격 조절 */
   }
 
-  @media (max-width: 768px) {
-    width: calc(100% - 6cm); /* 더 작은 화면에서는 마진을 더 줄임 */
-  }
-
-  @media (max-width: 480px) {
-    width: calc(100% - 2cm); /* 매우 작은 화면에서는 최소한의 마진만 적용 */
+  & > *:last-child {
+    margin-bottom: 0; /* 마지막 요소는 마진을 제거 */
   }
 `;
 
-const SearchTitle = styled.h2`
-  font-size: 2rem; /* h1과 h2 사이의 크기 */
-  margin-bottom: 1.5rem; /* 제목과 검색창 사이의 간격 조절 */
+const HeaderText = styled.h1`
+  font-size: 2.5rem; /* 제목 폰트 사이즈 */
+  text-align: left; /* 왼쪽 정렬 */
 `;
 
-const SearchWrapper = styled.div`
+const MenuWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 1cm; /* input과 container 사이 간격 */
-  margin-top: 1cm; /* 위쪽 container와 input의 간격 */
+  flex-direction: row; /* 가로로 정렬 */
+  gap: 1.5rem; /* 메뉴 간격 */
+  align-items: flex-start; /* 왼쪽 정렬 */
+  margin-top: 4rem;
 `;
 
-const SearchInputWrapper = styled.div`
+const MenuItem = styled.div`
   display: flex;
+  flex-direction: column; /* 세로 정렬 */
+  align-items: center; /* 중앙 정렬 */
+  width: 3cm;
+  height: 4cm;
+`;
+
+const MenuIcon = styled.div`
+  font-size: 2rem; /* 아이콘 크기 */
+  margin-bottom: 0.5rem; /* 아이콘과 텍스트 사이의 간격 */
+  margin-left: -4rem;
+`;
+
+const MenuText = styled.div`
+  font-size: 1rem; /* 메뉴 이름 폰트 사이즈 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+  margin-left: -4rem;
+`;
+
+const Subtitle = styled.h2`
+  font-size: 1.5rem; /* 소제목 폰트 사이즈 */
+  text-align: left; /* 왼쪽 정렬 */
+`;
+
+const HighlightText = styled.span`
+  color: #6e6e73; /* 강조 텍스트 색상 */
+`;
+
+const CarouselWrapper = styled.div`
   position: relative;
-
-  &:focus-within {
-    box-shadow: 0 0 0 2px #020202; /* input과 button에 집중 시 외곽선 추가 */
-    border-radius: 8px;
-  }
-`;
-
-const SearchInput = styled.input`
-  width: 17cm;
-  height: 1.3cm; /* 검색창 높이 조정 */
-  padding: 1rem; /* padding 조정 */
-  border: 1px solid #ccc;
-  border-radius: 8px 0 0 8px; /* 가장자리를 둥글게 */
-  border-right: none;
-  font-size: 1rem; /* 글자 크기 조정 */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
-  &::placeholder {
-    color: #aaa;
-    font-size: 1rem; /* placeholder 글자 크기 조정 */
-  }
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-const SearchButton = styled.button`
-  height: 1.3cm; /* 검색 버튼 높이 조정 */
-  width: 1.7cm; /* 돋보기 아이콘 크기를 input 높이에 맞춤 */
-  border: 1px solid #ccc;
-  border-left: none;
-  background-color: #fff;
-  cursor: pointer;
+  width: 100%; /* 캐러셀 너비 조정 */
   display: flex;
-  justify-content: center;
   align-items: center;
-  border-radius: 0 8px 8px 0; /* 가장자리를 둥글게 */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
-
-  &:hover {
-    background-color: #f0f0f0;
+  overflow: hidden;
+  margin-top: -30px;
+  .alice-carousel__stage {
+    height: 18cm !important;
+    display: flex !important;
+    align-items: center !important;
+    margin-left: 1rem;
   }
-
-  &:focus {
-    outline: none;
+  .alice-carousel__stage-item {
+    height: 90% !important;
+    margin-right: 35px;
   }
-`;
-
-const SearchIcon = styled(FaSearch)`
-  height: 0.8cm; /* 돋보기 아이콘 크기 조정 */
-  width: 0.8cm;
-`;
-
-const ContainerWrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 8.5cm); /* 4개의 컨테이너로 구성 */
-  gap: 3cm 2cm; /* 세로 간격 2cm, 가로 간격 3cm */
-  justify-content: center;
-  width: 100%;
-  margin-top: 0.5cm; /* 아래쪽 container와 input의 간격 */
-
-  @media (max-width: 1200px) {
-    grid-template-columns: repeat(3, 8.5cm); /* 화면이 작아지면 3개의 컨테이너로 구성 */
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 8.5cm); /* 더 작은 화면에서는 2개의 컨테이너로 구성 */
-  }
-
-  @media (max-width: 480px) {
-    grid-template-columns: repeat(1, 8.5cm); /* 매우 작은 화면에서는 1개의 컨테이너로 구성 */
+  &:hover button {
+    opacity: 1; /* 커서를 갖다 댔을 때 버튼 보이기 */
   }
 `;
 
 const Container = styled.div`
-  width: 8cm;
-  height: 12cm;
+  width: 12cm;
+  height: 15cm;
   background-color: #e0e0e0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 8px;
-  cursor: pointer;
-  overflow: hidden;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
-  transition: box-shadow 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */
-
-  &:hover {
-    background-color: #d0d0d0;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* hover 시 그림자 효과 증가 */
-    transform: scale(1.03); /* 살짝 커지는 효과 */
-  }
-`;
-
-const ImageContainer = styled.div`
-  width: 8cm;
-  height: 9cm;
-  background-color: #ccc; /* 사진이 들어갈 부분 */
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  padding-top: 1cm; /* 컨테이너 상단 여백 */
+  padding-bottom: 1cm; /* 컨테이너 하단 여백 */
+  transition: transform 0.3s ease;
+  position: relative;
+  z-index: 1; /* 가장 앞으로 위치 */
+
+  &:hover {
+    transform: scale(1.02); /* 살짝 커지는 효과 */
+  }
 `;
 
-const Image = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`;
-
-const RegionName = styled.div`
-  width: 100%;
-  height: 3cm;
+const ExtraContainer = styled.div`
+  width: 16cm;
+  height: 15cm;
+  background-color: #e0e0e0;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
-  padding-left: 1rem;
-  background-color: #f8f8f8;
-  border-top: 1px solid #ccc;
-  font-size: 1.5rem; /* 글자 크기 조정 */
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.02); /* 살짝 커지는 효과 */
+  }
+`;
+
+const ExtraContainerWrapper = styled.div`
+  display: flex;
+  gap: 1.5rem; /* 컨테이너 간 간격 */
+`;
+
+const ArrowButton = styled.button`
+  position: absolute;
+  top: calc(50% - 2.7rem); /* 세로 중앙에서 1cm 위로 */
+  background: none;
+  border: none;
+  font-size: 5.4rem; /* 크기 증가 (1.8배) */
+  color: rgba(2, 2, 2, 0.5); /* #020202 색상을 50% 투명하게 */
+  cursor: pointer;
+  z-index: 1;
+  opacity: 0; /* 기본 상태에서 숨기기 */
+  transition: opacity 0.7s ease;
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    opacity: 1;
+  }
+
+  & svg {
+    fill: #f5f5f7; /* 원 부분을 흰색으로 변경 */
+  }
+`;
+
+const PrevButton = styled(ArrowButton)`
+  left: 1rem; /* 왼쪽 위치 조정 */
+`;
+
+const NextButton = styled(ArrowButton)`
+  right: 1rem; /* 오른쪽 위치 조정 */
 `;
 
 const Containers = () => {
-  const handleContainerClick = (region) => {
-    console.log(`${region} clicked`);
+  const items = Array.from({ length: 8 }).map((_, index) => (
+    <Container key={index}>컨테이너 {index + 1}</Container>
+  ));
+
+  const carouselRef = React.useRef();
+
+  const slidePrev = () => {
+    if (carouselRef.current) {
+      carouselRef.current.slidePrev();
+    }
+  };
+
+  const slideNext = () => {
+    if (carouselRef.current) {
+      carouselRef.current.slideNext();
+    }
   };
 
   return (
     <SectionWrapper>
-      <SearchWrapper>
-        <SearchTitle>어디로 여행을 떠나시나요?</SearchTitle>
-        <SearchInputWrapper>
-          <SearchInput placeholder="도시명으로 검색해보세요." />
-          <SearchButton>
-            <SearchIcon />
-          </SearchButton>
-        </SearchInputWrapper>
-      </SearchWrapper>
-      <ContainerWrapper>
-        {Array.from({ length: 8 }).map((_, index) => (
-          <Container key={index} onClick={() => handleContainerClick(`Menu ${index + 1}`)}>
-            <ImageContainer>
-              <Image src={busanImage} alt="Busan" />
-            </ImageContainer>
-            <RegionName>Busan</RegionName>
-          </Container>
-        ))}
-      </ContainerWrapper>
+      <HeaderText>
+        Plan Journey.<HighlightText>완벽한 여행을
+        <br />
+        계획하는 가장 좋은 방법.</HighlightText>
+      </HeaderText>
+      <MenuWrapper>
+        <MenuItem>
+          <MenuIcon>
+            <FaHome />
+          </MenuIcon>
+          <MenuText>홈</MenuText>
+        </MenuItem>
+        <MenuItem>
+          <MenuIcon>
+            <FaInfo />
+          </MenuIcon>
+          <MenuText>정보</MenuText>
+        </MenuItem>
+        <MenuItem>
+          <MenuIcon>
+            <FaUserAlt />
+          </MenuIcon>
+          <MenuText>사용자</MenuText>
+        </MenuItem>
+      </MenuWrapper>
+      <Subtitle>
+        여행지 추천.
+        <HighlightText>지금 가장 HOT한 방문지</HighlightText>
+      </Subtitle>
+      <CarouselWrapper>
+        <PrevButton onClick={slidePrev}>
+          <IoIosArrowDropleftCircle />
+        </PrevButton>
+        <AliceCarousel
+          mouseTracking
+          items={items}
+          responsive={{
+            0: { items: 1 },
+            600: { items: 2 },
+            1024: { items: 3 },
+            1440: { items: 4 },
+          }}
+          controlsStrategy="responsive"
+          ref={carouselRef}
+          disableButtonsControls={true} // 기본 버튼 숨기기
+          infinite={false}
+          disableDotsControls={true} // 페이지 표시 툴 숨기기
+        />
+        <NextButton onClick={slideNext}>
+          <IoIosArrowDroprightCircle />
+        </NextButton>
+      </CarouselWrapper>
+      <Subtitle>여행 계획.<HighlightText>언제든, 당신에게 맞는 방식으로.</HighlightText></Subtitle>
+      <ExtraContainerWrapper>
+        <ExtraContainer>추가된 컨테이너 1</ExtraContainer>
+        <ExtraContainer>추가된 컨테이너 2</ExtraContainer>
+        <ExtraContainer>추가된 컨테이너 3</ExtraContainer>
+      </ExtraContainerWrapper>
     </SectionWrapper>
   );
 };
