@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { FaHome, FaInfo, FaUserAlt } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaShareSquare } from 'react-icons/fa';
+import { TbMapPlus } from 'react-icons/tb'; // 계획하기 아이콘
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
@@ -17,6 +18,12 @@ import testImage5 from '@assets/testImage5.jpg';
 import testImage6 from '@assets/testImage6.jpg';
 import testImage7 from '@assets/testImage7.jpg';
 import testImage8 from '@assets/justBlack.jpg';
+import food from '@assets/food1.jpg';
+import BBangBBang from '@assets/BBangBBang.jpg';
+import game from '@assets/game.jpg';
+import zombie from '@assets/zombie.jpg';
+import surinam from '@assets/surinam.jpg';
+import minecraft from '@assets/minecraft.jpg';
 
 const SectionWrapper = styled.div`
   width: calc(100% - 3cm); /* 왼쪽 마진 3cm 적용 */
@@ -28,7 +35,7 @@ const SectionWrapper = styled.div`
   transition: transform 2.5s ease; /* 부드러운 전환 효과 추가 */
 
   & > * {
-    margin-bottom: 2rem; /* 각 자식 요소 간의 간격 조절 */
+    margin-bottom: 0.8cm; /* 각 자식 요소 간의 간격 조절 */
   }
 
   & > *:last-child {
@@ -55,18 +62,17 @@ const MenuItem = styled.div`
   align-items: center; /* 중앙 정렬 */
   width: 3cm;
   height: 4cm;
+  cursor: pointer; /* 클릭 가능한 커서로 변경 */
 `;
 
 const MenuIcon = styled.div`
   font-size: 2rem; /* 아이콘 크기 */
   margin-bottom: 0.5rem; /* 아이콘과 텍스트 사이의 간격 */
-  margin-left: -4rem;
 `;
 
 const MenuText = styled.div`
   font-size: 1rem; /* 메뉴 이름 폰트 사이즈 */
   text-align: center; /* 텍스트 중앙 정렬 */
-  margin-left: -4rem;
 `;
 
 const Subtitle = styled.h2`
@@ -87,7 +93,8 @@ const CarouselWrapper = styled.div`
   margin-top: -63px;
 
   .alice-carousel__stage {
-    height: 18cm !important;
+    width: 110cm !important;
+    height: 19cm !important;
     display: flex !important;
     align-items: center !important;
   }
@@ -97,7 +104,7 @@ const CarouselWrapper = styled.div`
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    margin-right: 35px !important;
+    margin-right: 1.5cm !important; /* 슬라이드 간의 간격을 1cm로 설정 */
   }
 
   &:hover button {
@@ -105,28 +112,12 @@ const CarouselWrapper = styled.div`
   }
 `;
 
-const getContrastYIQ = (hex) => {
-  if (!/^#[0-9A-F]{6}$/i.test(hex)) {
-    throw new Error('Invalid HEX color');
-  }
-
-  const c = hex.substring(1); // 색상 앞의 # 제거
-  const rgb = parseInt(c, 16); // rrggbb를 10진수로 변환
-  const r = (rgb >> 16) & 0xff; // red 추출
-  const g = (rgb >> 8) & 0xff;  // green 추출
-  const b = (rgb >> 0) & 0xff;  // blue 추출
-  const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
-  
-  // 색상 선택
-  return luma < 127.5 ? "white" : "black";
-};
-
-
 const Container = styled.div.withConfig({
   shouldForwardProp: (prop) => isPropValid(prop) || prop.startsWith('$'),
 })`
   width: 12cm;
-  height: 15cm;
+  height: 12cm;
+  margin-top: -4cm;
   background-color: ${(props) => props.bgColor || '#e0e0e0'}; /* 배경 색상 */
   border-radius: 15px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -146,9 +137,19 @@ const Container = styled.div.withConfig({
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    font-family: SF Pro KR, SF Pro Display, SF Pro Icons, Apple Gothic, HY Gulim, MalgunGothic, HY Dotum, Lexi Gulim, Helvetica Neue, Helvetica, Arial, sans-serif;
-    color: ${(props) =>
-      getContrastYIQ(props.bgColor || '#e0e0e0')}; /* 텍스트 색상 */
+    font-family:
+      SF Pro KR,
+      SF Pro Display,
+      SF Pro Icons,
+      Apple Gothic,
+      HY Gulim,
+      MalgunGothic,
+      HY Dotum,
+      Lexi Gulim,
+      Helvetica Neue,
+      Helvetica,
+      Arial,
+      sans-serif;
   }
   .subtitle {
     font-size: 0.9rem; /* 보조 설명 텍스트 사이즈 */
@@ -172,16 +173,21 @@ const Container = styled.div.withConfig({
 `;
 
 const ExtraContainer = styled.div`
-  width: 16cm;
-  height: 15cm;
-  background-color: #ffffff; /* 기본 배경 색상 설정 */
+  width: 13cm;
+  height: 10cm;
+  margin-bottom: 6cm;
+  margin-left: -4cm;
+  background-color: #e0e0e0; /* 기본 배경 색상 설정 */
   border-radius: 15px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* 상단 정렬 */
+  position: relative; /* 위치 지정 가능하도록 설정 */
   transition: transform 0.3s ease;
   overflow: hidden; /* 컨테이너를 넘어서는 부분 숨기기 */
+  flex-direction: column; /* 세로 정렬 */
+
   /* 내부 텍스트 스타일 */
   .text-wrapper {
     position: absolute;
@@ -214,15 +220,72 @@ const ExtraContainer = styled.div`
   }
 `;
 
+const SmallContainer = styled.div`
+  width: 12cm;
+  height: 6.5cm;
+  border-radius: 15px;
+  background-color: #f5f5f7; /* 배경 색상, 필요에 따라 변경 */
+  position: relative; /* 위치 상대 설정 */
+  margin-top: 1cm; /* 위쪽에 1cm 간격 추가 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 0.5cm; /* 왼쪽 패딩 추가 */
+  margin-bottom: -0.5cm;
+
+  img {
+    width: 100%; /* 이미지 너비 100% */
+    height: 100%; /* 이미지 높이 100% */
+    object-fit: cover; /* 이미지 비율 유지하며 채우기 */
+    border-radius: 15px; /* 컨테이너와 동일한 테두리 반경 */
+  }
+`;
+
+const SmallContainerText1 = styled.div`
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-left: 0.8cm;
+  margin-bottom: 0.2cm;
+`;
+
+const SmallContainerText2 = styled.div`
+  font-size: 1rem;
+  margin-left: 0.8cm;
+  margin-bottom: -0.5cm;
+  color: #6e6e73;
+`;
 
 const ExtraContainerWrapper = styled.div`
+  position: relative;
+  width: 100%; /* 캐러셀 너비 조정 */
   display: flex;
-  gap: 1.5rem; /* 컨테이너 간 간격 */
+  align-items: center;
+  overflow: hidden;
+  padding-left: -1cm; /* 왼쪽에 2cm 패딩 추가 */
+  margin-top: -1.5cm;
+
+  .alice-carousel__stage {
+    height: 19cm !important;
+    display: flex !important;
+    align-items: center !important;
+    margin-left: 4cm !important;
+  }
+
+  .alice-carousel__stage-item {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin-right: 5cm !important; /* 슬라이드 간의 간격을 1cm로 설정 */
+  }
+
+  &:hover button {
+    opacity: 1; /* 커서를 갖다 댔을 때 버튼 보이기 */
+  }
 `;
 
 const ArrowButton = styled.button`
   position: absolute;
-  top: calc(46% - 2.7rem); /* 세로 중앙에서 1cm 위로 */
+  top: calc(40% - 2.7rem); /* 세로 중앙에서 1cm 위로 */
   background: none;
   border: none;
   font-size: 5.4rem; /* 크기 증가 (1.8배) */
@@ -231,6 +294,7 @@ const ArrowButton = styled.button`
   z-index: 1;
   opacity: 0; /* 기본 상태에서 숨기기 */
   transition: opacity 0.7s ease;
+  margin: -15px;
   &:focus {
     outline: none;
   }
@@ -239,7 +303,7 @@ const ArrowButton = styled.button`
   }
 
   & svg {
-    fill: #f5f5f7; /* 원 부분을 흰색으로 변경 */
+    fill: rgba(224, 224, 224, 0.5); /* 원 부분을 흰색으로 변경하여 60% 투명도 적용 */
   }
 `;
 
@@ -249,6 +313,16 @@ const PrevButton = styled(ArrowButton)`
 
 const NextButton = styled(ArrowButton)`
   right: 1rem; /* 오른쪽 위치 조정 */
+`;
+
+const ExtraPrevButton = styled(ArrowButton)`
+  left: 1rem; /* 왼쪽 위치 조정 */
+  top: calc(36% - 2.7rem); /* ExtraContainer의 높이 맞춤 */
+`;
+
+const ExtraNextButton = styled(ArrowButton)`
+  right: 1rem; /* 오른쪽 위치 조정 */
+  top: calc(36% - 2.7rem); /* ExtraContainer의 높이 맞춤 */
 `;
 
 const Containers = () => {
@@ -311,7 +385,56 @@ const Containers = () => {
     </Container>,
   ];
 
+  const extraItems = [
+    <ExtraContainer key={1} bgColor="#ffdddd">
+      <SmallContainerText1>방콕 다이어트 파괴범 길거리 음식!</SmallContainerText1>
+      <SmallContainerText2>Taejeong님의 일정 4박 5일</SmallContainerText2>
+      <SmallContainer>
+        <img src={food} alt="Food Image" />
+      </SmallContainer>
+    </ExtraContainer>,
+    <ExtraContainer key={2} bgColor="#ddffdd">
+      <SmallContainerText1>빵빵이의 포장마차 ~!</SmallContainerText1>
+      <SmallContainerText2>옥지님의 일정 1박 2일</SmallContainerText2>
+      <SmallContainer>
+        <img src={BBangBBang} alt="BBangBBang Image" />
+      </SmallContainer>
+    </ExtraContainer>,
+    <ExtraContainer key={3} bgColor="#ddddff">
+      <SmallContainerText1>아빠 어릴 땐 이러고 놀았어~</SmallContainerText1>
+      <SmallContainerText2>기훈이형님의 일정 30박 31일</SmallContainerText2>
+      <SmallContainer>
+        <img src={game} alt="Game Image" />
+      </SmallContainer>
+    </ExtraContainer>,
+    <ExtraContainer key={4} bgColor="#ffdddd">
+      <SmallContainerText1>좀비 세상에서 살아남기: 나의 브이로그</SmallContainerText1>
+      <SmallContainerText2>Cris님의 일정 45박 47일</SmallContainerText2>
+      <SmallContainer>
+        <img src={zombie} alt="Zombie Image" />
+      </SmallContainer>
+    </ExtraContainer>,
+    <ExtraContainer key={5} bgColor="#ddffdd">
+      <SmallContainerText1>전목사님과 함께하는 집캉스~!</SmallContainerText1>
+      <SmallContainerText2>강인구님의 일정 7박 8일</SmallContainerText2>
+      <SmallContainer>
+        <img src={surinam} alt="Surinam Image" />
+      </SmallContainer>
+    </ExtraContainer>,
+    <ExtraContainer key={6} bgColor="#ddddff">
+      <SmallContainerText1>멋봉리에 힐링하러왔어요~</SmallContainerText1>
+      <SmallContainerText2>동숙님의 일정 5박 6일</SmallContainerText2>
+      <SmallContainer>
+        <img src={minecraft} alt="Minecraft Image" />
+      </SmallContainer>
+    </ExtraContainer>,
+  ];
+
   const carouselRef = React.useRef();
+  const extraCarouselRef = React.useRef();
+  const journeyRef = useRef();
+  const planRef = useRef();
+  const shareRef = useRef(); // shareRef 추가
 
   const slidePrev = () => {
     if (carouselRef.current) {
@@ -322,6 +445,24 @@ const Containers = () => {
   const slideNext = () => {
     if (carouselRef.current) {
       carouselRef.current.slideNext();
+    }
+  };
+
+  const slideExtraPrev = () => {
+    if (extraCarouselRef.current) {
+      extraCarouselRef.current.slidePrev();
+    }
+  };
+
+  const slideExtraNext = () => {
+    if (extraCarouselRef.current) {
+      extraCarouselRef.current.slideNext();
+    }
+  };
+
+  const scrollToRef = (ref) => {
+    if (ref.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -336,26 +477,26 @@ const Containers = () => {
         </HighlightText>
       </HeaderText>
       <MenuWrapper>
-        <MenuItem>
+        <MenuItem onClick={() => scrollToRef(journeyRef)}>
           <MenuIcon>
-            <FaHome />
+            <FaMapMarkerAlt />
           </MenuIcon>
-          <MenuText>홈</MenuText>
+          <MenuText>여행지 추천</MenuText>
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={() => scrollToRef(planRef)}>
           <MenuIcon>
-            <FaInfo />
+            <TbMapPlus />
           </MenuIcon>
-          <MenuText>정보</MenuText>
+          <MenuText>계획하기</MenuText>
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={() => scrollToRef(shareRef)}> {/* shareRef로 변경 */}
           <MenuIcon>
-            <FaUserAlt />
+            <FaShareSquare />
           </MenuIcon>
-          <MenuText>사용자</MenuText>
+          <MenuText>일정공유</MenuText>
         </MenuItem>
       </MenuWrapper>
-      <Subtitle>
+      <Subtitle ref={journeyRef}>
         여행지 추천.
         <HighlightText>지금 가장 HOT한 방문지</HighlightText>
       </Subtitle>
@@ -382,16 +523,32 @@ const Containers = () => {
           <IoIosArrowDroprightCircle />
         </NextButton>
       </CarouselWrapper>
-      <Subtitle>
-        여행 계획.
-        <HighlightText>언제든, 당신에게 맞는 방식으로.</HighlightText>
+      <Subtitle ref={shareRef}> {/* ref 수정 */}
+        일정 공유.
+        <HighlightText>당신만의 추억, 모두의 이야기로.</HighlightText>
       </Subtitle>
       <ExtraContainerWrapper>
-        <ExtraContainer bgColor="#ffdddd">추가된 컨테이너 1</ExtraContainer>
-        <ExtraContainer bgColor="#ddffdd">추가된 컨테이너 2</ExtraContainer>
-        <ExtraContainer bgColor="#ddddff">
-          추가된 컨테이너 3
-        </ExtraContainer>
+        <ExtraPrevButton onClick={slideExtraPrev}>
+          <IoIosArrowDropleftCircle />
+        </ExtraPrevButton>
+        <AliceCarousel
+          mouseTracking
+          items={extraItems}
+          responsive={{
+            0: { items: 1 },
+            600: { items: 2 },
+            1024: { items: 3 },
+            1440: { items: 4 },
+          }}
+          controlsStrategy="responsive"
+          ref={extraCarouselRef}
+          disableButtonsControls={true} // 기본 버튼 숨기기
+          infinite={false}
+          disableDotsControls={true} // 페이지 표시 툴 숨기기
+        />
+        <ExtraNextButton onClick={slideExtraNext}>
+          <IoIosArrowDroprightCircle />
+        </ExtraNextButton>
       </ExtraContainerWrapper>
     </SectionWrapper>
   );
