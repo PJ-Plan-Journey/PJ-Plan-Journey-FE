@@ -1,9 +1,9 @@
-import create from 'zustand';
+// bearStore.js
+import { create } from 'zustand';
 
 const useBearStore = create((set) => ({
-  user: null,
-  setUser: (user) => set({ user }),
-  clearUser: () => set({ user: null }),
+  bears: 0,
+  increase: () => set((state) => ({ bears: state.bears + 1 })),
 }));
 
 export default useBearStore;

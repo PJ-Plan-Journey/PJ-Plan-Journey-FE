@@ -7,7 +7,7 @@ import {
 } from 'react-icons/io';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
-
+import isPropValid from '@emotion/is-prop-valid';
 // 이미지 파일 경로 설정
 import testImage1 from '@assets/testImage1.jpg';
 import testImage2 from '@assets/testImage2.jpg';
@@ -106,14 +106,25 @@ const CarouselWrapper = styled.div`
 `;
 
 const getContrastYIQ = (hex) => {
-  const r = parseInt(hex.substr(1, 2), 16);
-  const g = parseInt(hex.substr(3, 2), 16);
-  const b = parseInt(hex.substr(5, 2), 16);
-  const yiq = (r * 299 + g * 587 + b * 114) / 1000;
-  return yiq >= 128 ? 'black' : 'white';
+  if (!/^#[0-9A-F]{6}$/i.test(hex)) {
+    throw new Error('Invalid HEX color');
+  }
+
+  const c = hex.substring(1); // 색상 앞의 # 제거
+  const rgb = parseInt(c, 16); // rrggbb를 10진수로 변환
+  const r = (rgb >> 16) & 0xff; // red 추출
+  const g = (rgb >> 8) & 0xff;  // green 추출
+  const b = (rgb >> 0) & 0xff;  // blue 추출
+  const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
+  
+  // 색상 선택
+  return luma < 127.5 ? "white" : "black";
 };
 
-const Container = styled.div`
+
+const Container = styled.div.withConfig({
+  shouldForwardProp: (prop) => isPropValid(prop) || prop.startsWith('$'),
+})`
   width: 12cm;
   height: 15cm;
   background-color: ${(props) => props.bgColor || '#e0e0e0'}; /* 배경 색상 */
@@ -163,7 +174,7 @@ const Container = styled.div`
 const ExtraContainer = styled.div`
   width: 16cm;
   height: 15cm;
-  background-color: #ffffff;
+  background-color: #ffffff; /* 기본 배경 색상 설정 */
   border-radius: 15px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -202,6 +213,7 @@ const ExtraContainer = styled.div`
     transform: scale(1.02); /* 살짝 커지는 효과 */
   }
 `;
+
 
 const ExtraContainerWrapper = styled.div`
   display: flex;
@@ -378,10 +390,6 @@ const Containers = () => {
         <ExtraContainer bgColor="#ffdddd">추가된 컨테이너 1</ExtraContainer>
         <ExtraContainer bgColor="#ddffdd">추가된 컨테이너 2</ExtraContainer>
         <ExtraContainer bgColor="#ddddff">
-          <div className="text-wrapper">
-            <div className="subtitle">보조 설명 11</div>
-          </div>{' '}
-          <div className="main-text">메인 소개 11</div>
           추가된 컨테이너 3
         </ExtraContainer>
       </ExtraContainerWrapper>
