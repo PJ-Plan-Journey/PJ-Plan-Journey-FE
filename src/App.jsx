@@ -5,6 +5,7 @@ import LoginPage from '@pages/LoginPage';
 import SignupPage from '@pages/SignupPage';
 import ProfilePage from '@pages/ProfilePage';
 import MainPage from '@pages/MainPage';
+import TravelRecommendations from '@components/TravelRecommendations'; // @components 별칭을 사용
 
 function App() {
   return (
