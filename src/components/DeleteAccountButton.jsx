@@ -11,4 +11,3 @@ const DeleteAccountButton = () => {
 };
 
 export default DeleteAccountButton;
-

@@ -19,18 +19,131 @@ import {
   NextButton,
   ExtraPrevButton,
   ExtraNextButton,
-} from '@styles/TravelRecommendations.Style'; // @styles 별칭을 사용
+} from '@styles/TravelRecommendations.style'; // 경로를 수정합니다.
+import { FaMapMarkerAlt, FaShareSquare } from 'react-icons/fa';
+import { TbMapPlus } from 'react-icons/tb';
+import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from 'react-icons/io';
+import AliceCarousel from 'react-alice-carousel';
+import 'react-alice-carousel/lib/alice-carousel.css';
+import isPropValid from '@emotion/is-prop-valid';
 import testImage1 from '@assets/testImage1.jpg';
 import testImage2 from '@assets/testImage2.jpg';
-// 나머지 import 생략
+import testImage3 from '@assets/testImage3.jpg';
+import testImage4 from '@assets/testImage4.jpg';
+import testImage5 from '@assets/testImage5.jpg';
+import testImage6 from '@assets/testImage6.jpg';
+import testImage7 from '@assets/testImage7.jpg';
+import testImage8 from '@assets/justBlack.jpg';
+import food from '@assets/food1.jpg';
+import BBangBBang from '@assets/BBangBBang.jpg';
+import game from '@assets/game.jpg';
+import zombie from '@assets/zombie.jpg';
+import surinam from '@assets/surinam.jpg';
+import minecraft from '@assets/minecraft.jpg';
 
 const TravelRecommendations = () => {
   const items = [
-    // items 정의 생략
+    <Container key={1} bgColor="#ffdddd">
+      <div className="text-wrapper">
+        <div className="subtitle">서울특별시 종로구</div>
+        <div className="main-text">서울 성곽길</div>
+      </div>
+      <img src={testImage1} alt="Test Image 1" />
+    </Container>,
+    <Container key={2} bgColor="#ddffdd">
+      <div className="text-wrapper">
+        <div className="subtitle">서울특별시 종로구</div>
+        <div className="main-text">경복궁 근정전</div>
+      </div>
+      <img src={testImage2} alt="Test Image 2" />
+    </Container>,
+    <Container key={3} bgColor="#ddddff">
+      <div className="text-wrapper">
+        <div className="subtitle">강원도 강릉시 왕산면</div>
+        <div className="main-text">안반데기</div>
+      </div>
+      <img src={testImage3} alt="Test Image 3" />
+    </Container>,
+    <Container key={4} bgColor="#ffffdd">
+      <div className="text-wrapper">
+        <div className="subtitle">경상남도 창녕군 유어면</div>
+        <div className="main-text">우포늪</div>
+      </div>
+      <img src={testImage4} alt="Test Image 4" />
+    </Container>,
+    <Container key={5} bgColor="#ffddff">
+      <div className="text-wrapper">
+        <div className="subtitle">경상북도 영주시 부석면</div>
+        <div className="main-text">부석사</div>
+      </div>
+      <img src={testImage5} alt="Test Image 5" />
+    </Container>,
+    <Container key={6} bgColor="#d0d0d0">
+      <div className="text-wrapper">
+        <div className="subtitle">경상남도 남해군 상주면</div>
+        <div className="main-text">금산 보리암</div>
+      </div>
+      <img src={testImage6} alt="Test Image 6" />
+    </Container>,
+    <Container key={7} bgColor="#d0e0f0">
+      <div className="text-wrapper">
+        <div className="subtitle"> 경상남도 합천군 합천읍</div>
+        <div className="main-text">합천 다락논</div>
+      </div>
+      <img src={testImage7} alt="Test Image 7" />
+    </Container>,
+    <Container key={8} bgColor="#f0d0d0">
+      <div className="text-wrapper">
+        <div className="subtitle">보조 설명 8</div>
+        <div className="main-text">메인 소개 8</div>
+      </div>
+      <img src={testImage8} alt="Test Image 8" />
+    </Container>,
   ];
 
   const extraItems = [
-    // extraItems 정의 생략
+    <ExtraContainer key={1} bgColor="#ffdddd">
+      <SmallContainerText1>방콕 다이어트 파괴범 길거리 음식!</SmallContainerText1>
+      <SmallContainerText2>Taejeong님의 일정 4박 5일</SmallContainerText2>
+      <SmallContainer>
+        <img src={food} alt="Food Image" />
+      </SmallContainer>
+    </ExtraContainer>,
+    <ExtraContainer key={2} bgColor="#ddffdd">
+      <SmallContainerText1>빵빵이의 포장마차 ~!</SmallContainerText1>
+      <SmallContainerText2>옥지님의 일정 1박 2일</SmallContainerText2>
+      <SmallContainer>
+        <img src={BBangBBang} alt="BBangBBang Image" />
+      </SmallContainer>
+    </ExtraContainer>,
+    <ExtraContainer key={3} bgColor="#ddddff">
+      <SmallContainerText1>아빠 어릴 땐 이러고 놀았어~</SmallContainerText1>
+      <SmallContainerText2>기훈이형님의 일정 30박 31일</SmallContainerText2>
+      <SmallContainer>
+        <img src={game} alt="Game Image" />
+      </SmallContainer>
+    </ExtraContainer>,
+    <ExtraContainer key={4} bgColor="#ffdddd">
+      <SmallContainerText1>좀비 세상에서 살아남기: 나의 브이로그</SmallContainerText1>
+      <SmallContainerText2>Cris님의 일정 45박 47일</SmallContainerText2>
+      <SmallContainer>
+        <img src={zombie} alt="Zombie Image" />
+      </SmallContainer>
+    </ExtraContainer>,
+    <ExtraContainer key={5} bgColor="#ddffdd">
+      <SmallContainerText1>전목사님과 함께하는 집캉스~!</SmallContainerText1>
+      <SmallContainerText2>강인구님의 일정 7박 8일</SmallContainerText2>
+      <SmallContainer>
+        <img src={surinam} alt="Surinam Image" />
+      </SmallContainer>
+    </ExtraContainer>,
+    <ExtraContainer key={6} bgColor="#ddddff">
+      <SmallContainerText1>멋봉리에 힐링하러왔어요~</SmallContainerText1>
+      <SmallContainerText2>동숙님의 일정 5박 6일</SmallContainerText2>
+      <SmallContainer>
+        <img src={minecraft} alt="Minecraft Image" />
+      </SmallContainer>
+    </ExtraContainer>,
   ];
 
   const carouselRef = useRef();
