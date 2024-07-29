@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import useKakaoLoader from '@hooks/useKakaoLoader';
-import usePlaceStore from '@zustand/usePlaceStore';
+import useKakaoLoader from '@hooks/plan/useKakaoLoader';
+import usePlaceStore from '@zustand/plan/usePlaceStore';
 import { Map, Polyline, CustomOverlayMap } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
-import { flex } from '@styles/common.style';
+import { flex } from '@styles/common/common.style';
 
 const Container = styled.div`
   width: 100%;
@@ -37,7 +37,6 @@ const KakaoMap = () => {
   useKakaoLoader();
 
   const handleMapCreate = (mapInstance) => {
-    console.log('지도 객체 로드됨:', mapInstance);
     setMap(mapInstance);
   };
 
@@ -54,16 +53,15 @@ const KakaoMap = () => {
   return (
     <Container>
       <MapStyle
-        center={{ lat: 37.5665, lng: 126.978 }}
-        level={5}
-        onCreate={handleMapCreate}
+        center={{ lat: 37.5665, lng: 126.978 }} // map 시작 좌표
+        level={5} // 초기 확대 레벨 (숫자가 낮을수록 더 확대)
+        onCreate={handleMapCreate} // 맵 생성 시 호출
       >
         <Polyline
           path={placeList.map(({ lat, lng }) => ({ lat, lng }))}
-          strokeWeight={8}
-          strokeColor="#156bf0"
-          strokeOpacity={1}
-          strokeStyle="dashed"
+          strokeWeight={8} // 선 굵기
+          strokeColor="#156bf0" // 선 색깔
+          strokeStyle="dashed" // 선 모양
         />
         {placeList.map(({ name, lat, lng }, index) => (
           <CustomOverlayMap key={name} position={{ lat, lng }} yAnchor={0.5}>

@@ -6,7 +6,7 @@ import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
 } from 'react-icons/io';
-import { flex } from '@styles/common.style';
+import { flex } from '@styles/common/common.style';
 
 const Container = styled.div`
   ${flex}
@@ -37,7 +37,6 @@ const Container = styled.div`
 `;
 
 const CustomHeader = ({
-  date,
   decreaseMonth,
   increaseMonth,
   prevMonthButtonDisabled,

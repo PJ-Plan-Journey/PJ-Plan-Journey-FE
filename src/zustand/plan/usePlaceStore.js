@@ -11,6 +11,11 @@ const usePlaceStore = create((set) => ({
     set((state) => ({
       placeList: arrayMove(state.placeList, oldIndex, newIndex),
     })),
+  removePlace: (id) =>
+    set((state) => ({
+      placeList: state.placeList.filter((place) => place.id !== id),
+    })),
+  initList: () => set(() => ({ placeList: [] })),
 }));
 
 export default usePlaceStore;

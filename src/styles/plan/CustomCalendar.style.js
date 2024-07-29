@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { flexColumn } from './common.style';
+import { flexColumn } from '../common/common.style';
 
 export const CalendarContainer = styled.div`
   --date-size: 4rem;

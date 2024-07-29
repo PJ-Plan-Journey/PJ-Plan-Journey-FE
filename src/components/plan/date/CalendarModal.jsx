@@ -1,8 +1,8 @@
 import React from 'react';
-import CustomCalendar from '@components/createPlan/CustomCalendar';
+import CustomCalendar from '@components/plan/date/CustomCalendar';
 import styled from 'styled-components';
-import useDateStore from '@zustand/useDateStore';
-import { flex } from '@styles/common.style';
+import useDateStore from '@zustand/plan/useDateStore';
+import { flex } from '@styles/common/common.style';
 
 const Container = styled.div`
   width: inherit;

@@ -1,9 +1,10 @@
 import styled from 'styled-components';
-import { flex, flexColumn } from './common.style';
+import { flex, flexColumn } from '../common/common.style';
 import { motion } from 'framer-motion';
+import logo from '@assets/PJ_logo.png';
 
 export const Container = styled.div`
-  width: 200px;
+  min-width: 200px;
   height: 100%;
   ${flexColumn};
   justify-content: space-between;
@@ -15,7 +16,7 @@ export const Logo = styled.h1`
   width: 100%;
   height: 100px;
   background-repeat: no-repeat;
-  background-image: url('/images/PJ_logo.png');
+  background-image: url(${logo});
   background-size: contain;
   background-position: 50% 50%;
   opacity: 0.7;

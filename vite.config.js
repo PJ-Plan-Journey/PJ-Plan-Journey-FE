@@ -22,6 +22,7 @@ export default defineConfig({
       { find: '@styles', replacement: resolve(__dirname, 'src/styles') },
       { find: '@zustand', replacement: resolve(__dirname, 'src/zustand') },
       { find: '@axios', replacement: resolve(__dirname, 'src/axios') },
+      { find: '@assets', replacement: resolve(__dirname, 'src/assets') },
       { find: '@', replacement: resolve(__dirname, 'src') },
     ],
   },

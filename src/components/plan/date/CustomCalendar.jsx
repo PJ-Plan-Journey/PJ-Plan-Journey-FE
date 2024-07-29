@@ -9,9 +9,9 @@ import {
   startOfMonth,
   endOfMonth,
 } from 'date-fns';
-import useDateStore from '@zustand/useDateStore';
-import CustomHeader from '@components/createPlan/CustomHeader';
-import * as S from '@styles/CustomCalendar.style';
+import useDateStore from '@zustand/plan/useDateStore';
+import CustomHeader from '@components/plan/date/CustomHeader';
+import * as S from '@styles/plan/CustomCalendar.style';
 
 const CustomCalendar = () => {
   const { startDate: initStart, endDate: initEnd, setDates } = useDateStore();
@@ -59,19 +59,18 @@ const CustomCalendar = () => {
   return (
     <S.CalendarContainer>
       <DatePicker
-        locale={ko}
-        selected={startDate}
-        startDate={startDate}
-        endDate={endDate}
-        onChange={handleDateChange}
-        onMonthChange={(date) => setCurrentMonth(date)}
-        selectsRange
-        inline
-        monthsShown={2}
-        minDate={startOfDay(new Date())}
-        dayClassName={dayClassName}
+        locale={ko} // 한글 로케일 설정
+        selected={startDate} // 선택된 시작 날짜
+        startDate={startDate} // 날짜 범위 선택 시 시작 날짜
+        endDate={endDate} // 날짜 범위 선택 시 종료 날짜
+        onChange={handleDateChange} // 날짜 변경 시 호출되는 함수
+        onMonthChange={(date) => setCurrentMonth(date)} // 달 변경 시 호출되는 함수
+        selectsRange // 날짜 범위를 선택할 수 있도록 설정
+        inline // 인라인으로 캘린더를 표시
+        monthsShown={2} // 동시에 표시할 달의 수
+        minDate={startOfDay(new Date())} // 선택 가능한 최소 날짜 (오늘의 시작)
+        dayClassName={dayClassName} // 각 날짜에 클래스명을 추가하는 함수
         renderCustomHeader={({
-          date,
           decreaseMonth,
           increaseMonth,
           prevMonthButtonDisabled,
@@ -79,12 +78,11 @@ const CustomCalendar = () => {
           monthDate,
         }) => (
           <CustomHeader
-            date={date}
-            decreaseMonth={decreaseMonth}
-            increaseMonth={increaseMonth}
-            prevMonthButtonDisabled={prevMonthButtonDisabled}
-            nextMonthButtonDisabled={nextMonthButtonDisabled}
-            monthDate={monthDate}
+            decreaseMonth={decreaseMonth} // 이전 달로 이동하는 함수
+            increaseMonth={increaseMonth} // 다음 달로 이동하는 함수
+            prevMonthButtonDisabled={prevMonthButtonDisabled} // 이전 달 버튼 비활성화 여부
+            nextMonthButtonDisabled={nextMonthButtonDisabled} // 다음 달 버튼 비활성화 여부
+            monthDate={monthDate} // 현재 표시된 달의 날짜
           />
         )}
       />

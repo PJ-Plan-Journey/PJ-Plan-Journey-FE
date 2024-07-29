@@ -1,12 +1,11 @@
-import { flexColumn } from '@styles/common.style';
+import { flexColumn } from '@styles/common/common.style';
 import styled from 'styled-components';
 import { MdOutlineEditCalendar } from 'react-icons/md';
 import Portal from '@/utils/Portal';
-import CalendarModal from '@components/createPlan/CalendarModal';
+import CalendarModal from '@components/plan/date/CalendarModal';
 import { useState } from 'react';
-import useDateStore from '@zustand/useDateStore';
-import { format } from 'date-fns';
-import { ko } from 'date-fns/locale';
+import useDateStore from '@zustand/plan/useDateStore';
+import DateRangeDisplay from './DateRangeDisplay';
 
 const Container = styled.div`
   ${flexColumn}
@@ -25,21 +24,9 @@ const CalendarIcon = styled(MdOutlineEditCalendar)`
   cursor: pointer;
   font-size: 30px;
 `;
-
-const SelectedDateBox = styled.div`
-  ${flexColumn}
-  gap: 20px;
-  font-size: 26px;
-  font-weight: bold;
-`;
-
 const SelectedDate = () => {
   const { startDate, endDate } = useDateStore();
   const [isvisible, setIsvisible] = useState(!!!startDate || !!!endDate);
-
-  const formatDateToKorean = (date) => {
-    return date ? format(date, 'yyyy.MM.dd(EE)', { locale: ko }) : null;
-  };
 
   const toggle = () => {
     if (!startDate || !endDate) {
@@ -50,18 +37,14 @@ const SelectedDate = () => {
 
   return (
     <Container>
-      <Title>카드선택이름</Title>
+      <Title>서울</Title>
 
       <div>
         <CalendarIcon onClick={toggle} />
         <p>변경</p>
       </div>
 
-      <SelectedDateBox>
-        <div>
-          {formatDateToKorean(startDate)} - {formatDateToKorean(endDate)}
-        </div>
-      </SelectedDateBox>
+      <DateRangeDisplay />
       <Portal>{isvisible && <CalendarModal toggle={toggle} />}</Portal>
     </Container>
   );
