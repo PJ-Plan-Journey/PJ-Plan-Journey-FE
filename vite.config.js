@@ -8,18 +8,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: [
-      {
-        find: '@components',
-        replacement: resolve(__dirname, 'src/components'),
-      },
-      { find: '@hooks', replacement: resolve(__dirname, 'src/hooks') },
-      { find: '@pages', replacement: resolve(__dirname, 'src/pages') },
-      { find: '@routers', replacement: resolve(__dirname, 'src/routers') },
-      { find: '@styles', replacement: resolve(__dirname, 'src/styles') },
-      { find: '@zustand', replacement: resolve(__dirname, 'src/zustand') },
-      { find: '@axios', replacement: resolve(__dirname, 'src/axios') },
-      { find: '@', replacement: resolve(__dirname, 'src') },
-    ],
+    alias: {
+      '@components': resolve(__dirname, 'src/components'),
+      '@hooks': resolve(__dirname, 'src/hooks'),
+      '@pages': resolve(__dirname, 'src/pages'),
+      '@routers': resolve(__dirname, 'src/routers'),
+      '@styles': resolve(__dirname, 'src/styles'),
+      '@zustands': resolve(__dirname, 'src/zustands'),
+      '@axios': resolve(__dirname, 'src/axios'),
+      '@assets': resolve(__dirname, 'src/assets'), // assets 별칭 추가
+      '@': resolve(__dirname, 'src'),
+    },
   },
 });
