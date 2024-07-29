@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SignupContainer, SignupForm, Input, Button } from '@styles/Signup.styles';
+import { SignupContainer, SignupForm, Input, Button } from '@styles/auth/Signup.styles';
 import axios from '@axios/api';
 
 const SignupPage = () => {

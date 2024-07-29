@@ -6,8 +6,3 @@ export const MainContainer = styled.div`
   align-items: center;
   width: 100%;
 `;
-
-export const ContainerWrapper = styled.div`
-  display: flex;
-  gap: 1.5cm; /* 초기 간격 */
-`;

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { ProfileContainer, ProfileForm, Input, Button } from '@styles/Profile.styles';
+import { ProfileContainer, ProfileForm, Input, Button } from '@styles/profile/Profile.styles'; // 경로 확인
 import axios from '@axios/api';
-import useBearStore from '@zustands/bearStore'; // 경로가 맞다면 수정할 필요 없음
-import DeleteAccountButton from '@components/DeleteAccountButton';
-import LogoutButton from '@components/LogoutButton';
+import useBearStore from '@zustands/bearStore';
+import LogoutButton from '@components/common/LogoutButton'; // 수정된 경로
+import DeleteAccountButton from '@components/profile/DeleteAccountButton';
 
 const ProfilePage = () => {
   const { user, setUser } = useBearStore((state) => ({ user: state.user, setUser: state.setUser }));

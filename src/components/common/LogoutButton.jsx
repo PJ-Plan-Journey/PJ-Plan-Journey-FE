@@ -1,6 +1,6 @@
 import React from 'react';
 import useBearStore from '@zustands/bearStore';
-import { Button } from '@styles/Profile.styles';
+import { Button } from '@styles/profile/Profile.styles';
 
 const LogoutButton = () => {
   const clearUser = useBearStore((state) => state.clearUser);

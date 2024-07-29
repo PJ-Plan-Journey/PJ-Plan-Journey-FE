@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@styles/Profile.styles';
+import { Button } from '@styles/profile/Profile.styles';
 
 const DeleteAccountButton = () => {
   const handleDeleteAccount = () => {

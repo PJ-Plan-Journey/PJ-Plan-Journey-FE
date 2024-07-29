@@ -19,13 +19,12 @@ import {
   NextButton,
   ExtraPrevButton,
   ExtraNextButton,
-} from '@styles/TravelRecommendations.style'; // 경로를 수정합니다.
+} from '@styles/main/TravelRecommendations.style';
 import { FaMapMarkerAlt, FaShareSquare } from 'react-icons/fa';
 import { TbMapPlus } from 'react-icons/tb';
 import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from 'react-icons/io';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
-import isPropValid from '@emotion/is-prop-valid';
 import testImage1 from '@assets/testImage1.jpg';
 import testImage2 from '@assets/testImage2.jpg';
 import testImage3 from '@assets/testImage3.jpg';

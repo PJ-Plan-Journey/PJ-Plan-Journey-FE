@@ -4,33 +4,27 @@ export const ProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #f0f0f0;
+  width: 100%;
 `;
 
 export const ProfileForm = styled.form`
   display: flex;
   flex-direction: column;
-  padding: 2rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #fff;
+  gap: 1rem;
 `;
 
 export const Input = styled.input`
-  margin-bottom: 1rem;
   padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  font-size: 1rem;
 `;
 
 export const Button = styled.button`
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
   background-color: #007bff;
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   cursor: pointer;
 
   &:hover {
