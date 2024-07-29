@@ -1,6 +1,6 @@
 import { FaCircleCheck } from 'react-icons/fa6';
 import * as S from '@styles/plan/Step.style';
-import useStepStore from '@zustand/plan/useStepStore';
+import useStepStore from '@/zustands/plan/useStepStore';
 
 const STEPLIST = [{ name: '날짜 선택' }, { name: '장소 선택' }];
 

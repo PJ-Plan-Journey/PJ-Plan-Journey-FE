@@ -1,7 +1,7 @@
 import React from 'react';
 import CustomCalendar from '@components/plan/date/CustomCalendar';
 import styled from 'styled-components';
-import useDateStore from '@zustand/plan/useDateStore';
+import useDateStore from '@/zustands/plan/useDateStore';
 import { flex } from '@styles/common/common.style';
 
 const Container = styled.div`

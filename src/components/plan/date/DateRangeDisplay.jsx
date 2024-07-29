@@ -1,5 +1,5 @@
 import { flexColumn } from '@styles/common/common.style';
-import useDateStore from '@zustand/plan/useDateStore';
+import useDateStore from '@/zustands/plan/useDateStore';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import React from 'react';

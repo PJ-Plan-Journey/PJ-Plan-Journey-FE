@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import useKakaoLoader from '@hooks/plan/useKakaoLoader';
-import usePlaceStore from '@zustand/plan/usePlaceStore';
+import usePlaceStore from '@/zustands/plan/usePlaceStore';
 import { Map, Polyline, CustomOverlayMap } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 import { flex } from '@styles/common/common.style';

@@ -9,7 +9,7 @@ import {
   startOfMonth,
   endOfMonth,
 } from 'date-fns';
-import useDateStore from '@zustand/plan/useDateStore';
+import useDateStore from '@/zustands/plan/useDateStore';
 import CustomHeader from '@components/plan/date/CustomHeader';
 import * as S from '@styles/plan/CustomCalendar.style';
 

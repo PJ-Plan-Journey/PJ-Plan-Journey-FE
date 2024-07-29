@@ -3,7 +3,7 @@ import KakaoMap from '@components/plan/KakaoMap';
 import SelectedPlace from '@components/plan/place/SelectedPlace';
 import Step from '@components/plan/Step';
 import { flex } from '@styles/common/common.style';
-import useStepStore from '@zustand/plan/useStepStore';
+import useStepStore from '@/zustands/plan/useStepStore';
 import styled from 'styled-components';
 
 const Container = styled.div`

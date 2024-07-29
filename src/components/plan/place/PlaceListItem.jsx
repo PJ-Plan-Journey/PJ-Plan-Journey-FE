@@ -1,6 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import usePlaceStore from '@zustand/plan/usePlaceStore';
+import usePlaceStore from '@/zustands/plan/usePlaceStore';
 import styled from 'styled-components';
 import { FaBars } from 'react-icons/fa';
 import { MdOutlineRemove } from 'react-icons/md';

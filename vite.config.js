@@ -20,7 +20,7 @@ export default defineConfig({
       { find: '@pages', replacement: resolve(__dirname, 'src/pages') },
       { find: '@routers', replacement: resolve(__dirname, 'src/routers') },
       { find: '@styles', replacement: resolve(__dirname, 'src/styles') },
-      { find: '@zustand', replacement: resolve(__dirname, 'src/zustand') },
+      { find: '@zustands', replacement: resolve(__dirname, 'src/zustands') },
       { find: '@axios', replacement: resolve(__dirname, 'src/axios') },
       { find: '@assets', replacement: resolve(__dirname, 'src/assets') },
       { find: '@', replacement: resolve(__dirname, 'src') },

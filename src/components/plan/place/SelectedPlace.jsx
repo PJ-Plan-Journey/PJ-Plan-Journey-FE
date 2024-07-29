@@ -4,7 +4,7 @@ import { SortableContext } from '@dnd-kit/sortable';
 import styled from 'styled-components';
 import { flex, flexColumn } from '@styles/common/common.style';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import usePlaceStore from '@zustand/plan/usePlaceStore';
+import usePlaceStore from '@/zustands/plan/usePlaceStore';
 import { FaPlus, FaCheck } from 'react-icons/fa';
 import { IoSearch } from 'react-icons/io5';
 import { IoIosCloseCircle } from 'react-icons/io';

@@ -4,7 +4,7 @@ import { MdOutlineEditCalendar } from 'react-icons/md';
 import Portal from '@/utils/Portal';
 import CalendarModal from '@components/plan/date/CalendarModal';
 import { useState } from 'react';
-import useDateStore from '@zustand/plan/useDateStore';
+import useDateStore from '@/zustands/plan/useDateStore';
 import DateRangeDisplay from './DateRangeDisplay';
 
 const Container = styled.div`
