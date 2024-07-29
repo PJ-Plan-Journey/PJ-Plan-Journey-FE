@@ -1,6 +1,7 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // useNavigate 훅 import
 import styled from 'styled-components';
-import { FaUser, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
+import { FaUser } from 'react-icons/fa';
 import logo from '@assets/Logo.jpg';
 
 const HeaderWrapper = styled.header`
@@ -24,28 +25,35 @@ const HeaderWrapper = styled.header`
 `;
 
 const Logo = styled.img`
-  height: 40px; /* 로고 크기 조정 */
-  margin-right: 2rem;
+  height: 60px; /* 로고 크기 조정 */
+  margin-right: 55rem;
+  cursor: pointer; /* 클릭 가능한 요소임을 시각적으로 표현 */
 `;
 
 const Nav = styled.nav`
   display: flex;
   align-items: center;
-  gap: 2rem; /* 간격 조정 */
+  gap: 1.5rem; /* 간격 조정 */
 `;
 
 const NavLink = styled.a`
   text-decoration: none;
   color: #333;
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
 `;
 
 const Header = () => {
+  const navigate = useNavigate(); // useNavigate 훅 사용
+
+  const handleLogoClick = () => {
+    navigate('/'); // MainPage로 이동
+  };
+
   return (
     <HeaderWrapper>
-      <Logo src={logo} alt="Logo" />
+      <Logo src={logo} alt="Logo" onClick={handleLogoClick} /> {/* onClick 이벤트 추가 */}
       <Nav>
         <NavLink href="/login">로그인</NavLink>
         <NavLink href="/signup">회원가입</NavLink>

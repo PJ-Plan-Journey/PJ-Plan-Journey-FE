@@ -22,12 +22,23 @@ export const SectionWrapper = styled.div`
 export const HeaderText = styled.h1`
   font-size: 2.5rem; /* 제목 폰트 사이즈 */
   text-align: left; /* 왼쪽 정렬 */
+  font-weight: bold;
+  line-height: 1.3;
+`;
+
+export const LoginText = styled.h1`
+  font-size: 1.9rem; /* 제목 폰트 사이즈 */
+  text-align: left; /* 왼쪽 정렬 */
+  font-weight: bold;
+  margin-top: auto;
+  line-height: 1.4;
+  margin-right: 7.7rem;
 `;
 
 export const MenuWrapper = styled.div`
   display: flex;
   flex-direction: row; /* 가로로 정렬 */
-  gap: 1.5rem; /* 메뉴 간격 */
+  gap: 1.3rem; /* 메뉴 간격 */
   align-items: flex-start; /* 왼쪽 정렬 */
   margin-top: 4rem;
 `;
@@ -38,12 +49,13 @@ export const MenuItem = styled.div`
   align-items: center; /* 중앙 정렬 */
   width: 3cm;
   height: 4cm;
+  
   cursor: pointer; /* 클릭 가능한 커서로 변경 */
 `;
 
 export const MenuIcon = styled.div`
-  font-size: 2rem; /* 아이콘 크기 */
-  margin-bottom: 0.5rem; /* 아이콘과 텍스트 사이의 간격 */
+  font-size: 2.5rem; /* 아이콘 크기 */
+  margin-bottom: 1rem; /* 아이콘과 텍스트 사이의 간격 */
 `;
 
 export const MenuText = styled.div`
@@ -55,6 +67,7 @@ export const Subtitle = styled.h2`
   font-size: 1.5rem; /* 소제목 폰트 사이즈 */
   text-align: left; /* 왼쪽 정렬 */
   margin-top: -1.5rem; /* 섹션 간격 조정 */
+  font-weight: bold;
 `;
 
 export const HighlightText = styled.span`
