@@ -1,8 +1,8 @@
+import { flexColumn } from '@styles/common/common.style';
 import styled from 'styled-components';
-import { flexColumn } from '../common/common.style';
 
 export const CalendarContainer = styled.div`
-  --date-size: 4rem;
+  --date-size: 3rem;
 
   ${flexColumn}
   width: 100%;
@@ -20,7 +20,7 @@ export const CalendarContainer = styled.div`
 
   .react-datepicker__header {
     background-color: #156bf0;
-    padding: 30px 20px 0;
+    padding: 20px 20px 10px;
     border-radius: 30px 30px 5px 5px;
   }
 
@@ -30,14 +30,13 @@ export const CalendarContainer = styled.div`
 
   .react-datepicker__current-month {
     color: white;
-    font-size: 20px;
     margin-bottom: 20px;
   }
 
   .react-datepicker__day-name {
     width: var(--date-size);
     line-height: var(--date-size);
-    font-size: 20px;
+    font-size: 18px;
     color: white;
   }
 
@@ -62,7 +61,7 @@ export const CalendarContainer = styled.div`
   }
 
   .react-datepicker__day {
-    font-size: 20px;
+    font-size: 18px;
     width: var(--date-size);
     line-height: var(--date-size);
   }

@@ -1,14 +1,15 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { flex, flexColumn } from '../common/common.style';
-import { motion } from 'framer-motion';
 import logo from '@assets/PJ_logo.png';
 
 export const Container = styled.div`
-  min-width: 200px;
+  min-width: 150px;
   height: 100%;
   ${flexColumn};
   justify-content: space-between;
-  padding: 30px;
+  padding: 20px;
+  background-color: white;
+  border-right: 1px solid #ccc;
 `;
 
 export const Logo = styled.h1`
@@ -34,7 +35,7 @@ export const StepList = styled.ol`
   gap: 100px;
 `;
 
-export const Item = styled(motion.li)`
+export const Item = styled.li`
   min-height: 50px;
   cursor: pointer;
   ${flexColumn}
@@ -43,12 +44,26 @@ export const Item = styled(motion.li)`
   text-align: center;
   text-transform: uppercase;
   color: ${({ $status }) => ($status === 'true' ? '#156bf0' : 'gray')};
-  font-size: 20px;
   font-weight: bold;
 
   transform: ${({ $status }) =>
-    $status === 'true' ? 'scale(1.2)' : 'scale(1)'};
+    $status === 'true' ? 'scale(1.1)' : 'scale(1)'};
   transition: all 0.2s ease-out;
+
+  .step-number {
+    ${({ $status }) =>
+      $status === 'true'
+        ? css`
+            box-shadow: 0 0 2px #156bf0;
+          `
+        : css`
+            box-shadow: 0 0 2px black;
+          `};
+
+    ${flex}
+    padding: 10px;
+    border-radius: 30px;
+  }
 `;
 
 export const Button = styled.button`

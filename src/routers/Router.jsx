@@ -15,12 +15,11 @@ const Router = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/searchcity" element={<PlanPage />} />
         <Route path="/mypage" element={<MyPage />} /> {/* MyPage 경로 추가 */}
+        <Route path="/plan/create" element={<PlanPage />} />
       </Routes>
     </BrowserRouter>
   );
 };
 
 export default Router;
-

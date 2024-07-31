@@ -1,52 +1,55 @@
-import { flexColumn } from '@styles/common/common.style';
-import styled from 'styled-components';
-import { MdOutlineEditCalendar } from 'react-icons/md';
 import Portal from '@/utils/Portal';
 import CalendarModal from '@components/plan/date/CalendarModal';
 import { useState } from 'react';
-import useDateStore from '@/zustands/plan/useDateStore';
-import DateRangeDisplay from './DateRangeDisplay';
+import DateRangeDisplay from '@components/plan/date/DateRangeDisplay';
+import { ko } from 'date-fns/locale';
+import { format } from 'date-fns';
+import * as S from '@styles/plan/date/SelectedDate.style';
+import useDateStore from '@zustands/plan/useDateStore';
 
-const Container = styled.div`
-  ${flexColumn}
-  gap: 30px;
-  width: 800px;
-  height: 100%;
-  padding: 60px 0;
-`;
-
-const Title = styled.h1`
-  font-weight: bold;
-  font-size: 30px;
-`;
-
-const CalendarIcon = styled(MdOutlineEditCalendar)`
-  cursor: pointer;
-  font-size: 30px;
-`;
 const SelectedDate = () => {
   const { startDate, endDate } = useDateStore();
   const [isvisible, setIsvisible] = useState(!!!startDate || !!!endDate);
 
-  const toggle = () => {
-    if (!startDate || !endDate) {
-      return alert('일정을 선택해주세요.');
-    }
-    setIsvisible((prev) => !prev);
+  const openCalendar = () => {
+    setIsvisible(true);
+  };
+
+  const closeCalendar = () => {
+    setIsvisible(false);
+  };
+
+  const onClickTicketing = () => {
+    const formatDateToKorean = (date) => {
+      return date ? format(date, 'yyyyMMdd', { locale: ko }) : null;
+    };
+
+    const origin = 'SEL'; // 출발지 (IATA 코드)
+    const destination = 'PUS'; // 도착지 (IATA 코드)
+    const formattedStartDate = formatDateToKorean(startDate);
+    const formattedEndDate = formatDateToKorean(endDate);
+    const naverFlightsUrl = `https://flight.naver.com/flights/domestic/${origin}-${destination}-${formattedStartDate}/${destination}-${origin}-${formattedEndDate}?adult=1&fareType=YC`;
+
+    // 새 창 또는 탭으로 URL 열기
+    window.open(naverFlightsUrl, '_blank');
   };
 
   return (
-    <Container>
-      <Title>서울</Title>
-
-      <div>
-        <CalendarIcon onClick={toggle} />
-        <p>변경</p>
+    <S.SelectedDateContainer>
+      <DateRangeDisplay />
+      <div className="button-group">
+        <button onClick={openCalendar} className="date">
+          일정 변경
+        </button>
+        <button className="ticketing" onClick={onClickTicketing}>
+          항공권 알아보기
+        </button>
       </div>
 
-      <DateRangeDisplay />
-      <Portal>{isvisible && <CalendarModal toggle={toggle} />}</Portal>
-    </Container>
+      <Portal>
+        {isvisible && <CalendarModal closeCalendar={closeCalendar} />}
+      </Portal>
+    </S.SelectedDateContainer>
   );
 };
 

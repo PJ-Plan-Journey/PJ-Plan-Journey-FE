@@ -9,9 +9,9 @@ import {
   startOfMonth,
   endOfMonth,
 } from 'date-fns';
-import useDateStore from '@/zustands/plan/useDateStore';
+import useDateStore from '@zustands/plan/useDateStore';
 import CustomHeader from '@components/plan/date/CustomHeader';
-import * as S from '@styles/plan/CustomCalendar.style';
+import * as S from '@styles/plan/date/CustomCalendar.style';
 
 const CustomCalendar = () => {
   const { startDate: initStart, endDate: initEnd, setDates } = useDateStore();

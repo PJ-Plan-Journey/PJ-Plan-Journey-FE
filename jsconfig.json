@@ -8,7 +8,7 @@
       "@pages/*": ["pages/*"],
       "@routers/*": ["routers/*"],
       "@styles/*": ["styles/*"],
-      "@zustand/*": ["zustand/*"],
+      "@zustands/*": ["zustands/*"],
       "@axios/*": ["axios/*"],
       "@/*": ["*"]
     }
