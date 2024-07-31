@@ -1,21 +1,43 @@
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import useBearStore from '@zustands/bearStore';
 import useDateStore from '@zustands/plan/useDateStore';
 import Header from '@components/common/Header';
-import { FaSignOutAlt, FaCogs, FaUserFriends, FaCalendarAlt } from 'react-icons/fa';
+import { FaCheck, FaTrash, FaUser, FaLock, FaKey, FaSignOutAlt, FaCogs, FaUserFriends, FaCalendarAlt } from 'react-icons/fa';
 import AccountSettings from '@components/MyPage/AccountSettings';
 import FriendManagement from '@components/MyPage/FriendManagement';
 import TravelManagement from '@components/MyPage/TravelManagement';
 import Modal from '@components/MyPage/Modal';
-import {
-  OuterContainer,
-  PageContainer,
-  ContentContainer,
-  MenuContainerWrapper,
-  MenuItem,
-  MenuItemIcon,
-  MainContent,
-} from '@styles/auth/MyPage.styles';
+import Sidebar from '@components/MyPage/Sidebar';
+import MainContent from '@components/MyPage/MainContent';
+
+const OuterContainer = styled.div`
+  background-color: white;
+  width: 100%;
+  max-width: 1380px;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem; /* Header와의 간격 조절 */
+  padding: 0 3cm; /* 양쪽 패딩 추가 */
+  border-radius: 15px;
+`;
+
+const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  width: 100%;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 3cm; /* Header로부터 3cm 떨어지도록 설정 */
+  margin-right: 4cm;
+`;
 
 const MyPage = () => {
   const { user } = useBearStore((state) => ({ user: state.user }));
@@ -56,7 +78,15 @@ const MyPage = () => {
       case 'friends':
         return <FriendManagement user={user} />;
       case 'travel':
-        return <TravelManagement days={days} />;
+        return (
+          <>
+            <LoginText>일정관리</LoginText>
+            <MenuText>나의 여행</MenuText>
+            {days.map((day, index) => (
+              <DayButton key={index} onClick={() => alert(`${day} 클릭`)}>{day}</DayButton>
+            ))}
+          </>
+        );
       default:
         return <p>메뉴를 선택해주세요.</p>;
     }
@@ -68,36 +98,8 @@ const MyPage = () => {
       <OuterContainer>
         <PageContainer>
           <ContentContainer>
-            <MenuContainerWrapper>
-              <h1>{user.name ? `${user.name} 님` : '사용자 님'}</h1>
-              <MenuItem onClick={() => setSelectedMenu('account')}>
-                <MenuItemIcon>
-                  <FaCogs />
-                </MenuItemIcon>
-                계정센터
-              </MenuItem>
-              <MenuItem onClick={() => setSelectedMenu('friends')}>
-                <MenuItemIcon>
-                  <FaUserFriends />
-                </MenuItemIcon>
-                친구관리
-              </MenuItem>
-              <MenuItem onClick={() => setSelectedMenu('travel')}>
-                <MenuItemIcon>
-                  <FaCalendarAlt />
-                </MenuItemIcon>
-                나의 일정
-              </MenuItem>
-              <MenuItem onClick={() => alert('로그아웃 클릭')}>
-                <MenuItemIcon>
-                  <FaSignOutAlt />
-                </MenuItemIcon>
-                로그아웃
-              </MenuItem>
-            </MenuContainerWrapper>
-            <MainContent>
-              {renderContent()}
-            </MainContent>
+            <Sidebar user={user} />
+            <MainContent renderContent={renderContent} />
           </ContentContainer>
         </PageContainer>
       </OuterContainer>
