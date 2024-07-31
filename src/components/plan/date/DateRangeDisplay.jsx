@@ -1,16 +1,9 @@
-import { flexColumn } from '@styles/common/common.style';
-import useDateStore from '@/zustands/plan/useDateStore';
+import useDateStore from '@zustands/plan/useDateStore';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import React from 'react';
-import styled from 'styled-components';
+import * as S from '@styles/plan/date/DateRangeDisplay.style';
 
-const SelectedDateBox = styled.div`
-  ${flexColumn}
-  gap: 20px;
-  font-size: 26px;
-  font-weight: bold;
-`;
+import { MdCalendarToday as CalendarIcon } from 'react-icons/md';
 
 const DateRangeDisplay = () => {
   const { startDate, endDate } = useDateStore();
@@ -20,9 +13,14 @@ const DateRangeDisplay = () => {
   };
 
   return (
-    <SelectedDateBox>
-      {formatDateToKorean(startDate)} - {formatDateToKorean(endDate)}
-    </SelectedDateBox>
+    <S.DateRangeDisplayContainer>
+      <div className="city">서울</div>
+      <div className="dateRange">
+        {startDate ? formatDateToKorean(startDate) : <CalendarIcon />}
+        <span>-</span>
+        {endDate ? formatDateToKorean(endDate) : <CalendarIcon />}
+      </div>
+    </S.DateRangeDisplayContainer>
   );
 };
 
