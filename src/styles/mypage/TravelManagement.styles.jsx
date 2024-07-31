@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const TravelContainer = styled.div`
-  padding: 2rem;
   line-height: 1.5;
 `;
 

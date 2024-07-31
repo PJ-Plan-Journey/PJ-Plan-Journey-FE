@@ -2,38 +2,79 @@ import React from 'react';
 import AccountSettings from '@components/MyPage/AccountSettings';
 import FriendManagement from '@components/MyPage/FriendManagement';
 import TravelManagement from '@components/MyPage/TravelManagement';
-import { MainContentWrapper, LoginText, MenuText, DayButton } from '@styles/mypage/MainContent.styles';
+import {
+  MainContentContainer,
+  Card,
+  Section,
+  LoginTextContainer,
+  SectionTitle,
+  LoginText,
+} from '@styles/mypage/MainContent.styles';
 
-const MainContent = () => {
-  const [selectedMenu, setSelectedMenu] = React.useState('');
-  const [days, setDays] = React.useState(['day1', 'day2', 'day3']); // 임시 데이터
-
+const MainContent = ({ selectedMenu, user, days, setShowModal }) => {
   const renderContent = () => {
     switch (selectedMenu) {
       case 'account':
-        return <AccountSettings user={{ name: '사용자', email: 'user@example.com' }} onDeleteAccount={() => {}} />;
+        return (
+          <Section>
+            <SectionTitle>계정센터</SectionTitle>
+            <LoginTextContainer>
+              <LoginText>개인정보</LoginText>
+              <Card>
+                <p>
+                  <strong>이름:</strong> {user.name}
+                </p>
+                <p>
+                  <strong>계정:</strong> {user.email}
+                </p>
+              </Card>
+            </LoginTextContainer>
+            <LoginTextContainer>
+              <LoginText>비밀번호 수정</LoginText>
+              <AccountSettings
+                user={user}
+                onDeleteAccount={() => setShowModal(true)}
+              />
+            </LoginTextContainer>
+          </Section>
+        );
       case 'friends':
-        return <FriendManagement user={{ name: '사용자', email: 'user@example.com' }} />;
+        return (
+          <Section>
+            <SectionTitle>친구 관리</SectionTitle>
+            <Card>
+              <FriendManagement user={user} />
+            </Card>
+          </Section>
+        );
       case 'travel':
         return (
-          <>
-            <LoginText>일정관리</LoginText>
-            <MenuText>나의 여행</MenuText>
-            {days.map((day, index) => (
-              <DayButton key={index} onClick={() => alert(`${day} 클릭`)}>{day}</DayButton>
-            ))}
-          </>
+          <Section>
+            <SectionTitle>일정 관리</SectionTitle>
+            <Card>
+              <TravelManagement days={days} />
+            </Card>
+            <LoginTextContainer>
+              <LoginText>여행 계획</LoginText>
+              <Card>
+                {/* 여행 계획 컴포넌트 추가 가능 */}
+                <p>여행 계획을 여기에 추가하세요.</p>
+              </Card>
+            </LoginTextContainer>
+          </Section>
         );
       default:
-        return <p>메뉴를 선택해주세요.</p>;
+        return (
+          <Section>
+            <Card>
+              <p>메뉴를 선택해주세요.</p>
+            </Card>
+          </Section>
+        );
     }
   };
 
-  return (
-    <MainContentWrapper>
-      {renderContent()}
-    </MainContentWrapper>
-  );
+  return <MainContentContainer>{renderContent()}</MainContentContainer>;
 };
 
 export default MainContent;

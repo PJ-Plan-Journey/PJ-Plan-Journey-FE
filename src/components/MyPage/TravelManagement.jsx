@@ -3,8 +3,7 @@ import { TravelContainer, LoginText, MenuText, DayButton } from '@styles/mypage/
 
 const TravelManagement = ({ days }) => (
   <TravelContainer>
-    <LoginText>일정관리</LoginText>
-    <MenuText>나의 여행</MenuText>
+    <LoginText>나의 여행</LoginText>
     {days.map((day, index) => (
       <DayButton key={index} onClick={() => alert(`${day} 클릭`)}>{day}</DayButton>
     ))}

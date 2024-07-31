@@ -9,11 +9,11 @@ import {
   FriendActions,
 } from '@styles/mypage/FriendManagement.styles';
 import { FaCheck, FaTrash } from 'react-icons/fa';
+import { MdGroupAdd } from 'react-icons/md';
 
 const FriendManagement = ({ user }) => (
   <FriendContainer>
-    <LoginText>친구관리</LoginText>
-    <MenuText>친구요청</MenuText>
+    <LoginText>친구요청</LoginText>
     <FriendRequestContainer>
       <div>
         <strong>{user.name}님</strong> {user.email}
@@ -23,12 +23,13 @@ const FriendManagement = ({ user }) => (
         <FaTrash style={{ cursor: 'pointer' }} />
       </FriendRequestActions>
     </FriendRequestContainer>
-    <MenuText>친구</MenuText>
+    <LoginText>친구</LoginText>
     <FriendContainerInner>
       <div>
         <strong>user1님</strong> user1@example.com
       </div>
       <FriendActions>
+        <MdGroupAdd style={{ cursor: 'pointer' }} />
         <FaTrash style={{ cursor: 'pointer' }} />
       </FriendActions>
     </FriendContainerInner>
@@ -37,6 +38,7 @@ const FriendManagement = ({ user }) => (
         <strong>user2님</strong> user2@example.com
       </div>
       <FriendActions>
+        <MdGroupAdd style={{ cursor: 'pointer' }} />
         <FaTrash style={{ cursor: 'pointer' }} />
       </FriendActions>
     </FriendContainerInner>

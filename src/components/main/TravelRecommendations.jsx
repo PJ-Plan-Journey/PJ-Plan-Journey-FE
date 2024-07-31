@@ -25,6 +25,7 @@ import { TbMapPlus } from 'react-icons/tb';
 import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from 'react-icons/io';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
+import { useNavigate } from 'react-router-dom'; // useNavigate import 추가
 import testImage1 from '@assets/testImage1.jpg';
 import testImage2 from '@assets/testImage2.jpg';
 import testImage3 from '@assets/testImage3.jpg';
@@ -151,6 +152,8 @@ const TravelRecommendations = () => {
   const planRef = useRef();
   const shareRef = useRef();
 
+  const navigate = useNavigate(); // useNavigate 훅 추가
+
   const slidePrev = () => {
     if (carouselRef.current) {
       carouselRef.current.slidePrev();
@@ -196,7 +199,7 @@ const TravelRecommendations = () => {
           </MenuIcon>
           <MenuText>여행지 추천</MenuText>
         </MenuItem>
-        <MenuItem onClick={() => scrollToRef(planRef)}>
+        <MenuItem onClick={() => navigate('/plan/create')}>
           <MenuIcon>
             <TbMapPlus />
           </MenuIcon>
