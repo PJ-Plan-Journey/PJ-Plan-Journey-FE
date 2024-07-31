@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FaUser, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
+import { FaUser } from 'react-icons/fa';
 import logo from '@assets/Logo.jpg';
 
 const HeaderWrapper = styled.header`
@@ -24,32 +24,33 @@ const HeaderWrapper = styled.header`
 `;
 
 const Logo = styled.img`
-  height: 40px; /* 로고 크기 조정 */
-  margin-right: 2rem;
+  height: 50px; /* 로고 크기 조정 */
+  cursor: pointer;
 `;
 
 const Nav = styled.nav`
   display: flex;
   align-items: center;
-  gap: 2rem; /* 간격 조정 */
+  gap: 1.5rem; /* 간격 조정 */
 `;
 
 const NavLink = styled.a`
   text-decoration: none;
   color: #333;
-  font-size: 1.2rem;
+  font-size: 1rem;
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 const Header = () => {
   return (
     <HeaderWrapper>
-      <Logo src={logo} alt="Logo" />
+      <Logo src={logo} alt="Logo" onClick={() => window.location.href = '/'} />
       <Nav>
         <NavLink href="/login">로그인</NavLink>
         <NavLink href="/signup">회원가입</NavLink>
-        <NavLink href="/mypage">
+        <NavLink onClick={() => window.location.href = '/mypage'}>
           <FaUser />
         </NavLink>
       </Nav>
