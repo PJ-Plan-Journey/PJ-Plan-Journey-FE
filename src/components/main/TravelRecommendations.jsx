@@ -184,12 +184,12 @@ const TravelRecommendations = () => {
   return (
     <SectionWrapper>
       <HeaderText>
+      <HighlightText>
         Plan Journey.
-        <HighlightText>
+        </HighlightText>
           완벽한 여행을
           <br />
           계획하는 가장 좋은 방법.
-        </HighlightText>
       </HeaderText>
       <MenuWrapper>
         <MenuItem onClick={() => scrollToRef(journeyRef)}>

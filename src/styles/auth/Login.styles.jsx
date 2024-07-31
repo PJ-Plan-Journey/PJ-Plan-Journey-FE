@@ -7,6 +7,7 @@ export const PageContainer = styled.div`
   justify-content: center;
   height: 100vh;
   background-color: white; /* 페이지 배경색 */
+  padding-top: -3rem; /* 컨텐츠를 위로 올리기 위해 상단 패딩 추가 */
 `;
 
 export const ContentContainer = styled.div`
@@ -20,7 +21,6 @@ export const ContentContainer = styled.div`
   border-radius: 15px; /* 테두리 둥글게 */
   border-color: #aaa;
   border: 1px;
-
   margin-bottom: auto;
 `;
 
@@ -44,7 +44,7 @@ export const InputWrapper = styled.div`
 
 export const InputLabel = styled.label`
   position: absolute;
-  top: 1.3rem;
+  top: 1.2rem;
   left: 0.8rem;
   font-size: 1.05rem;
   color: #aaa;
@@ -54,7 +54,7 @@ export const InputLabel = styled.label`
 `;
 
 export const Input = styled.input`
-  padding: 1.5rem 0.9rem;
+  padding: 1.3rem 0.9rem;
   padding-bottom: 0.8rem;
   font-size: 1.2rem;
   border: 1px solid #ccc;
@@ -89,7 +89,7 @@ export const Input = styled.input`
 export const Button = styled.button`
   padding: 1rem;
   font-size: 1rem;
-  background-color: #007bff;
+  background-color: #156BF0;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -103,15 +103,46 @@ export const Button = styled.button`
 `;
 
 export const KakaoButton = styled(Button)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #f7e700;
   color: #000;
-  margin-top: 0.1rem; /* Kakao 버튼과 로그인 버튼 사이 간격 */
+  margin-top: -0.05rem; /* Kakao 버튼과 로그인 버튼 사이 간격 */
+
+  &:hover {
+    background-color: #BDB000; /* 호버 시 색상 변경 */
+  }
+`;
+
+export const KakaoLogoImage = styled.img`
+  height: 1.5rem;
+  margin-right: 0.5rem;
 `;
 
 export const SignUpText = styled.span`
   margin-top: 1rem;
+  color: #156BF0;
+  cursor: pointer;
+  text-decoration: underline;
+
+  &:hover {
+    color: #0056b3;
+  }
+`;
+
+export const SignUpPrompt = styled.div`
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  color: black;
+  font-size: 1rem;
+`;
+
+export const SignUpLink = styled.span`
   color: #007bff;
   cursor: pointer;
+  margin-left: 0.5rem;
   text-decoration: underline;
 
   &:hover {

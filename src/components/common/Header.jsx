@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // useNavigate 훅 import
 import styled from 'styled-components';
 import { FaUser } from 'react-icons/fa';
 import logo from '@assets/Logo.jpg';
@@ -25,9 +24,8 @@ const HeaderWrapper = styled.header`
 `;
 
 const Logo = styled.img`
-  height: 60px; /* 로고 크기 조정 */
-  margin-right: 55rem;
-  cursor: pointer; /* 클릭 가능한 요소임을 시각적으로 표현 */
+  height: 50px; /* 로고 크기 조정 */
+  cursor: pointer;
 `;
 
 const Nav = styled.nav`
@@ -39,25 +37,20 @@ const Nav = styled.nav`
 const NavLink = styled.a`
   text-decoration: none;
   color: #333;
-  font-size: 0.9rem;
+  font-size: 1rem;
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 const Header = () => {
-  const navigate = useNavigate(); // useNavigate 훅 사용
-
-  const handleLogoClick = () => {
-    navigate('/'); // MainPage로 이동
-  };
-
   return (
     <HeaderWrapper>
-      <Logo src={logo} alt="Logo" onClick={handleLogoClick} /> {/* onClick 이벤트 추가 */}
+      <Logo src={logo} alt="Logo" onClick={() => window.location.href = '/'} />
       <Nav>
         <NavLink href="/login">로그인</NavLink>
         <NavLink href="/signup">회원가입</NavLink>
-        <NavLink href="/mypage">
+        <NavLink onClick={() => window.location.href = '/mypage'}>
           <FaUser />
         </NavLink>
       </Nav>

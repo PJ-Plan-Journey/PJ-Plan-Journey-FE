@@ -21,6 +21,7 @@ export const SectionWrapper = styled.div`
 
 export const HeaderText = styled.h1`
   font-size: 2.5rem; /* 제목 폰트 사이즈 */
+  color: black;
   text-align: left; /* 왼쪽 정렬 */
   font-weight: bold;
   line-height: 1.3;
@@ -32,7 +33,7 @@ export const LoginText = styled.h1`
   font-weight: bold;
   margin-top: auto;
   line-height: 1.4;
-  margin-right: 7.7rem;
+  margin-right: 8.1rem;
 `;
 
 export const MenuWrapper = styled.div`
@@ -71,7 +72,7 @@ export const Subtitle = styled.h2`
 `;
 
 export const HighlightText = styled.span`
-  color: #6e6e73; /* 강조 텍스트 색상 */
+  color: #156BF0; /* 강조 텍스트 색상 */
 `;
 
 export const CarouselWrapper = styled.div`
