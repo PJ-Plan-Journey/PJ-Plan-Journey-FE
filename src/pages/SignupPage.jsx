@@ -1,3 +1,4 @@
+// src/pages/SignupPage.jsx
 import React, { useState } from 'react';
 import {
   PageContainer,
@@ -94,6 +95,7 @@ const SignupPage = () => {
       <ContentContainer>
         <Form onSubmit={handleSignup}>
           <InputContainer>
+            {/* 이름 입력 필드 */}
             <InputWrapper>
               <Input
                 type="text"
@@ -104,6 +106,8 @@ const SignupPage = () => {
               />
               <InputLabel htmlFor="firstName">이름을 입력해주세요.</InputLabel>
             </InputWrapper>
+            
+            {/* 이메일 입력 및 인증 버튼 */}
             <EmailContainer>
               <InputWrapper>
                 <Input
@@ -119,6 +123,8 @@ const SignupPage = () => {
                 인증
               </EmailButton>
             </EmailContainer>
+
+            {/* 이메일 인증 코드 입력 및 확인 버튼 */}
             {emailSent && (
               <InputWrapper>
                 <Input
@@ -134,6 +140,8 @@ const SignupPage = () => {
                 </EmailButton>
               </InputWrapper>
             )}
+
+            {/* 비밀번호 및 비밀번호 확인 입력 필드 */}
             <InputWrapper>
               <Input
                 type="password"
@@ -156,8 +164,12 @@ const SignupPage = () => {
               <InputLabel htmlFor="confirmPassword">암호 확인</InputLabel>
             </InputWrapper>
           </InputContainer>
+
+          {/* 회원가입 버튼 */}
           <Button type="submit">회원가입</Button>
         </Form>
+        
+        {/* 로그인 페이지로 이동 */}
         <SignUpText onClick={() => (window.location.href = '/login')}>
           로그인
         </SignUpText>
