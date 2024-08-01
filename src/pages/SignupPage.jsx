@@ -13,7 +13,7 @@ import {
   EmailButton,
 } from '@styles/auth/Signup.styles';
 import api from '@axios/api';
-import Header from '@components/common/Header';
+import Header from '@Header/Header';
 import {
   LoginText,
   HighlightText,

@@ -16,7 +16,7 @@ import {
 } from '@styles/auth/Login.styles';
 import api from '@axios/api';
 import useBearStore from '@zustands/bearStore';
-import Header from '@components/common/Header';
+import Header from "@Header/Header";
 import {
   LoginText,
   HighlightText,

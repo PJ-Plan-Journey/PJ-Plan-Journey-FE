@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import useBearStore from '@zustands/bearStore';
 import useDateStore from '@zustands/plan/useDateStore';
-import Header from '@components/common/Header';
+import Header from "@Header/Header";
 import Sidebar from '@components/MyPage/Sidebar';
 import MainContent from '@components/MyPage/MainContent';
 import Modal from '@components/MyPage/Modal';
