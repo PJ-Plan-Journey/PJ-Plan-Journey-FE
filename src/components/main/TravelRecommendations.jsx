@@ -1,3 +1,5 @@
+// src/components/main/TravelRecommendations.jsx
+
 import React, { useRef } from 'react';
 import {
   SectionWrapper,
@@ -19,13 +21,17 @@ import {
   NextButton,
   ExtraPrevButton,
   ExtraNextButton,
-} from '@styles/main/TravelRecommendations.style';
+  Overlay, // 추가된 Overlay 임포트
+} from '@styles/main/TravelRecommendations.style'; // 올바른 경로
 import { FaMapMarkerAlt, FaShareSquare } from 'react-icons/fa';
 import { TbMapPlus } from 'react-icons/tb';
-import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from 'react-icons/io';
+import {
+  IoIosArrowDropleftCircle,
+  IoIosArrowDroprightCircle,
+} from 'react-icons/io';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
-import { useNavigate } from 'react-router-dom'; // useNavigate import 추가
+import { useNavigate } from 'react-router-dom';
 import testImage1 from '@assets/testImage1.jpg';
 import testImage2 from '@assets/testImage2.jpg';
 import testImage3 from '@assets/testImage3.jpg';
@@ -44,66 +50,85 @@ import minecraft from '@assets/minecraft.jpg';
 const TravelRecommendations = () => {
   const items = [
     <Container key={1} bgColor="#ffdddd">
-      <div className="text-wrapper">
-        <div className="subtitle">서울특별시 종로구</div>
-        <div className="main-text">서울 성곽길</div>
-      </div>
+      <Overlay> {/* Overlay 추가 */}
+        <div className="text-wrapper">
+          <div className="subtitle">서울특별시 종로구</div>
+          <div className="main-text">서울 성곽길</div>
+        </div>
+      </Overlay>
       <img src={testImage1} alt="Test Image 1" />
     </Container>,
+
     <Container key={2} bgColor="#ddffdd">
-      <div className="text-wrapper">
-        <div className="subtitle">서울특별시 종로구</div>
-        <div className="main-text">경복궁 근정전</div>
-      </div>
+      <Overlay> {/* Overlay 추가 */}
+        <div className="text-wrapper">
+          <div className="subtitle">서울특별시 종로구</div>
+          <div className="main-text">경복궁 근정전</div>
+        </div>
+      </Overlay>
       <img src={testImage2} alt="Test Image 2" />
     </Container>,
     <Container key={3} bgColor="#ddddff">
-      <div className="text-wrapper">
-        <div className="subtitle">강원도 강릉시 왕산면</div>
-        <div className="main-text">안반데기</div>
-      </div>
+      <Overlay> {/* Overlay 추가 */}
+        <div className="text-wrapper">
+          <div className="subtitle">강원도 강릉시 왕산면</div>
+          <div className="main-text">안반데기</div>
+        </div>
+      </Overlay>
       <img src={testImage3} alt="Test Image 3" />
     </Container>,
     <Container key={4} bgColor="#ffffdd">
-      <div className="text-wrapper">
-        <div className="subtitle">경상남도 창녕군 유어면</div>
-        <div className="main-text">우포늪</div>
-      </div>
+      <Overlay> {/* Overlay 추가 */}
+        <div className="text-wrapper">
+          <div className="subtitle">경상남도 창녕군 유어면</div>
+          <div className="main-text">우포늪</div>
+        </div>
+      </Overlay>
       <img src={testImage4} alt="Test Image 4" />
     </Container>,
     <Container key={5} bgColor="#ffddff">
-      <div className="text-wrapper">
-        <div className="subtitle">경상북도 영주시 부석면</div>
-        <div className="main-text">부석사</div>
-      </div>
+      <Overlay> {/* Overlay 추가 */}
+        <div className="text-wrapper">
+          <div className="subtitle">경상북도 영주시 부석면</div>
+          <div className="main-text">부석사</div>
+        </div>
+      </Overlay>
       <img src={testImage5} alt="Test Image 5" />
     </Container>,
     <Container key={6} bgColor="#d0d0d0">
-      <div className="text-wrapper">
-        <div className="subtitle">경상남도 남해군 상주면</div>
-        <div className="main-text">금산 보리암</div>
-      </div>
+      <Overlay> {/* Overlay 추가 */}
+        <div className="text-wrapper">
+          <div className="subtitle">경상남도 남해군 상주면</div>
+          <div className="main-text">금산 보리암</div>
+        </div>
+      </Overlay>
       <img src={testImage6} alt="Test Image 6" />
     </Container>,
     <Container key={7} bgColor="#d0e0f0">
-      <div className="text-wrapper">
-        <div className="subtitle"> 경상남도 합천군 합천읍</div>
-        <div className="main-text">합천 다락논</div>
-      </div>
+      <Overlay> {/* Overlay 추가 */}
+        <div className="text-wrapper">
+          <div className="subtitle"> 경상남도 합천군 합천읍</div>
+          <div className="main-text">합천 다락논</div>
+        </div>
+      </Overlay>
       <img src={testImage7} alt="Test Image 7" />
     </Container>,
     <Container key={8} bgColor="#f0d0d0">
-      <div className="text-wrapper">
-        <div className="subtitle">보조 설명 8</div>
-        <div className="main-text">메인 소개 8</div>
-      </div>
+      <Overlay> {/* Overlay 추가 */}
+        <div className="text-wrapper">
+          <div className="subtitle">보조 설명 8</div>
+          <div className="main-text">메인 소개 8</div>
+        </div>
+      </Overlay>
       <img src={testImage8} alt="Test Image 8" />
     </Container>,
   ];
 
   const extraItems = [
     <ExtraContainer key={1} bgColor="#ffdddd">
-      <SmallContainerText1>방콕 다이어트 파괴범 길거리 음식!</SmallContainerText1>
+      <SmallContainerText1>
+        방콕 다이어트 파괴범 길거리 음식!
+      </SmallContainerText1>
       <SmallContainerText2>Taejeong님의 일정 4박 5일</SmallContainerText2>
       <SmallContainer>
         <img src={food} alt="Food Image" />
@@ -124,7 +149,9 @@ const TravelRecommendations = () => {
       </SmallContainer>
     </ExtraContainer>,
     <ExtraContainer key={4} bgColor="#ffdddd">
-      <SmallContainerText1>좀비 세상에서 살아남기: 나의 브이로그</SmallContainerText1>
+      <SmallContainerText1>
+        좀비 세상에서 살아남기: 나의 브이로그
+      </SmallContainerText1>
       <SmallContainerText2>Cris님의 일정 45박 47일</SmallContainerText2>
       <SmallContainer>
         <img src={zombie} alt="Zombie Image" />
@@ -232,7 +259,8 @@ const TravelRecommendations = () => {
           controlsStrategy="responsive"
           ref={carouselRef}
           disableButtonsControls={true} // 기본 버튼 숨기기
-          infinite={false}
+          infinite={false} // 무한 스크롤 활성화
+          animationDuration={1000} // 애니메이션 속도 조절
           disableDotsControls={true} // 페이지 표시 툴 숨기기
         />
         <NextButton onClick={slideNext}>
@@ -259,7 +287,8 @@ const TravelRecommendations = () => {
           controlsStrategy="responsive"
           ref={extraCarouselRef}
           disableButtonsControls={true} // 기본 버튼 숨기기
-          infinite={false}
+          infinite={false} // 무한 스크롤 활성화
+          animationDuration={800} // 애니메이션 속도 조절
           disableDotsControls={true} // 페이지 표시 툴 숨기기
         />
         <ExtraNextButton onClick={slideExtraNext}>

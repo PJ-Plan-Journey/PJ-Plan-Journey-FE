@@ -13,7 +13,7 @@ const CarouselWrapper = styled.div`
   margin-top: -63px;
 
   .alice-carousel__stage {
-    width: 110cm !important;
+    width: 120cm !important;
     height: 17cm !important;
     display: flex !important;
     align-items: center !important;
@@ -90,6 +90,7 @@ const Carousel = ({ items, carouselRef, slidePrev, slideNext }) => (
       disableButtonsControls={true} // 기본 버튼 숨기기
       infinite={false}
       disableDotsControls={true} // 페이지 표시 툴 숨기기
+  
     />
     <NextButton onClick={slideNext}>
       <IoIosArrowDroprightCircle />
