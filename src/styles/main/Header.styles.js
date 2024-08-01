@@ -6,6 +6,9 @@ export const HeaderWrapper = styled.header`
   align-items: center;
   padding: 1rem 2rem;
   box-sizing: border-box;
+  width: 100%;
+  margin-left: 12rem;
+
 
   @media (max-width: 1200px) {
     padding: 1rem 1.5rem;
@@ -23,15 +26,13 @@ export const HeaderWrapper = styled.header`
 export const LogoWrapper = styled.div`
   display: flex;
   align-items: center;
-  flex: 1;
 `;
 
 export const NavWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  flex: 1;
-  width: 700px;
+  justify-content: space-between;
+  margin-right: 15rem;
   
   @media (max-width: 1200px) {
     width: 600px;

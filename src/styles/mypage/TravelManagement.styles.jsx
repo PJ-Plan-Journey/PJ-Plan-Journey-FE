@@ -9,9 +9,10 @@ export const LoginText = styled.h2`
   margin-bottom: 1rem;
 `;
 
-export const MenuText = styled.p`
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
+export const DayButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row; /* 가로로 배치 */
+  margin-bottom: 1rem;
 `;
 
 export const DayButton = styled.button`
@@ -25,4 +26,26 @@ export const DayButton = styled.button`
   &:hover {
     background-color: #0056b3;
   }
+`;
+
+export const DayContainer = styled.div`
+  margin-left: 1rem;
+  padding: 1rem;
+  border-left: 3px solid #156BF0;
+  margin-bottom: 1rem;
+`;
+
+export const ScheduleItem = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+`;
+
+export const Dot = styled.span`
+  height: 8px;
+  width: 8px;
+  background-color: #156BF0;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 0.5rem;
 `;

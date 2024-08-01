@@ -168,7 +168,7 @@ export const Overlay = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 20%; /* 높이 조절 가능 */
+  height: 22%; /* 높이 조절 가능 */
   background: rgba(0, 0, 0, 0.2); /* 반투명한 어두운 배경 */
   backdrop-filter: blur(8px); /* 블러 효과 */
   display: flex;
