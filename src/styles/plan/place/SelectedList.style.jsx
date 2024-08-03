@@ -1,30 +1,69 @@
 import { flex, flexColumn, ScrollStyle } from '@styles/common/common.style';
 import styled from 'styled-components';
 
-export const SideBar = styled.div`
-  position: absolute;
-  ${flexColumn}
-  top: 0;
-  left: 0;
-  height: 100%;
-  z-index: -2;
-  transition: all 0.2s ease-out;
+export const DayList = styled.ul`
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  overflow: auto;
+  ${ScrollStyle}
+  margin-top: 30px;
 
-  &.hide {
-    left: 0%;
+  .item {
+    width: 300px;
   }
 
-  &.show {
-    left: 100%;
+  .date {
+    font-weight: bold;
+    color: black;
+  }
+
+  .day {
+    ${flex}
+    align-items: flex-end;
+    gap: 10px;
+    color: #c8c8c8;
+    font-weight: bold;
+    padding-bottom: 10px;
+  }
+
+  .info {
+    font-size: 14px;
+  }
+
+  .button-group {
+    padding: 10px 0 60px;
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: white;
+      border: 1px solid #c6c6c6;
+      border-radius: 10px;
+      font-weight: bold;
+      font-family: 'Nanum Gothic', sans-serif;
+    }
+  }
+
+  .toggle {
+    cursor: pointer;
+    font-size: 30px;
+
+    svg {
+      padding-top: 5px;
+    }
   }
 `;
 
 export const SelectedListContainer = styled.div`
   ${flexColumn}
-  width: 400px;
+  justify-content: center;
+  width: 100%;
   height: 100%;
   background-color: white;
   padding: 40px;
+  padding-right: 0;
   padding-bottom: 100px;
 
   .sub-box {
@@ -58,9 +97,8 @@ export const SelectedListContainer = styled.div`
     gap: 15px;
     width: 100%;
     height: inherit;
-    padding: 30px 5px;
-    overflow-y: auto;
-    ${ScrollStyle}
+    padding: 2px 0 20px;
+    padding-right: 10px;
   }
 
   .not-content {
