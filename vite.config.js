@@ -23,6 +23,7 @@ export default defineConfig({
       { find: '@zustands', replacement: resolve(__dirname, 'src/zustands') },
       { find: '@axios', replacement: resolve(__dirname, 'src/axios') },
       { find: '@assets', replacement: resolve(__dirname, 'src/assets') },
+      { find: '@Header', replacement: resolve(__dirname, 'src/components/Header') }, // 수정된 부분
       { find: '@', replacement: resolve(__dirname, 'src') },
     ],
   },
