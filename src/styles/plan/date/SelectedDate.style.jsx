@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const SelectedDateContainer = styled.div`
   ${flexColumn}
   gap: 20px;
-  width: 400px;
+  width: 100%;
   height: 100%;
   padding: 80px 40px;
   background-color: white;

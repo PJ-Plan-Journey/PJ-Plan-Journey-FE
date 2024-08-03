@@ -13,11 +13,11 @@ export const flexColumn = css`
 
 export const ScrollStyle = css`
   &::-webkit-scrollbar {
-    width: 5px;
+    width: 8px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #dedede;
+    background-color: #d0d0d0;
     border-radius: 10px;
   }
 
