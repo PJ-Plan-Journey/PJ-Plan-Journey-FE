@@ -1,21 +1,13 @@
+// src/pages/MyPage.jsx
+
 import React, { useState, useEffect } from 'react';
 import useBearStore from '@zustands/bearStore';
 import useDateStore from '@zustands/plan/useDateStore';
-import Header from '@components/common/Header';
-import { FaSignOutAlt, FaCogs, FaUserFriends, FaCalendarAlt } from 'react-icons/fa';
-import AccountSettings from '@components/MyPage/AccountSettings';
-import FriendManagement from '@components/MyPage/FriendManagement';
-import TravelManagement from '@components/MyPage/TravelManagement';
+import Header from "@Header/Header";
+import Sidebar from '@components/MyPage/Sidebar';
+import MainContent from '@components/MyPage/MainContent';
 import Modal from '@components/MyPage/Modal';
-import {
-  OuterContainer,
-  PageContainer,
-  ContentContainer,
-  MenuContainerWrapper,
-  MenuItem,
-  MenuItemIcon,
-  MainContent,
-} from '@styles/auth/MyPage.styles';
+import * as S from '@styles/mypage/MyPage.styles'; // 스타일 경로
 
 const MyPage = () => {
   const { user } = useBearStore((state) => ({ user: state.user }));
@@ -40,8 +32,7 @@ const MyPage = () => {
   }, [startDate, endDate]);
 
   const handleDeleteAccount = () => {
-    // 현재 비밀번호와 함께 회원탈퇴 로직을 처리하는 함수
-    if (currentPasswordForDeletion === 'userPassword') { // 여기에 실제 검증 로직을 넣어야 함
+    if (currentPasswordForDeletion === 'userPassword') {
       console.log('계정이 성공적으로 삭제되었습니다.');
       setShowModal(false);
     } else {
@@ -49,58 +40,22 @@ const MyPage = () => {
     }
   };
 
-  const renderContent = () => {
-    switch (selectedMenu) {
-      case 'account':
-        return <AccountSettings user={user} onDeleteAccount={() => setShowModal(true)} />;
-      case 'friends':
-        return <FriendManagement user={user} />;
-      case 'travel':
-        return <TravelManagement days={days} />;
-      default:
-        return <p>메뉴를 선택해주세요.</p>;
-    }
-  };
-
   return (
     <>
       <Header />
-      <OuterContainer>
-        <PageContainer>
-          <ContentContainer>
-            <MenuContainerWrapper>
-              <h1>{user.name ? `${user.name} 님` : '사용자 님'}</h1>
-              <MenuItem onClick={() => setSelectedMenu('account')}>
-                <MenuItemIcon>
-                  <FaCogs />
-                </MenuItemIcon>
-                계정센터
-              </MenuItem>
-              <MenuItem onClick={() => setSelectedMenu('friends')}>
-                <MenuItemIcon>
-                  <FaUserFriends />
-                </MenuItemIcon>
-                친구관리
-              </MenuItem>
-              <MenuItem onClick={() => setSelectedMenu('travel')}>
-                <MenuItemIcon>
-                  <FaCalendarAlt />
-                </MenuItemIcon>
-                나의 일정
-              </MenuItem>
-              <MenuItem onClick={() => alert('로그아웃 클릭')}>
-                <MenuItemIcon>
-                  <FaSignOutAlt />
-                </MenuItemIcon>
-                로그아웃
-              </MenuItem>
-            </MenuContainerWrapper>
-            <MainContent>
-              {renderContent()}
-            </MainContent>
-          </ContentContainer>
-        </PageContainer>
-      </OuterContainer>
+      <S.PageContainer>
+        <Sidebar setSelectedMenu={setSelectedMenu} />
+        <S.ContentContainer>
+          <MainContent
+            selectedMenu={selectedMenu}
+            user={user}
+            startDate={startDate}
+            endDate={endDate}
+            days={days}
+            setShowModal={setShowModal}
+          />
+        </S.ContentContainer>
+      </S.PageContainer>
       {showModal && (
         <Modal
           currentPasswordForDeletion={currentPasswordForDeletion}

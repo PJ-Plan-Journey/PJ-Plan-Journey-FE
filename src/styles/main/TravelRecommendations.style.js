@@ -50,7 +50,7 @@ export const MenuItem = styled.div`
   align-items: center; /* 중앙 정렬 */
   width: 3cm;
   height: 4cm;
-  
+
   cursor: pointer; /* 클릭 가능한 커서로 변경 */
 `;
 
@@ -72,7 +72,7 @@ export const Subtitle = styled.h2`
 `;
 
 export const HighlightText = styled.span`
-  color: #156BF0; /* 강조 텍스트 색상 */
+  color: #156bf0; /* 강조 텍스트 색상 */
 `;
 
 export const CarouselWrapper = styled.div`
@@ -96,7 +96,7 @@ export const CarouselWrapper = styled.div`
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    margin-right: 1.5cm !important; /* 슬라이드 간의 간격을 1cm로 설정 */
+    margin-right: 1.7cm !important; /* 슬라이드 간의 간격을 1cm로 설정 */
   }
 
   &:hover button {
@@ -130,25 +130,18 @@ export const Container = styled.div.withConfig({
   /* 내부 텍스트 스타일 */
   .text-wrapper {
     position: absolute;
-    top: calc(1rem + 0.8cm); /* 상단 여백을 1cm 추가 */
-    left: calc(1rem + 0.5cm); /* 좌측 여백을 1cm 추가 */
+    bottom: 0; /* 하단 배치 */
+    left: 0;
+    width: 100%;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    font-family:
-      SF Pro KR,
-      SF Pro Display,
-      SF Pro Icons,
-      Apple Gothic,
-      HY Gulim,
-      MalgunGothic,
-      HY Dotum,
-      Lexi Gulim,
-      Helvetica Neue,
-      Helvetica,
-      Arial,
+    font-family: SF Pro KR, SF Pro Display, SF Pro Icons, Apple Gothic, HY Gulim,
+      MalgunGothic, HY Dotum, Lexi Gulim, Helvetica Neue, Helvetica, Arial,
       sans-serif;
   }
+
   .subtitle {
     font-size: 0.9rem; /* 보조 설명 텍스트 사이즈 */
     margin-bottom: 0.3rem; /* 설명 텍스트와 메인 텍스트 사이의 간격 */
@@ -157,8 +150,8 @@ export const Container = styled.div.withConfig({
   .main-text {
     font-size: 1.5rem; /* 메인 소개 텍스트 사이즈 (소제목 사이즈와 동일) */
     font-weight: bold; /* 메인 텍스트 강조 */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* 그림자 효과 추가 */
   }
+
   img {
     width: 100%; /* 이미지 너비 100% */
     height: 100%; /* 이미지 높이 100% */
@@ -168,6 +161,23 @@ export const Container = styled.div.withConfig({
   &:hover {
     transform: scale(1.02); /* 살짝 커지는 효과 */
   }
+`;
+
+export const Overlay = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 22%; /* 높이 조절 가능 */
+  background: rgba(0, 0, 0, 0.2); /* 반투명한 어두운 배경 */
+  backdrop-filter: blur(8px); /* 블러 효과 */
+  display: flex;
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+  color: white; /* 흰색 텍스트 */
+  padding: 0.5rem;
+  box-sizing: border-box;
+  text-align: center;
 `;
 
 export const ExtraContainer = styled.div`

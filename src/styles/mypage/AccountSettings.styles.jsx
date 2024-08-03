@@ -1,7 +1,5 @@
-// AccountSettings.jsx
-
 import React, { useState } from 'react';
-import * as S from '@styles/mypage/MainContent.styles'; // 스타일 경로
+import { LoginTextContainer, LoginText, Card, InputContainer, InputWrapper, Input, Button } from '@styles/mypage/MainContent.styles';
 
 const AccountSettings = ({ user, onDeleteAccount }) => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -29,46 +27,46 @@ const AccountSettings = ({ user, onDeleteAccount }) => {
 
   return (
     <>
-      <S.Card>
-        <S.InputContainer>
-          <S.InputWrapper>
-            <S.Input
+      <Card>
+        <InputContainer>
+          <InputWrapper>
+            <Input
               type="password"
               placeholder="현재 비밀번호"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               onBlur={handleCurrentPasswordValidation}
             />
-          </S.InputWrapper>
+          </InputWrapper>
           {isCurrentPasswordValid && (
             <>
-              <S.InputWrapper>
-                <S.Input
+              <InputWrapper>
+                <Input
                   type="password"
                   placeholder="변경할 비밀번호"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                 />
-              </S.InputWrapper>
-              <S.InputWrapper>
-                <S.Input
+              </InputWrapper>
+              <InputWrapper>
+                <Input
                   type="password"
                   placeholder="변경할 비밀번호 확인"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
-              </S.InputWrapper>
+              </InputWrapper>
             </>
           )}
-          <S.Button
+          <Button
             onClick={handlePasswordChange}
             disabled={!isCurrentPasswordValid || newPassword !== confirmPassword}
           >
             비밀번호 변경
-          </S.Button>
-        </S.InputContainer>
-      </S.Card>
-      <S.Button onClick={onDeleteAccount}>회원탈퇴</S.Button>
+          </Button>
+        </InputContainer>
+      </Card>
+      <Button onClick={onDeleteAccount}>회원탈퇴</Button>
     </>
   );
 };

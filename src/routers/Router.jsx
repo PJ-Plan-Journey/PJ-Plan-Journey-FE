@@ -11,11 +11,11 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<MainPage />} /> {/* 메인페이지 */}
+        <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/mypage" element={<MyPage />} /> {/* MyPage 경로 추가 */}
+        <Route path="/mypage" element={<MyPage />} />
         <Route path="/plan/create" element={<PlanPage />} />
         <Route path="/plans" element={<PlanBoardsPage />} />
       </Routes>

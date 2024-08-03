@@ -1,39 +1,38 @@
-// src/components/MyPage/Menu.jsx
+// src/components/MyPage/Sidebar.jsx
 
 import React from 'react';
-import * as S from '@styles/MyPage.styles'; // 스타일 경로
 import { FaCogs, FaUserFriends, FaCalendarAlt, FaSignOutAlt } from 'react-icons/fa';
+import * as S from '@styles/mypage/Sidebar.styles'; // 스타일 경로
 
-const Menu = ({ user, setSelectedMenu }) => {
+const Sidebar = ({ setSelectedMenu }) => {
   return (
-    <S.MenuContainerWrapper>
-      <h1>{user.name ? `${user.name} 님` : '사용자 님'}</h1>
+    <S.SidebarContainer>
       <S.MenuItem onClick={() => setSelectedMenu('account')}>
         <S.MenuItemIcon>
           <FaCogs />
         </S.MenuItemIcon>
-        계정센터
+        <S.MenuText>계정 설정</S.MenuText>
       </S.MenuItem>
       <S.MenuItem onClick={() => setSelectedMenu('friends')}>
         <S.MenuItemIcon>
           <FaUserFriends />
         </S.MenuItemIcon>
-        친구관리
+        <S.MenuText>친구 관리</S.MenuText>
       </S.MenuItem>
       <S.MenuItem onClick={() => setSelectedMenu('travel')}>
         <S.MenuItemIcon>
           <FaCalendarAlt />
         </S.MenuItemIcon>
-        나의 일정
+        <S.MenuText>일정 관리</S.MenuText>
       </S.MenuItem>
       <S.MenuItem onClick={() => alert('로그아웃 클릭')}>
         <S.MenuItemIcon>
           <FaSignOutAlt />
         </S.MenuItemIcon>
-        로그아웃
+        <S.MenuText>로그아웃</S.MenuText>
       </S.MenuItem>
-    </S.MenuContainerWrapper>
+    </S.SidebarContainer>
   );
 };
 
-export default Menu;
+export default Sidebar;

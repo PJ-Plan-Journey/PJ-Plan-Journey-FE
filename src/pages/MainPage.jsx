@@ -1,7 +1,7 @@
-import React from 'react';
-import { MainContainer } from '@styles/main/MainPage.style'; // 경로 확인
-import Header from '@components/common/Header'; // 경로 확인
-import TravelRecommendations from '@components/main/TravelRecommendations'; // 경로 확인
+import React from "react";
+import { MainContainer } from "@styles/main/MainPage.style";
+import Header from "@Header/Header";
+import TravelRecommendations from "@components/main/TravelRecommendations";
 
 const MainPage = () => {
   return (
