@@ -11,6 +11,7 @@ export const CalendarModalContainer = styled.div`
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 5;
     background-color: rgba(0, 0, 0, 0.5);
   }
 `;
@@ -19,6 +20,7 @@ export const ModalBox = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
+  z-index: 6;
   transform: translate(-50%, -50%);
   ${flexColumn};
   justify-content: space-between;

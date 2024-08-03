@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { flex } from '@styles/common/common.style';
 
 export const KakaoContainer = styled.div`
+  width: 100%;
   height: 100%;
-  z-index: 0;
   flex: 1;
 
   .map {
