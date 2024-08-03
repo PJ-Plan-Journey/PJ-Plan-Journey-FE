@@ -1,75 +1,134 @@
 // src/components/MyPage/FriendManagement.jsx
+
 import React from 'react';
-import {
-  FriendContainer,
-  LoginText,
-  FriendRequestContainer,
-  FriendRequestActions,
-  FriendContainerInner,
-  FriendActions,
-} from '@styles/mypage/FriendManagement.styles';
+import * as S from '@styles/mypage/FriendManagement.styles'; // 스타일 경로
 import { FaCheck, FaTrash } from 'react-icons/fa';
 import { MdGroupAdd } from 'react-icons/md';
-import useFriendStore from '../../zustands/friend/useFriendStore';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import api from '@axios/api';
 
 const FriendManagement = () => {
-  // 상태와 액션을 가져옵니다.
-  const {
-    friends,
-    friendRequests,
-    acceptFriendRequest,
-    rejectFriendRequest,
-    removeFriend,
-    inviteToEvent,
-  } = useFriendStore();
+  const queryClient = useQueryClient();
+
+  // 친구 목록 가져오기
+  const { data: friends = [], isLoading: isFriendsLoading } = useQuery(['friends'], () =>
+    api.get('/friends').then((res) => res.data)
+  );
+
+  // 친구 요청 목록 가져오기
+  const { data: friendRequests = [], isLoading: isRequestsLoading } = useQuery(['friendRequests'], () =>
+    api.get('/friend-requests').then((res) => res.data)
+  );
+
+  // 친구 요청 수락
+  const acceptFriendMutation = useMutation(
+    (id) => api.post(`/friend-requests/${id}/accept`),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['friendRequests']);
+        queryClient.invalidateQueries(['friends']);
+      },
+      onError: (error) => {
+        console.error('친구 요청 수락 실패:', error);
+        alert('친구 요청 수락에 실패했습니다.');
+      }
+    }
+  );
+
+  // 친구 요청 거절
+  const rejectFriendMutation = useMutation(
+    (id) => api.post(`/friend-requests/${id}/reject`),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['friendRequests']);
+      },
+      onError: (error) => {
+        console.error('친구 요청 거절 실패:', error);
+        alert('친구 요청 거절에 실패했습니다.');
+      }
+    }
+  );
+
+  // 친구 삭제
+  const removeFriendMutation = useMutation(
+    (id) => api.delete(`/friends/${id}`),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['friends']);
+      },
+      onError: (error) => {
+        console.error('친구 삭제 실패:', error);
+        alert('친구 삭제에 실패했습니다.');
+      }
+    }
+  );
+
+  // 일정 초대 (모의 함수)
+  const inviteToEvent = async (id) => {
+    // 일정 초대 요청을 모사하는 비동기 함수
+    const success = await mockSendInvite(id);
+    if (success) {
+      alert('일정에 초대되었습니다.');
+    }
+  };
+
+  // 가상의 초대 요청을 처리하는 함수
+  const mockSendInvite = (id) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log(`User with ID ${id} invited to event.`);
+        resolve(true); // 초대 성공
+      }, 1000);
+    });
+  };
 
   return (
-    <FriendContainer>
-      <LoginText>친구요청</LoginText>
-      {friendRequests.length > 0 ? (
+    <S.FriendContainer>
+      <S.LoginText>친구요청</S.LoginText>
+      {isRequestsLoading ? (
+        <p>Loading friend requests...</p>
+      ) : (
         friendRequests.map((user) => (
-          <FriendRequestContainer key={user.id}>
+          <S.FriendRequestContainer key={user.id}>
             <div>
               <strong>{user.name}님</strong> {user.email}
             </div>
-            <FriendRequestActions>
+            <S.FriendRequestActions>
               <FaCheck
                 style={{ cursor: 'pointer' }}
-                onClick={() => acceptFriendRequest(user.id)}
+                onClick={() => acceptFriendMutation.mutate(user.id)}
               />
               <FaTrash
                 style={{ cursor: 'pointer' }}
-                onClick={() => rejectFriendRequest(user.id)}
+                onClick={() => rejectFriendMutation.mutate(user.id)}
               />
-            </FriendRequestActions>
-          </FriendRequestContainer>
+            </S.FriendRequestActions>
+          </S.FriendRequestContainer>
         ))
-      ) : (
-        <p>친구 요청이 없습니다.</p>
       )}
-      <LoginText>친구</LoginText>
-      {friends.length > 0 ? (
+      <S.LoginText>친구</S.LoginText>
+      {isFriendsLoading ? (
+        <p>Loading friends...</p>
+      ) : (
         friends.map((user) => (
-          <FriendContainerInner key={user.id}>
+          <S.FriendContainerInner key={user.id}>
             <div>
               <strong>{user.name}님</strong> {user.email}
             </div>
-            <FriendActions>
+            <S.FriendActions>
               <MdGroupAdd
                 style={{ cursor: 'pointer' }}
                 onClick={() => inviteToEvent(user.id)}
               />
               <FaTrash
                 style={{ cursor: 'pointer' }}
-                onClick={() => removeFriend(user.id)}
+                onClick={() => removeFriendMutation.mutate(user.id)}
               />
-            </FriendActions>
-          </FriendContainerInner>
+            </S.FriendActions>
+          </S.FriendContainerInner>
         ))
-      ) : (
-        <p>친구가 없습니다.</p>
       )}
-    </FriendContainer>
+    </S.FriendContainer>
   );
 };
 

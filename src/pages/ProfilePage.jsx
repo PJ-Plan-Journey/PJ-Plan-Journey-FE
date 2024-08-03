@@ -1,5 +1,7 @@
+// src/pages/ProfilePage.jsx
+
 import React, { useState } from 'react';
-import { ProfileContainer, ProfileForm, Input, Button } from '@styles/profile/Profile.styles'; // 경로 확인
+import * as S from '@styles/profile/Profile.styles'; // 스타일 경로
 import axios from '@axios/api';
 import useBearStore from '@zustands/bearStore';
 import LogoutButton from '@components/common/LogoutButton'; // 수정된 경로
@@ -22,26 +24,26 @@ const ProfilePage = () => {
   };
 
   return (
-    <ProfileContainer>
+    <S.ProfileContainer>
       <h1>Profile Page</h1>
-      <ProfileForm onSubmit={handleProfileUpdate}>
-        <Input
+      <S.ProfileForm onSubmit={handleProfileUpdate}>
+        <S.Input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <Input
+        <S.Input
           type="password"
           placeholder="New Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button type="submit">Update Profile</Button>
-      </ProfileForm>
+        <S.Button type="submit">Update Profile</S.Button>
+      </S.ProfileForm>
       <DeleteAccountButton />
       <LogoutButton />
-    </ProfileContainer>
+    </S.ProfileContainer>
   );
 };
 

@@ -1,24 +1,14 @@
 // src/pages/SignupPage.jsx
+
 import React, { useState } from 'react';
-import {
-  PageContainer,
-  ContentContainer,
-  Form,
-  Input,
-  Button,
-  SignUpText,
-  InputContainer,
-  InputWrapper,
-  InputLabel,
-  EmailContainer,
-  EmailButton,
-} from '@styles/auth/Signup.styles';
+import * as S from '@styles/auth/Signup.styles'; // 스타일 경로
 import api from '@axios/api';
 import Header from '@Header/Header';
 import {
   LoginText,
   HighlightText,
 } from '@styles/main/TravelRecommendations.style';
+import { useMutation } from '@tanstack/react-query';
 
 const SignupPage = () => {
   const [firstName, setFirstName] = useState('');
@@ -30,7 +20,21 @@ const SignupPage = () => {
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
 
-  const handleSignup = async (e) => {
+  const signupMutation = useMutation(
+    (data) => api.post('/auth/signup', data),
+    {
+      onSuccess: (response) => {
+        console.log('Signup successful:', response.data);
+        window.location.href = '/login';
+      },
+      onError: (error) => {
+        console.error('Signup failed:', error);
+        alert('회원가입에 실패했습니다.');
+      }
+    }
+  );
+
+  const handleSignup = (e) => {
     e.preventDefault();
     if (!isEmailVerified) {
       alert('이메일 인증을 완료해주세요.');
@@ -40,14 +44,7 @@ const SignupPage = () => {
       alert('비밀번호가 일치하지 않습니다.');
       return;
     }
-    try {
-      const response = await api.post('/auth/signup', { firstName, email, password });
-      console.log('Signup successful:', response.data);
-      // 회원가입 후 로그인 페이지로 이동
-      window.location.href = '/login';
-    } catch (error) {
-      console.error('Signup failed:', error);
-    }
+    signupMutation.mutate({ firstName, email, password });
   };
 
   const handleEmailVerification = async () => {
@@ -57,6 +54,7 @@ const SignupPage = () => {
       alert('인증 코드가 이메일로 전송되었습니다.');
     } catch (error) {
       console.error('Email verification failed:', error);
+      alert('인증 코드 전송에 실패했습니다.');
     }
   };
 
@@ -71,6 +69,7 @@ const SignupPage = () => {
       }
     } catch (error) {
       console.error('Email verification failed:', error);
+      alert('이메일 인증에 실패했습니다.');
     }
   };
 
@@ -85,75 +84,75 @@ const SignupPage = () => {
   };
 
   return (
-    <PageContainer>
+    <S.PageContainer>
       <Header />
       <LoginText>
         <HighlightText>PlanJourney</HighlightText>에 오신것을
         <br />
         환영합니다.
       </LoginText>
-      <ContentContainer>
-        <Form onSubmit={handleSignup}>
-          <InputContainer>
+      <S.ContentContainer>
+        <S.Form onSubmit={handleSignup}>
+          <S.InputContainer>
             {/* 이름 입력 필드 */}
-            <InputWrapper>
-              <Input
+            <S.InputWrapper>
+              <S.Input
                 type="text"
                 id="firstName"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder=" "
               />
-              <InputLabel htmlFor="firstName">이름을 입력해주세요.</InputLabel>
-            </InputWrapper>
+              <S.InputLabel htmlFor="firstName">이름을 입력해주세요.</S.InputLabel>
+            </S.InputWrapper>
             
             {/* 이메일 입력 및 인증 버튼 */}
-            <EmailContainer>
-              <InputWrapper>
-                <Input
+            <S.EmailContainer>
+              <S.InputWrapper>
+                <S.Input
                   type="email"
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder=" "
                 />
-                <InputLabel htmlFor="email">name@example.com</InputLabel>
-              </InputWrapper>
-              <EmailButton type="button" onClick={handleEmailVerification}>
+                <S.InputLabel htmlFor="email">name@example.com</S.InputLabel>
+              </S.InputWrapper>
+              <S.EmailButton type="button" onClick={handleEmailVerification}>
                 인증
-              </EmailButton>
-            </EmailContainer>
+              </S.EmailButton>
+            </S.EmailContainer>
 
             {/* 이메일 인증 코드 입력 및 확인 버튼 */}
             {emailSent && (
-              <InputWrapper>
-                <Input
+              <S.InputWrapper>
+                <S.Input
                   type="text"
                   id="verificationCode"
                   value={verificationCode}
                   onChange={(e) => setVerificationCode(e.target.value)}
                   placeholder=" "
                 />
-                <InputLabel htmlFor="verificationCode">인증 코드를 입력해주세요.</InputLabel>
-                <EmailButton type="button" onClick={handleVerifyCode}>
+                <S.InputLabel htmlFor="verificationCode">인증 코드를 입력해주세요.</S.InputLabel>
+                <S.EmailButton type="button" onClick={handleVerifyCode}>
                   확인
-                </EmailButton>
-              </InputWrapper>
+                </S.EmailButton>
+              </S.InputWrapper>
             )}
 
             {/* 비밀번호 및 비밀번호 확인 입력 필드 */}
-            <InputWrapper>
-              <Input
+            <S.InputWrapper>
+              <S.Input
                 type="password"
                 id="password"
                 value={password}
                 onChange={handlePasswordChange}
                 placeholder=" "
               />
-              <InputLabel htmlFor="password">암호</InputLabel>
-            </InputWrapper>
-            <InputWrapper>
-              <Input
+              <S.InputLabel htmlFor="password">암호</S.InputLabel>
+            </S.InputWrapper>
+            <S.InputWrapper>
+              <S.Input
                 type="password"
                 id="confirmPassword"
                 value={confirmPassword}
@@ -161,20 +160,20 @@ const SignupPage = () => {
                 placeholder=" "
                 className={!passwordMatch && confirmPassword ? 'error' : ''}
               />
-              <InputLabel htmlFor="confirmPassword">암호 확인</InputLabel>
-            </InputWrapper>
-          </InputContainer>
+              <S.InputLabel htmlFor="confirmPassword">암호 확인</S.InputLabel>
+            </S.InputWrapper>
+          </S.InputContainer>
 
           {/* 회원가입 버튼 */}
-          <Button type="submit">회원가입</Button>
-        </Form>
+          <S.Button type="submit">회원가입</S.Button>
+        </S.Form>
         
         {/* 로그인 페이지로 이동 */}
-        <SignUpText onClick={() => (window.location.href = '/login')}>
+        <S.SignUpText onClick={() => (window.location.href = '/login')}>
           로그인
-        </SignUpText>
-      </ContentContainer>
-    </PageContainer>
+        </S.SignUpText>
+      </S.ContentContainer>
+    </S.PageContainer>
   );
 };
 

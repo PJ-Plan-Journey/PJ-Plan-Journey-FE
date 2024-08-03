@@ -1,3 +1,5 @@
+// src/pages/MyPage.jsx
+
 import React, { useState, useEffect } from 'react';
 import useBearStore from '@zustands/bearStore';
 import useDateStore from '@zustands/plan/useDateStore';
@@ -5,7 +7,7 @@ import Header from "@Header/Header";
 import Sidebar from '@components/MyPage/Sidebar';
 import MainContent from '@components/MyPage/MainContent';
 import Modal from '@components/MyPage/Modal';
-import { PageContainer, ContentContainer } from '@styles/mypage/MyPage.styles';
+import * as S from '@styles/mypage/MyPage.styles'; // 스타일 경로
 
 const MyPage = () => {
   const { user } = useBearStore((state) => ({ user: state.user }));
@@ -41,9 +43,9 @@ const MyPage = () => {
   return (
     <>
       <Header />
-      <PageContainer>
+      <S.PageContainer>
         <Sidebar setSelectedMenu={setSelectedMenu} />
-        <ContentContainer>
+        <S.ContentContainer>
           <MainContent
             selectedMenu={selectedMenu}
             user={user}
@@ -52,8 +54,8 @@ const MyPage = () => {
             days={days}
             setShowModal={setShowModal}
           />
-        </ContentContainer>
-      </PageContainer>
+        </S.ContentContainer>
+      </S.PageContainer>
       {showModal && (
         <Modal
           currentPasswordForDeletion={currentPasswordForDeletion}

@@ -1,36 +1,38 @@
+// src/components/MyPage/Menu.jsx
+
 import React from 'react';
-import { MenuContainerWrapper, MenuItem, MenuItemIcon } from '@styles/MyPage.styles';
+import * as S from '@styles/MyPage.styles'; // 스타일 경로
 import { FaCogs, FaUserFriends, FaCalendarAlt, FaSignOutAlt } from 'react-icons/fa';
 
 const Menu = ({ user, setSelectedMenu }) => {
   return (
-    <MenuContainerWrapper>
+    <S.MenuContainerWrapper>
       <h1>{user.name ? `${user.name} 님` : '사용자 님'}</h1>
-      <MenuItem onClick={() => setSelectedMenu('account')}>
-        <MenuItemIcon>
+      <S.MenuItem onClick={() => setSelectedMenu('account')}>
+        <S.MenuItemIcon>
           <FaCogs />
-        </MenuItemIcon>
+        </S.MenuItemIcon>
         계정센터
-      </MenuItem>
-      <MenuItem onClick={() => setSelectedMenu('friends')}>
-        <MenuItemIcon>
+      </S.MenuItem>
+      <S.MenuItem onClick={() => setSelectedMenu('friends')}>
+        <S.MenuItemIcon>
           <FaUserFriends />
-        </MenuItemIcon>
+        </S.MenuItemIcon>
         친구관리
-      </MenuItem>
-      <MenuItem onClick={() => setSelectedMenu('travel')}>
-        <MenuItemIcon>
+      </S.MenuItem>
+      <S.MenuItem onClick={() => setSelectedMenu('travel')}>
+        <S.MenuItemIcon>
           <FaCalendarAlt />
-        </MenuItemIcon>
+        </S.MenuItemIcon>
         나의 일정
-      </MenuItem>
-      <MenuItem onClick={() => alert('로그아웃 클릭')}>
-        <MenuItemIcon>
+      </S.MenuItem>
+      <S.MenuItem onClick={() => alert('로그아웃 클릭')}>
+        <S.MenuItemIcon>
           <FaSignOutAlt />
-        </MenuItemIcon>
+        </S.MenuItemIcon>
         로그아웃
-      </MenuItem>
-    </MenuContainerWrapper>
+      </S.MenuItem>
+    </S.MenuContainerWrapper>
   );
 };
 

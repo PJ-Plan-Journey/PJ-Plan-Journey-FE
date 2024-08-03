@@ -7,8 +7,6 @@ export const HeaderWrapper = styled.header`
   padding: 1rem 2rem;
   box-sizing: border-box;
   width: 100%;
-  margin-left: 12rem;
-
 
   @media (max-width: 1200px) {
     padding: 1rem 1.5rem;
@@ -32,7 +30,6 @@ export const NavWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-right: 15rem;
   
   @media (max-width: 1200px) {
     width: 600px;

@@ -1,80 +1,75 @@
+// src/components/MyPage/MainContent.jsx
+
 import React from 'react';
 import AccountSettings from '@components/MyPage/AccountSettings';
 import FriendManagement from '@components/MyPage/FriendManagement';
 import TravelManagement from '@components/MyPage/TravelManagement';
-import {
-  MainContentContainer,
-  Card,
-  Section,
-  LoginTextContainer,
-  SectionTitle,
-  LoginText,
-} from '@styles/mypage/MainContent.styles';
+import * as S from '@styles/mypage/MainContent.styles'; // 스타일 경로
 
 const MainContent = ({ selectedMenu, user, days, setShowModal }) => {
   const renderContent = () => {
     switch (selectedMenu) {
       case 'account':
         return (
-          <Section>
-            <SectionTitle>계정센터</SectionTitle>
-            <LoginTextContainer>
-              <LoginText>개인정보</LoginText>
-              <Card>
+          <S.Section>
+            <S.SectionTitle>계정센터</S.SectionTitle>
+            <S.LoginTextContainer>
+              <S.LoginText>개인정보</S.LoginText>
+              <S.Card>
                 <p>
                   <strong>이름:</strong> {user.name}
                 </p>
                 <p>
                   <strong>계정:</strong> {user.email}
                 </p>
-              </Card>
-            </LoginTextContainer>
-            <LoginTextContainer>
-              <LoginText>비밀번호 수정</LoginText>
+              </S.Card>
+            </S.LoginTextContainer>
+            <S.LoginTextContainer>
+              <S.LoginText>비밀번호 수정</S.LoginText>
               <AccountSettings
                 user={user}
                 onDeleteAccount={() => setShowModal(true)}
               />
-            </LoginTextContainer>
-          </Section>
+            </S.LoginTextContainer>
+          </S.Section>
         );
       case 'friends':
         return (
-          <Section>
-            <SectionTitle>친구 관리</SectionTitle>
-            <Card>
+          <S.Section>
+            <S.SectionTitle>친구 관리</S.SectionTitle>
+            <S.Card>
               <FriendManagement user={user} />
-            </Card>
-          </Section>
+            </S.Card>
+          </S.Section>
         );
       case 'travel':
         return (
-          <Section>
-            <SectionTitle>일정 관리</SectionTitle>
-            <Card>
+          <S.Section>
+            <S.SectionTitle>일정 관리</S.SectionTitle>
+            <S.Card>
               <TravelManagement days={days} />
-            </Card>
-            <LoginTextContainer>
-              <LoginText>여행 계획</LoginText>
-              <Card>
+            </S.Card>
+            <S.LoginTextContainer>
+              <S.LoginText>여행 계획</S.LoginText>
+              <S.Card>
                 {/* 여행 계획 컴포넌트 추가 가능 */}
                 <p>여행 계획을 여기에 추가하세요.</p>
-              </Card>
-            </LoginTextContainer>
-          </Section>
+              </S.Card>
+            </S.LoginTextContainer>
+          </S.Section>
         );
       default:
         return (
-          <Section>
-            <Card>
+          <S.Section>
+            <S.Card>
               <p>메뉴를 선택해주세요.</p>
-            </Card>
-          </Section>
+            </S.Card>
+          </S.Section>
         );
     }
   };
 
-  return <MainContentContainer>{renderContent()}</MainContentContainer>;
+  return <S.MainContentContainer>{renderContent()}</S.MainContentContainer>;
 };
 
 export default MainContent;

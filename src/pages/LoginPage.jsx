@@ -1,19 +1,6 @@
 // src/pages/LoginPage.jsx
 import React, { useState } from 'react';
-import {
-  PageContainer,
-  ContentContainer,
-  Form,
-  Input,
-  Button,
-  KakaoButton,
-  SignUpPrompt,
-  InputContainer,
-  InputWrapper,
-  InputLabel,
-  KakaoLogoImage,
-  SignUpLink,
-} from '@styles/auth/Login.styles';
+import * as S from '@styles/auth/Login.styles'; // 스타일 경로
 import api from '@axios/api';
 import useBearStore from '@zustands/bearStore';
 import Header from "@Header/Header";
@@ -22,30 +9,35 @@ import {
   HighlightText,
 } from '@styles/main/TravelRecommendations.style';
 import KakaoLogo from '@assets/Kakao_logo.jpg';
+import { useMutation } from '@tanstack/react-query';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const setUser = useBearStore((state) => state.setUser);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await api.post('/auth/login', { email, password });
-      const { accessToken } = response.data;
-
-      // 액세스 토큰을 로컬 스토리지에 저장
-      localStorage.setItem('accessToken', accessToken);
-
-      // 사용자 정보를 Zustand 상태에 저장
-      setUser(response.data.user);
-      console.log('Login successful:', response.data);
-
-      // 로그인 후 메인 페이지로 이동
-      window.location.href = '/';
-    } catch (error) {
-      console.error('Login failed:', error);
+  // useMutation 훅 사용
+  const mutation = useMutation(
+    (data) => api.post('/auth/login', data),
+    {
+      onSuccess: (response) => {
+        const { accessToken, refreshToken } = response.data;
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+        setUser(response.data.user);
+        console.log('Login successful:', response.data);
+        window.location.href = '/';
+      },
+      onError: (error) => {
+        console.error('Login failed:', error);
+        alert('로그인에 실패했습니다.');
+      }
     }
+  );
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    mutation.mutate({ email, password });
   };
 
   const handleKakaoLogin = () => {
@@ -71,7 +63,7 @@ const LoginPage = () => {
   };
 
   return (
-    <PageContainer>
+    <S.PageContainer>
       <Header />
       <LoginText>
         안녕하세요.
@@ -81,41 +73,41 @@ const LoginPage = () => {
         <br />
         로그인
       </LoginText>
-      <ContentContainer>
-        <Form onSubmit={handleLogin}>
-          <InputContainer>
-            <InputWrapper>
-              <Input
+      <S.ContentContainer>
+        <S.Form onSubmit={handleLogin}>
+          <S.InputContainer>
+            <S.InputWrapper>
+              <S.Input
                 type="email"
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder=" "
               />
-              <InputLabel htmlFor="email">e-mail을 입력해주세요</InputLabel>
-            </InputWrapper>
-            <InputWrapper>
-              <Input
+              <S.InputLabel htmlFor="email">e-mail을 입력해주세요</S.InputLabel>
+            </S.InputWrapper>
+            <S.InputWrapper>
+              <S.Input
                 type="password"
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder=" "
               />
-              <InputLabel htmlFor="password">비밀번호를 입력해주세요</InputLabel>
-            </InputWrapper>
-            <SignUpPrompt>
-              처음이신가요? <SignUpLink onClick={() => window.location.href = '/signup'}>회원가입하기</SignUpLink>
-            </SignUpPrompt>
-          </InputContainer>
-          <Button type="submit">로그인</Button>
-          <KakaoButton onClick={handleKakaoLogin}>
-            <KakaoLogoImage src={KakaoLogo} alt="Kakao Logo" />
+              <S.InputLabel htmlFor="password">비밀번호를 입력해주세요</S.InputLabel>
+            </S.InputWrapper>
+            <S.SignUpPrompt>
+              처음이신가요? <S.SignUpLink onClick={() => window.location.href = '/signup'}>회원가입하기</S.SignUpLink>
+            </S.SignUpPrompt>
+          </S.InputContainer>
+          <S.Button type="submit">로그인</S.Button>
+          <S.KakaoButton onClick={handleKakaoLogin}>
+            <S.KakaoLogoImage src={KakaoLogo} alt="Kakao Logo" />
             카카오톡으로 시작하기
-          </KakaoButton>
-        </Form>
-      </ContentContainer>
-    </PageContainer>
+          </S.KakaoButton>
+        </S.Form>
+      </S.ContentContainer>
+    </S.PageContainer>
   );
 };
 

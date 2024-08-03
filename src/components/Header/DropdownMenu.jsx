@@ -1,12 +1,14 @@
+// src/components/main/DropdownMenu.jsx
+
 import React from 'react';
-import { DropdownMenuWrapper, DropdownItem } from '@styles/main/Header.styles';
+import * as S from '@styles/main/Header.styles'; // 스타일 경로
 
 const DropdownMenu = ({ isVisible }) => {
   return (
-    <DropdownMenuWrapper isVisible={isVisible}>
-      <DropdownItem href="/mypage">마이페이지</DropdownItem>
-      <DropdownItem href="/logout">로그아웃</DropdownItem>
-    </DropdownMenuWrapper>
+    <S.DropdownMenuWrapper isVisible={isVisible}>
+      <S.DropdownItem href="/mypage">마이페이지</S.DropdownItem>
+      <S.DropdownItem href="/logout">로그아웃</S.DropdownItem>
+    </S.DropdownMenuWrapper>
   );
 };
 

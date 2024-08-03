@@ -1,13 +1,7 @@
+// src/components/MyPage/TravelManagement.jsx
+
 import React, { useState } from 'react';
-import {
-  TravelContainer,
-  LoginText,
-  DayButton,
-  DayButtonWrapper,
-  DayContainer,
-  ScheduleItem,
-  Dot,
-} from '@styles/mypage/TravelManagement.styles';
+import * as S from '@styles/mypage/TravelManagement.styles'; // 스타일 경로
 
 const TravelManagement = () => {
   // 초기 상태로 임시 데이터를 설정
@@ -40,32 +34,37 @@ const TravelManagement = () => {
   const addDay = () => {
     const newDay = `Day ${days.length + 1}`;
     setDays((prevDays) => [...prevDays, newDay]);
-    schedule[newDay] = [`${newDay} 일정 1`, `${newDay} 일정 2`, `${newDay} 일정 3`]; // 임시 일정 추가
+    schedule[newDay] = [
+      `${newDay} 일정 1`,
+      `${newDay} 일정 2`,
+      `${newDay} 일정 3`,
+    ]; // 임시 일정 추가
   };
 
   return (
-    <TravelContainer>
-      <LoginText>나의 여행</LoginText>
-      <DayButtonWrapper>
+    <S.TravelContainer>
+      <S.LoginText>나의 여행</S.LoginText>
+      <S.DayButtonWrapper>
         {days.map((day, index) => (
-          <DayButton key={index} onClick={() => alert(`${day} 클릭`)}>
+          <S.DayButton key={index} onClick={() => alert(`${day} 클릭`)}>
             {day}
-          </DayButton>
+          </S.DayButton>
         ))}
         {/* 새로운 여행 일정을 추가하는 버튼 */}
-        <DayButton onClick={addDay}>Add New Day</DayButton>
-      </DayButtonWrapper>
+        <S.DayButton onClick={addDay}>Add New Day</S.DayButton>
+      </S.DayButtonWrapper>
       {days.map((day, index) => (
-        <DayContainer key={index}>
-          {schedule[day] && schedule[day].map((item, idx) => (
-            <ScheduleItem key={idx}>
-              <Dot />
-              {item}
-            </ScheduleItem>
-          ))}
-        </DayContainer>
+        <S.DayContainer key={index}>
+          {schedule[day] &&
+            schedule[day].map((item, idx) => (
+              <S.ScheduleItem key={idx}>
+                <S.Dot />
+                {item}
+              </S.ScheduleItem>
+            ))}
+        </S.DayContainer>
       ))}
-    </TravelContainer>
+    </S.TravelContainer>
   );
 };
 
