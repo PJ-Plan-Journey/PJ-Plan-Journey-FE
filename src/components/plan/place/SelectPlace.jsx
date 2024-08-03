@@ -3,35 +3,45 @@ import usePlaceStore from '@zustands/plan/usePlaceStore';
 import { FaPlus as AddIcon, FaCheck as CheckIcon } from 'react-icons/fa';
 import { IoSearch as SearchIcon } from 'react-icons/io5';
 import { IoIosCloseCircle as CloseIcon } from 'react-icons/io';
-import DateRangeDisplay from '@components/plan/date/DateRangeDisplay';
+import { v4 as uuidv4 } from 'uuid';
 import * as S from '@styles/plan/place/SelectPlace.style';
-import SelectedList from '@components/plan/place/SelectedList';
 
-const SelectPlace = () => {
+const SelectPlace = ({ isVisible, day, setIsVisible }) => {
   const [inputValue, setInputValue] = useState('');
   const [searchList, setSearchList] = useState([]);
-  const [isVisible, setIsVisible] = useState(false);
-  const { placeList, addPlace, removePlace } = usePlaceStore();
+  const [dayPlaceList, setDayPlaceList] = useState([]);
+  const { addPlace, placeList } = usePlaceStore();
 
   const onAddPlace = (place) => {
-    addPlace({
-      id: place.id,
-      name: place.place_name,
-      lat: parseFloat(place.y),
-      lng: parseFloat(place.x),
-      address: place.address_name,
-      roadAddress: place.road_address_name,
-      url: place.place_url,
-    });
+    const newPlace = {
+      ...place,
+      id: uuidv4(),
+    };
+    setDayPlaceList((prev) => [...prev, newPlace]);
+  };
+
+  const removePlace = (id) => {
+    const update = dayPlaceList.filter((item) => item.id !== id);
+    setDayPlaceList(update);
   };
 
   const initSearchValue = () => {
     setInputValue('');
   };
 
-  const onToggle = () => {
-    setIsVisible((prev) => !prev);
+  const SubmitDayList = (day) => {
+    addPlace(day, dayPlaceList);
+    setDayPlaceList([]);
+    setIsVisible(false);
   };
+
+  useEffect(() => {
+    if (placeList[day]) {
+      setDayPlaceList([...placeList[day]]);
+    } else {
+      setDayPlaceList([]);
+    }
+  }, [day, placeList]);
 
   useEffect(() => {
     // 디바운스 적용 필요
@@ -48,9 +58,9 @@ const SelectPlace = () => {
   }, [inputValue]);
 
   return (
-    <S.SelectPlaceContainer>
+    <S.SelectPlaceContainer $isVisible={isVisible.toString()}>
       <div className="search-box">
-        <DateRangeDisplay />
+        <div>{day}</div>
         <S.SearchBox>
           <SearchIcon />
           <input
@@ -68,14 +78,20 @@ const SelectPlace = () => {
         {inputValue && <div className="result">장소결과</div>}
 
         <S.SearchList>
-          {searchList.map((item) => (
+          {inputValue && searchList.length <= 0 && (
+            <div className="not-result">검색 결과가 없습니다</div>
+          )}
+
+          {searchList?.map((item) => (
             <S.SearchItem key={item.id}>
               <div className="item">
                 <h1 className="place-name">{item.place_name}</h1>
                 <div className="place-address">{item.address_name}</div>
               </div>
 
-              {placeList.find((place) => place.name === item.place_name) ? (
+              {dayPlaceList.find(
+                (place) => place.place_name === item.place_name
+              ) ? (
                 <button className="check" onClick={() => removePlace(item.id)}>
                   <CheckIcon />
                 </button>
@@ -87,8 +103,10 @@ const SelectPlace = () => {
             </S.SearchItem>
           ))}
         </S.SearchList>
+        <button className="complete" onClick={() => SubmitDayList(day)}>
+          선택완료
+        </button>
       </div>
-      <SelectedList isVisible={isVisible} onToggle={onToggle} />
     </S.SelectPlaceContainer>
   );
 };
