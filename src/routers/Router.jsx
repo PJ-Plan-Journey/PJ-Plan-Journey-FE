@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LoginPage from '@pages/LoginPage';
 import SignupPage from '@pages/SignupPage';
@@ -6,6 +5,7 @@ import ProfilePage from '@pages/ProfilePage';
 import MainPage from '@pages/MainPage';
 import PlanPage from '@pages/PlanPage';
 import MyPage from '@pages/MyPage'; // MyPage 컴포넌트 추가
+import PlanBoardsPage from '@pages/PlanBoardsPage';
 
 const Router = () => {
   return (
@@ -17,6 +17,7 @@ const Router = () => {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/mypage" element={<MyPage />} /> {/* MyPage 경로 추가 */}
         <Route path="/plan/create" element={<PlanPage />} />
+        <Route path="/plans" element={<PlanBoardsPage />} />
       </Routes>
     </BrowserRouter>
   );
