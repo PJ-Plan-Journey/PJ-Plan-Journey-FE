@@ -11,57 +11,53 @@ const FriendManagement = () => {
   const queryClient = useQueryClient();
 
   // 친구 목록 가져오기
-  const { data: friends = [], isLoading: isFriendsLoading } = useQuery(['friends'], () =>
-    api.get('/friends').then((res) => res.data)
-  );
+  const { data: friends = [], isLoading: isFriendsLoading } = useQuery({
+    queryKey: ['friends'],
+    queryFn: () => api.get('/friends').then((res) => res.data),
+  });
 
   // 친구 요청 목록 가져오기
-  const { data: friendRequests = [], isLoading: isRequestsLoading } = useQuery(['friendRequests'], () =>
-    api.get('/friend-requests').then((res) => res.data)
-  );
+  const { data: friendRequests = [], isLoading: isRequestsLoading } = useQuery({
+    queryKey: ['friendRequests'],
+    queryFn: () => api.get('/friend-requests').then((res) => res.data),
+  });
 
   // 친구 요청 수락
-  const acceptFriendMutation = useMutation(
-    (id) => api.post(`/friend-requests/${id}/accept`),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['friendRequests']);
-        queryClient.invalidateQueries(['friends']);
-      },
-      onError: (error) => {
-        console.error('친구 요청 수락 실패:', error);
-        alert('친구 요청 수락에 실패했습니다.');
-      }
-    }
-  );
+  const acceptFriendMutation = useMutation({
+    mutationFn: (id) => api.post(`/friend-requests/${id}/accept`),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['friendRequests']);
+      queryClient.invalidateQueries(['friends']);
+    },
+    onError: (error) => {
+      console.error('친구 요청 수락 실패:', error);
+      alert('친구 요청 수락에 실패했습니다.');
+    },
+  });
 
   // 친구 요청 거절
-  const rejectFriendMutation = useMutation(
-    (id) => api.post(`/friend-requests/${id}/reject`),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['friendRequests']);
-      },
-      onError: (error) => {
-        console.error('친구 요청 거절 실패:', error);
-        alert('친구 요청 거절에 실패했습니다.');
-      }
-    }
-  );
+  const rejectFriendMutation = useMutation({
+    mutationFn: (id) => api.post(`/friend-requests/${id}/reject`),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['friendRequests']);
+    },
+    onError: (error) => {
+      console.error('친구 요청 거절 실패:', error);
+      alert('친구 요청 거절에 실패했습니다.');
+    },
+  });
 
   // 친구 삭제
-  const removeFriendMutation = useMutation(
-    (id) => api.delete(`/friends/${id}`),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['friends']);
-      },
-      onError: (error) => {
-        console.error('친구 삭제 실패:', error);
-        alert('친구 삭제에 실패했습니다.');
-      }
-    }
-  );
+  const removeFriendMutation = useMutation({
+    mutationFn: (id) => api.delete(`/friends/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['friends']);
+    },
+    onError: (error) => {
+      console.error('친구 삭제 실패:', error);
+      alert('친구 삭제에 실패했습니다.');
+    },
+  });
 
   // 일정 초대 (모의 함수)
   const inviteToEvent = async (id) => {

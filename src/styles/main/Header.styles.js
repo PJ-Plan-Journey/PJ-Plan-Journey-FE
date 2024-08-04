@@ -24,11 +24,13 @@ export const HeaderWrapper = styled.header`
 export const LogoWrapper = styled.div`
   display: flex;
   align-items: center;
+  padding-left: 7rem;
 `;
 
 export const NavWrapper = styled.div`
   display: flex;
   align-items: center;
+  padding-right: 7rem;
   justify-content: space-between;
   
   @media (max-width: 1200px) {

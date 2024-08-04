@@ -11,23 +11,21 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const setUser = useBearStore((state) => state.setUser);
 
-  const mutation = useMutation(
-    (data) => api.post('/auth/login', data),
-    {
-      onSuccess: (response) => {
-        const { accessToken, refreshToken } = response.data;
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        setUser(response.data.user);
-        console.log('Login successful:', response.data);
-        window.location.href = '/';
-      },
-      onError: (error) => {
-        console.error('Login failed:', error);
-        alert('로그인에 실패했습니다.');
-      }
-    }
-  );
+  const mutation = useMutation({
+    mutationFn: (data) => api.post('/auth/login', data),
+    onSuccess: (response) => {
+      const { accessToken, refreshToken } = response.data;
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      setUser(response.data.user);
+      console.log('Login successful:', response.data);
+      window.location.href = '/';
+    },
+    onError: (error) => {
+      console.error('Login failed:', error);
+      alert('로그인에 실패했습니다.');
+    },
+  });
 
   const handleLogin = (e) => {
     e.preventDefault();

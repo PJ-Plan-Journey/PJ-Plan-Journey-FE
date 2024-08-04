@@ -5,12 +5,15 @@ export const FriendContainer = styled.div`
 `;
 
 export const LoginText = styled.h2`
-  font-size: 1.5rem; /* 폰트 크기 수정 */
-  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  margin-bottom: 1rem; /* 기존 간격 */
+  &:not(:first-child) {
+    margin-top: 5rem; /* 텍스트 사이 간격 추가 */
+  }
 `;
 
 export const MenuText = styled.h3`
-  font-size: 1.2rem; /* 한단계 작은 폰트 크기 */
+  font-size: 1.2rem;
   margin-bottom: 0.5rem;
 `;
 
@@ -18,7 +21,7 @@ export const FriendRequestContainer = styled.div`
   background: #fff;
   padding: 1rem;
   margin-top: 0.5rem;
-  margin-bottom: 2rem; /* 간격 추가 */
+  margin-bottom: 2rem;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
