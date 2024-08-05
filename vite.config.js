@@ -43,7 +43,8 @@ export default defineConfig({
       {
         find: '@Header',
         replacement: resolve(__dirname, 'src/components/Header'),
-      }, // 수정된 부분
+      },
+      { find: '@auth', replacement: resolve(__dirname, 'src/components/auth') },
       { find: '@', replacement: resolve(__dirname, 'src') },
     ],
   },
