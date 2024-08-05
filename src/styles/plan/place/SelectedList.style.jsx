@@ -8,7 +8,8 @@ export const DayList = styled.ul`
   flex-wrap: wrap;
   overflow: auto;
   ${ScrollStyle}
-  margin-top: 30px;
+  padding: 30px;
+  border-bottom: 1px solid #d4d4d4;
 
   .item {
     width: 300px;
@@ -62,7 +63,6 @@ export const SelectedListContainer = styled.div`
   width: 100%;
   height: 100%;
   background-color: white;
-  padding: 40px;
   padding-right: 0;
   padding-bottom: 100px;
 

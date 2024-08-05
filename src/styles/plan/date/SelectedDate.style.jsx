@@ -5,6 +5,7 @@ export const SelectedDateContainer = styled.div`
   ${flexColumn}
   gap: 20px;
   width: 100%;
+  min-width: 400px;
   height: 100%;
   padding: 80px 40px;
   background-color: white;

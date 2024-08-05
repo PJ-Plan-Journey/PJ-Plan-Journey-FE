@@ -6,11 +6,17 @@ import * as S from '@styles/plan/PlanPage.style';
 import { useEffect, useRef, useState } from 'react';
 import SelectedList from '@components/plan/place/SelectedList';
 import { FaGripLinesVertical as WidthSizeIcon } from 'react-icons/fa6';
+import TItleForm from '@components/plan/TitleForm';
+import useDateStore from '@zustands/plan/useDateStore';
+import usePlaceStore from '@zustands/plan/usePlaceStore';
+import { px } from 'framer-motion';
 
 const MINWIDTH = 37;
 
 const PlanPage = () => {
-  const { step } = useStepStore();
+  const { step, setStep, setTitle } = useStepStore();
+  const { setDates } = useDateStore();
+  const { initList } = usePlaceStore();
   const [width, setWidth] = useState(MINWIDTH);
   const [isDragging, setIsDragging] = useState(false);
   const widthRef = useRef(width);
@@ -62,7 +68,16 @@ const PlanPage = () => {
   }, []);
 
   // 날짜 변경 컴포넌트는 width 변경이 필요없어서 조건문 설정
-  const resizeContainerStyle = step === 2 ? { width: `${width}%` } : {};
+  const resizeContainerStyle = step >= 2 ? { width: `${width}%` } : {};
+
+  useEffect(() => {
+    return () => {
+      setDates({ startDate: null, endDate: null });
+      initList();
+      setStep(1);
+      setTitle('');
+    };
+  }, [setDates, initList, setStep, setTitle]);
 
   return (
     <S.PlanPageContainer>
@@ -70,12 +85,16 @@ const PlanPage = () => {
       <div className="resize-container" style={resizeContainerStyle}>
         <Step />
         {step == 1 && <SelectedDate />}
-        {step == 2 && <SelectedList />}
-        {step === 2 && (
-          <div className="width-size-button" onMouseDown={handleMouseDown}>
-            <WidthSizeIcon />
-          </div>
+        {step >= 2 && (
+          <>
+            <SelectedList />
+            <div className="width-size-button" onMouseDown={handleMouseDown}>
+              <WidthSizeIcon />
+            </div>
+          </>
         )}
+
+        {step >= 3 && <TItleForm />}
       </div>
 
       <KakaoMap />

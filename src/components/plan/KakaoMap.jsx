@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useKakaoLoader from '@hooks/plan/useKakaoLoader';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
 import { Map, Polyline, CustomOverlayMap } from 'react-kakao-maps-sdk';
