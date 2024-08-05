@@ -15,22 +15,18 @@ const MainContent = ({ selectedMenu, user, days, setShowModal }) => {
             <S.SectionTitle>계정센터</S.SectionTitle>
             <S.LoginTextContainer>
               <S.LoginText>개인정보</S.LoginText>
-              <S.Card>
                 <p>
                   <strong>이름:</strong> {user.name}
                 </p>
                 <p>
                   <strong>계정:</strong> {user.email}
                 </p>
-              </S.Card>
             </S.LoginTextContainer>
-            <S.LoginTextContainer>
               <S.LoginText>비밀번호 수정</S.LoginText>
               <AccountSettings
                 user={user}
                 onDeleteAccount={() => setShowModal(true)}
               />
-            </S.LoginTextContainer>
           </S.Section>
         );
       case 'friends':

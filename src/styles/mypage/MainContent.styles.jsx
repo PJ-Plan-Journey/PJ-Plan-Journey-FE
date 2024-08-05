@@ -1,11 +1,32 @@
+// src/styles/mypage/MainContent.styles.js
+
 import styled from 'styled-components';
 
+export const LayoutContainer = styled.div`
+  display: flex; /* 전체 레이아웃을 Flexbox로 설정 */
+  width: 100%;
+  height: 100vh; /* 화면 전체 높이 사용 */
+  overflow: hidden; /* 넘치는 내용 숨김 */
+`;
+
+export const SidebarContainer = styled.div`
+  width: 250px; /* 사이드바의 고정 너비 */
+  height: 100vh;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+`;
+
 export const MainContentContainer = styled.div`
-  flex-grow: 1;
+  flex-grow: 1; /* 남은 공간을 차지 */
+  max-width: calc(100% - 250px); /* Sidebar의 너비를 제외한 나머지 */
   padding: 2rem;
   overflow-y: auto;
-  margin-left: 2cm;
-  margin-right: 2cm;
+  margin-left: 2rem;
 `;
 
 export const Section = styled.div`
@@ -16,7 +37,9 @@ export const LoginTextContainer = styled.div`
   margin-bottom: 1rem;
   background: #fff;
   padding: 1rem;
+  padding-bottom: 2rem;
   border-radius: 10px;
+  line-height: 2rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
