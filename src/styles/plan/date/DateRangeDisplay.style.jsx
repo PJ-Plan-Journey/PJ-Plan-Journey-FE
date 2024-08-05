@@ -5,6 +5,8 @@ export const DateRangeDisplayContainer = styled.div`
   width: 100%;
   ${flexColumn}
   gap: 30px;
+  padding: 20px 0;
+  border-bottom: 1px solid #cbcbcb;
 
   .city {
     font-weight: bold;

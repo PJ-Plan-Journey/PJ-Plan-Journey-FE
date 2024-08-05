@@ -4,7 +4,12 @@ import usePlaceStore from '@zustands/plan/usePlaceStore';
 
 const PlaceListItem = ({ day, place, index, provided }) => {
   const { place_name } = place;
-  const { removePlace } = usePlaceStore();
+  const { removePlace, setDay } = usePlaceStore();
+
+  const remveItem = () => {
+    setDay(day);
+    removePlace(day, place.id);
+  };
 
   return (
     <S.PlaceItem ref={provided.innerRef} {...provided.draggableProps}>
@@ -17,7 +22,7 @@ const PlaceListItem = ({ day, place, index, provided }) => {
           <div className="array-number">{index}</div>
           <div className="title">{place_name}</div>
         </div>
-        <button className="remove" onClick={() => removePlace(day, place.id)}>
+        <button className="remove" onClick={remveItem}>
           <RemoveIcon />
         </button>
       </S.Item>

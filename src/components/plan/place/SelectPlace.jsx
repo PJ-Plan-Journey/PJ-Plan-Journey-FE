@@ -10,12 +10,12 @@ const SelectPlace = ({ isVisible, day, setIsVisible }) => {
   const [inputValue, setInputValue] = useState('');
   const [searchList, setSearchList] = useState([]);
   const [dayPlaceList, setDayPlaceList] = useState([]);
-  const { addPlace, placeList } = usePlaceStore();
+  const { addPlace, placeList, setDay } = usePlaceStore();
 
   const onAddPlace = (place) => {
     const newPlace = {
       ...place,
-      id: uuidv4(),
+      id: uuidv4(), // place id를 사용하면 같은 장소를 넣었을 때 오류가 나서 uuid로 각각 장소의 id를 다르게 설정
     };
     setDayPlaceList((prev) => [...prev, newPlace]);
   };
@@ -30,6 +30,7 @@ const SelectPlace = ({ isVisible, day, setIsVisible }) => {
   };
 
   const SubmitDayList = (day) => {
+    setDay(day);
     addPlace(day, dayPlaceList);
     setDayPlaceList([]);
     setIsVisible(false);
