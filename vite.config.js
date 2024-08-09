@@ -10,6 +10,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 console.log('VITE_SERVER_URL:', process.env.VITE_SERVER_URL);
 
+console.log('VITE_SERVER_URL:', process.env.VITE_SERVER_URL);
+
 export default defineConfig({
   plugins: [react()],
   server: {
@@ -30,10 +32,7 @@ export default defineConfig({
   },
   resolve: {
     alias: [
-      {
-        find: '@components',
-        replacement: resolve(__dirname, 'src/components'),
-      },
+      { find: '@components', replacement: resolve(__dirname, 'src/components') },
       { find: '@hooks', replacement: resolve(__dirname, 'src/hooks') },
       { find: '@pages', replacement: resolve(__dirname, 'src/pages') },
       { find: '@routers', replacement: resolve(__dirname, 'src/routers') },

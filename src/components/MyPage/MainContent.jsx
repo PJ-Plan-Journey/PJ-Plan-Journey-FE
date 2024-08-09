@@ -4,9 +4,12 @@ import React from 'react';
 import AccountSettings from '@components/MyPage/AccountSettings';
 import FriendManagement from '@components/MyPage/FriendManagement';
 import TravelManagement from '@components/MyPage/TravelManagement';
-import * as S from '@styles/mypage/MainContent.styles'; // 스타일 경로
+import * as S from '@styles/mypage/MainContent.styles';
+import useAuthStore from '@zustands/useAuthStore';
 
-const MainContent = ({ selectedMenu, user, days, setShowModal }) => {
+const MainContent = ({ selectedMenu, days, setShowModal, travels }) => {
+  const user = useAuthStore((state) => state.user);
+
   const renderContent = () => {
     switch (selectedMenu) {
       case 'account':
@@ -15,18 +18,15 @@ const MainContent = ({ selectedMenu, user, days, setShowModal }) => {
             <S.SectionTitle>계정센터</S.SectionTitle>
             <S.LoginTextContainer>
               <S.LoginText>개인정보</S.LoginText>
-                <p>
-                  <strong>이름:</strong> {user.name}
-                </p>
-                <p>
-                  <strong>계정:</strong> {user.email}
-                </p>
+              <p>
+                <strong>이름:</strong> {user?.nickname || '닉네임 없음'}
+              </p>
+              <p>
+                <strong>계정:</strong> {user?.email || '이메일 없음'}
+              </p>
             </S.LoginTextContainer>
-              <S.LoginText>비밀번호 수정</S.LoginText>
-              <AccountSettings
-                user={user}
-                onDeleteAccount={() => setShowModal(true)}
-              />
+            <S.LoginText>비밀번호 수정</S.LoginText>
+            <AccountSettings onDeleteAccount={() => setShowModal(true)} />
           </S.Section>
         );
       case 'friends':
@@ -34,7 +34,7 @@ const MainContent = ({ selectedMenu, user, days, setShowModal }) => {
           <S.Section>
             <S.SectionTitle>친구 관리</S.SectionTitle>
             <S.Card>
-              <FriendManagement user={user} />
+              <FriendManagement />
             </S.Card>
           </S.Section>
         );
@@ -43,15 +43,8 @@ const MainContent = ({ selectedMenu, user, days, setShowModal }) => {
           <S.Section>
             <S.SectionTitle>일정 관리</S.SectionTitle>
             <S.Card>
-              <TravelManagement days={days} />
+              <TravelManagement travels={travels} />
             </S.Card>
-            <S.LoginTextContainer>
-              <S.LoginText>여행 계획</S.LoginText>
-              <S.Card>
-                {/* 여행 계획 컴포넌트 추가 가능 */}
-                <p>여행 계획을 여기에 추가하세요.</p>
-              </S.Card>
-            </S.LoginTextContainer>
           </S.Section>
         );
       default:
