@@ -1,4 +1,5 @@
 import { flexColumn } from '@styles/common/common.style';
+import styled from 'styled-components';
 
 export const DayListContainer = styled.div`
   min-width: 180px;
