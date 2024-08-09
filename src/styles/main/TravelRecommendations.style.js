@@ -33,7 +33,7 @@ export const LoginText = styled.h1`
   font-weight: bold;
   margin-top: auto;
   line-height: 1.4;
-  margin-right: 8.1rem;
+  margin-right: 8rem;
 `;
 
 export const MenuWrapper = styled.div`

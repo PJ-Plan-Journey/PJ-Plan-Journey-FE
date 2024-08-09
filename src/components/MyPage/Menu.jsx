@@ -3,11 +3,14 @@
 import React from 'react';
 import * as S from '@styles/MyPage.styles'; // 스타일 경로
 import { FaCogs, FaUserFriends, FaCalendarAlt, FaSignOutAlt } from 'react-icons/fa';
+import useAuthStore from '@zustands/authStore';
 
-const Menu = ({ user, setSelectedMenu }) => {
+const Menu = ({ setSelectedMenu }) => {
+  const user = useAuthStore((state) => state.user);
+
   return (
     <S.MenuContainerWrapper>
-      <h1>{user.name ? `${user.name} 님` : '사용자 님'}</h1>
+      <h1>{user?.nickname ? `${user.nickname} 님` : '사용자 님'}</h1>
       <S.MenuItem onClick={() => setSelectedMenu('account')}>
         <S.MenuItemIcon>
           <FaCogs />

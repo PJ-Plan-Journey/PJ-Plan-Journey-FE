@@ -1,30 +1,43 @@
-// src/components/MyPage/FriendManagement.jsx
-
-import React from 'react';
-import * as S from '@styles/mypage/FriendManagement.styles'; // 스타일 경로
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import * as S from '@styles/mypage/FriendManagement.styles';
 import { FaCheck, FaTrash } from 'react-icons/fa';
 import { MdGroupAdd } from 'react-icons/md';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '@axios/api';
+import useAuthStore from '@zustands/authStore';
 
 const FriendManagement = () => {
+  const navigate = useNavigate();
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const accessToken = useAuthStore((state) => state.accessToken);
+
+  // useEffect(() => {
+  //   if (!isLoggedIn) {
+  //     navigate('/login');
+  //   }
+  // }, [isLoggedIn, navigate]);
+
   const queryClient = useQueryClient();
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
 
   // 친구 목록 가져오기
   const { data: friends = [], isLoading: isFriendsLoading } = useQuery({
     queryKey: ['friends'],
-    queryFn: () => api.get('/friends').then((res) => res.data),
+    queryFn: () => api.get('/friends', { headers }).then((res) => res.data),
   });
 
   // 친구 요청 목록 가져오기
   const { data: friendRequests = [], isLoading: isRequestsLoading } = useQuery({
     queryKey: ['friendRequests'],
-    queryFn: () => api.get('/friend-requests').then((res) => res.data),
+    queryFn: () => api.get('/friends/receivedLists', { headers }).then((res) => res.data),
   });
 
   // 친구 요청 수락
   const acceptFriendMutation = useMutation({
-    mutationFn: (id) => api.post(`/friend-requests/${id}/accept`),
+    mutationFn: (id) => api.post('/friends/accept', { id }, { headers }),
     onSuccess: () => {
       queryClient.invalidateQueries(['friendRequests']);
       queryClient.invalidateQueries(['friends']);
@@ -37,7 +50,7 @@ const FriendManagement = () => {
 
   // 친구 요청 거절
   const rejectFriendMutation = useMutation({
-    mutationFn: (id) => api.post(`/friend-requests/${id}/reject`),
+    mutationFn: (id) => api.post('/friends/reject', { id }, { headers }),
     onSuccess: () => {
       queryClient.invalidateQueries(['friendRequests']);
     },
@@ -49,7 +62,7 @@ const FriendManagement = () => {
 
   // 친구 삭제
   const removeFriendMutation = useMutation({
-    mutationFn: (id) => api.delete(`/friends/${id}`),
+    mutationFn: (id) => api.delete(`/friends/${id}`, { headers }),
     onSuccess: () => {
       queryClient.invalidateQueries(['friends']);
     },
@@ -61,7 +74,6 @@ const FriendManagement = () => {
 
   // 일정 초대 (모의 함수)
   const inviteToEvent = async (id) => {
-    // 일정 초대 요청을 모사하는 비동기 함수
     const success = await mockSendInvite(id);
     if (success) {
       alert('일정에 초대되었습니다.');
@@ -73,17 +85,21 @@ const FriendManagement = () => {
     return new Promise((resolve) => {
       setTimeout(() => {
         console.log(`User with ID ${id} invited to event.`);
-        resolve(true); // 초대 성공
+        resolve(true);
       }, 1000);
     });
   };
+
+  if (!isLoggedIn) {
+    return null;
+  }
 
   return (
     <S.FriendContainer>
       <S.LoginText>친구요청</S.LoginText>
       {isRequestsLoading ? (
         <p>Loading friend requests...</p>
-      ) : (
+      ) : Array.isArray(friendRequests) && friendRequests.length > 0 ? (
         friendRequests.map((user) => (
           <S.FriendRequestContainer key={user.id}>
             <div>
@@ -101,11 +117,13 @@ const FriendManagement = () => {
             </S.FriendRequestActions>
           </S.FriendRequestContainer>
         ))
+      ) : (
+        <p>No friend requests found.</p>
       )}
       <S.LoginText>친구</S.LoginText>
       {isFriendsLoading ? (
         <p>Loading friends...</p>
-      ) : (
+      ) : Array.isArray(friends) && friends.length > 0 ? (
         friends.map((user) => (
           <S.FriendContainerInner key={user.id}>
             <div>
@@ -123,6 +141,8 @@ const FriendManagement = () => {
             </S.FriendActions>
           </S.FriendContainerInner>
         ))
+      ) : (
+        <p>No friends found.</p>
       )}
     </S.FriendContainer>
   );

@@ -1,3 +1,5 @@
+// src/styles/auth/Signup.styles.js
+
 import styled from 'styled-components';
 
 export const PageContainer = styled.div`
@@ -52,7 +54,7 @@ export const InputLabel = styled.label`
   transition: all 0.3s ease;
   pointer-events: none;
   z-index: 1;
-  width: 100%;
+  width: 80%;
 `;
 
 export const Input = styled.input`
@@ -108,30 +110,25 @@ export const EmailContainer = styled.div`
   align-items: center;
   width: 100%;
   gap: 0.5rem;
+  position: relative; /* 상대 위치 설정 */
 `;
 
 export const EmailInput = styled(Input)`
   flex-grow: 1; /* 남은 공간을 차지 */
+  padding-right: 4rem; /* 인증하기 텍스트 공간 확보 */
 `;
 
-export const EmailButton = styled.button`
-  padding: 1.3rem;
-  height: 3.4rem;
+export const VerifyText = styled.span`
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
   font-size: 1rem;
-  background-color: #156BF0;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
+  color: #156BF0;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 20%;
 
   &:hover {
-    background-color: #0056b3;
+    color: #0056b3;
   }
 `;
 
@@ -162,3 +159,4 @@ export const SignUpText = styled.span`
     color: #0056b3;
   }
 `;
+
