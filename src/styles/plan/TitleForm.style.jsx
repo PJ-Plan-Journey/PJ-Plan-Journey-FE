@@ -1,4 +1,4 @@
-import { flex } from '@styles/common/common.style';
+import { flex, flexColumn } from '@styles/common/common.style';
 import styled from 'styled-components';
 
 export const TItleFormContainer = styled.div`
