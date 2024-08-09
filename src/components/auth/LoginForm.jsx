@@ -15,11 +15,24 @@ const LoginForm = () => {
   const mutation = useMutation({
     mutationFn: (data) => api.post('/users/login', data),
     onSuccess: (response) => {
-      const { accessToken, refreshToken, ...user } = response.data.data;
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-      login(user, accessToken, refreshToken);
-      console.log('Login successful:', response.data);
+      console.log('Response headers:', response.headers);
+  
+      // 헤더에서 토큰을 추출
+      const accessToken = response.headers['authorization']?.split(' ')[1];
+      const refreshToken = response.headers['refresh-token'];
+  
+      // 유저 정보는 여전히 response.data.data에서 가져옵니다.
+      const user = response.data.data;
+  
+      // 토큰이 존재하면 로컬 스토리지에 저장하고 로그인 처리
+      if (accessToken && refreshToken) {
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+        login(user, accessToken, refreshToken);
+      } else {
+        console.error('토큰이 헤더에 없습니다.');
+      }
+  
       window.location.href = '/';
     },
     onError: (error) => {
