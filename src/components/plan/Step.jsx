@@ -6,7 +6,6 @@ import usePlaceStore from '@zustands/plan/usePlaceStore';
 import useModal from '@hooks/useModal';
 import Modal from '@components/plan/Modal';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 
 const STEPLIST = [{ name: '여행 일정 등록' }, { name: '여행 장소 등록' }];
 
@@ -29,10 +28,6 @@ const Step = () => {
     showError('변경사항이 저장되지 않을 수 있습니다.');
   };
 
-  const onSubmit = () => {
-    navigate('/');
-  };
-
   return (
     <S.Container>
       <S.StepList>
@@ -53,11 +48,7 @@ const Step = () => {
         ))}
       </S.StepList>
 
-      {step === 2 ? (
-        <S.Button onClick={onSubmit}>저장</S.Button>
-      ) : (
-        <S.Button onClick={nextStep}>다음</S.Button>
-      )}
+      {step < 3 && <S.Button onClick={nextStep}>다음</S.Button>}
 
       {isError && (
         <Modal onCancel={hideError} onConfirm={() => navigate('/')}>
