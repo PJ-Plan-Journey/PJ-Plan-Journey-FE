@@ -30,12 +30,6 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    // const userId = 1;
-
-    // if (userId) {
-    //   config.headers['USERID'] = userId; // 사용자 ID를 헤더에 추가
-    // }
-
     return config;
   },
   (error) => Promise.reject(error)
@@ -43,32 +37,32 @@ api.interceptors.request.use(
 
 // 응답 인터셉터 설정
 api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-    if (
-      error.response &&
-      error.response.status === 401 &&
-      !originalRequest._retry
-    ) {
-      originalRequest._retry = true;
-      const refreshToken = localStorage.getItem('refreshToken');
-      if (refreshToken) {
-        try {
-          const { data } = await api.post('/auth/refresh', { refreshToken });
-          localStorage.setItem('accessToken', data.accessToken);
-          originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
-          return api(originalRequest);
-        } catch (err) {
-          console.error('리프레시 토큰을 통한 액세스 토큰 재발급 실패:', err);
-          handleLogout();
-        }
-      } else {
-        handleLogout();
-      }
-    }
-    return Promise.reject(error);
-  }
+  (response) => response
+  // async (error) => {
+  //   const originalRequest = error.config;
+  //   if (
+  //     error.response &&
+  //     error.response.status === 401 &&
+  //     !originalRequest._retry
+  //   ) {
+  //     originalRequest._retry = true;
+  //     const refreshToken = localStorage.getItem('refreshToken');
+  //     if (refreshToken) {
+  //       try {
+  //         const { data } = await api.post('/auth/refresh', { refreshToken });
+  //         localStorage.setItem('accessToken', data.accessToken);
+  //         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+  //         return api(originalRequest);
+  //       } catch (err) {
+  //         console.error('리프레시 토큰을 통한 액세스 토큰 재발급 실패:', err);
+  //         handleLogout();
+  //       }
+  //     } else {
+  //       handleLogout();
+  //     }
+  //   }
+  //   return Promise.reject(error);
+  // }
 );
 
 export default api;

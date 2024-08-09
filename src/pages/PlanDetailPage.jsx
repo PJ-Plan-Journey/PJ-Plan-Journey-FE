@@ -6,7 +6,7 @@ import { FaGripLinesVertical as WidthSizeIcon } from 'react-icons/fa6';
 import useDateStore from '@zustands/plan/useDateStore';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
 import { useEffect, useRef, useState } from 'react';
-import { io } from 'socket.io-client';
+import { Client } from '@stomp/stompjs';
 import * as S from '@styles/plan/PlanDetailPage.style';
 
 const initialData = {
@@ -71,6 +71,10 @@ const PlanDetailPage = () => {
   const [width, setWidth] = useState(MINWIDTH);
   const [isDragging, setIsDragging] = useState(false);
   const widthRef = useRef(width);
+
+  const [stompClient, setStompClient] = useState(null);
+
+  const stomp = new Client();
 
   const { addPlace, day, initList, setDay } = usePlaceStore();
   const { setDates } = useDateStore();
@@ -153,25 +157,41 @@ const PlanDetailPage = () => {
     };
   }, [isDragging]);
 
-  // useEffect(() => {
-  //   const socketClient = io(import.meta.env.VITE_WEB_SOCKET_URL, {
-  //     transports: ['websocket'],
-  //     path: '/ws',
-  //     reconnectionAttempts: 3,
-  //   });
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
 
-  //   socketClient.on('connect', () => {
-  //     console.log('Connected to the server');
-  //   });
+    const connectStomp = new Client({
+      brokerURL: import.meta.env.VITE_WEB_SOCKET_URL,
+      connectHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+      debug: (str) => {
+        console.log('STOMP Debug:', str);
+      },
+      reconnectDelay: 5000, // 자동 재연결 설정
+      heartbeatIncoming: 4000,
+      heartbeatOutgoing: 4000,
+      onConnect: (frame) => {
+        console.log('Connected:', frame);
+      },
+      onStompError: (frame) => {
+        console.error('STOMP Error:', frame);
+      },
+      onWebSocketClose: () => {
+        console.log('WebSocket Closed');
+      },
+    });
 
-  //   socketClient.on('connect_error', (err) => {
-  //     console.error('Connection failed:', err);
-  //   });
+    connectStomp.onConnect = (frame) => {
+      console.log('STOMP Connected:', frame);
+      // 서버에서 필요한 구독 및 초기 작업
+      // 예: connectStomp.subscribe('/topic/your-topic', (message) => { ... });
+    };
 
-  //   return () => {
-  //     socketClient.disconnect();
-  //   };
-  // }, []);
+    connectStomp.onStompError = (frame) => {
+      console.error('STOMP Error:', frame);
+    };
+  }, []);
 
   useEffect(() => {
     return () => {

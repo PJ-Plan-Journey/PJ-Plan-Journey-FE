@@ -41,11 +41,7 @@ const TItleForm = () => {
         planDetails,
       };
 
-      const { data } = await api.post('/plans', plan, {
-        headers: {
-          USERID: 1,
-        },
-      });
+      const { data } = await api.post('/plans', plan);
 
       console.log(data);
     } catch (error) {
