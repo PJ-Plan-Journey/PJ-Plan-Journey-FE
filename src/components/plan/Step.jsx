@@ -1,8 +1,6 @@
 import { FaCheck as CheckIcon } from 'react-icons/fa6';
 import * as S from '@styles/plan/Step.style';
 import useStepStore from '@zustands/plan/useStepStore';
-import useDateStore from '@zustands/plan/useDateStore';
-import usePlaceStore from '@zustands/plan/usePlaceStore';
 import useModal from '@hooks/useModal';
 import Modal from '@components/plan/Modal';
 import { useNavigate } from 'react-router-dom';
@@ -11,8 +9,6 @@ const STEPLIST = [{ name: '여행 일정 등록' }, { name: '여행 장소 등�
 
 const Step = () => {
   const { step, setStep } = useStepStore();
-  const { startDate, endDate } = useDateStore();
-  const { placeList } = usePlaceStore();
   const { isError, message, showError, hideError } = useModal();
   const navigate = useNavigate();
 

@@ -7,6 +7,10 @@ import * as S from '@styles/plan/KakaoMap.style';
 const KakaoMap = () => {
   const { placeList, day } = usePlaceStore();
   const [map, setMap] = useState(null);
+  const [initialCenter, setInitialCenter] = useState({
+    lat: 37.5665,
+    lng: 126.978,
+  }); // 기본 중심 좌표
 
   // 카카오 맵 로드 함수
   useKakaoLoader();
@@ -16,47 +20,133 @@ const KakaoMap = () => {
     setMap(mapInstance);
   };
 
+  // 각 day에 대해 다른 색상 적용
+  const colors = ['#156bf0', '#f01562', '#15f062', '#f0d215']; // 예시 색상 배열
+  const getColor = (day) => {
+    // day에 따라 색상을 결정
+    const days = Object.keys(placeList);
+    const dayIndex = days.indexOf(day);
+    return dayIndex !== -1 ? colors[dayIndex % colors.length] : colors[0];
+  };
+
   useEffect(() => {
-    if (map && placeList[day]?.length > 0) {
+    if (map) {
       const bounds = new window.kakao.maps.LatLngBounds();
-      placeList[day].forEach(({ x: lat, y: lng }) => {
-        bounds.extend(new window.kakao.maps.LatLng(lng, lat));
-      });
-      map.setBounds(bounds);
+      let shouldSetBounds = false;
+
+      if (day && placeList[day]?.length > 0) {
+        // 선택된 day의 장소들로 경계 설정
+        placeList[day].forEach(({ x: lng, y: lat }) => {
+          if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
+            bounds.extend(new window.kakao.maps.LatLng(lat, lng));
+            shouldSetBounds = true;
+          }
+        });
+      } else if (day && !placeList[day]) {
+        map.setCenter(initialCenter);
+        map.setLevel(3);
+        return;
+      } else {
+        // 모든 장소들로 경계 설정
+        Object.values(placeList)
+          .flat()
+          .forEach(({ x: lng, y: lat }) => {
+            if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
+              bounds.extend(new window.kakao.maps.LatLng(lat, lng));
+              shouldSetBounds = true;
+            }
+          });
+      }
+
+      // 경계를 설정
+      if (shouldSetBounds) {
+        map.setBounds(bounds);
+      }
     }
-  }, [map, placeList, day]);
+  }, [map, placeList, day, initialCenter]);
 
   return (
     <S.KakaoContainer>
       <Map
         className="map"
-        center={
-          placeList[day] && placeList[day].length > 0
-            ? { lat: placeList[day][0].y, lng: placeList[day][0].x }
-            : { lat: 37.5665, lng: 126.978 }
-        } // 기본 중심 좌표
-        level={3} // 초기 확대 레벨
-        onCreate={handleMapCreate} // 맵 생성 시 호출
+        center={initialCenter}
+        level={3}
+        onCreate={handleMapCreate}
       >
-        {placeList[day] && placeList[day].length > 0 && (
-          <>
+        {day && placeList[day]?.length > 0 ? (
+          // 선택된 날짜의 장소들만 렌더링
+          <div>
             <Polyline
-              path={placeList[day]?.map(({ x: lng, y: lat }) => ({ lng, lat }))}
+              path={placeList[day]
+                .map(({ x: lng, y: lat }) => ({ lng, lat }))
+                .filter(
+                  ({ lng, lat }) => lng && lat && !isNaN(lng) && !isNaN(lat)
+                )}
               strokeWeight={8} // 선 굵기
               strokeOpacity={1}
-              strokeColor="#156bf0" // 선 색깔
+              strokeColor={getColor(day)} // 선택된 날짜에 대한 색상
               strokeStyle="dashed" // 선 모양
             />
-            {placeList[day]?.map(({ id, x: lng, y: lat }, index) => (
-              <CustomOverlayMap
-                key={`${day}-${id}`}
-                position={{ lng, lat }}
-                yAnchor={0.5}
-              >
-                <S.CustomMarker>{index + 1}</S.CustomMarker>
-              </CustomOverlayMap>
-            ))}
-          </>
+            {placeList[day].map(
+              ({ id, x: lng, y: lat }, placeIndex) =>
+                lng &&
+                lat &&
+                !isNaN(lng) &&
+                !isNaN(lat) && (
+                  <CustomOverlayMap
+                    key={`${day}-${id}`}
+                    position={{ lng, lat }}
+                    yAnchor={0.5}
+                  >
+                    <S.CustomMarker
+                      style={{ backgroundColor: getColor(day) }} // 마커 색상
+                    >
+                      {placeIndex + 1}
+                    </S.CustomMarker>
+                  </CustomOverlayMap>
+                )
+            )}
+          </div>
+        ) : (
+          // 날짜가 없을 때 모든 장소들 렌더링
+          Object.entries(placeList).map(([currentDay, places], index) => {
+            const validPath = places
+              .map(({ x: lng, y: lat }) => ({ lng, lat }))
+              .filter(
+                ({ lng, lat }) => lng && lat && !isNaN(lng) && !isNaN(lat)
+              );
+
+            return validPath.length > 0 ? (
+              <div key={currentDay}>
+                <Polyline
+                  path={validPath}
+                  strokeWeight={8} // 선 굵기
+                  strokeOpacity={1}
+                  strokeColor={getColor(currentDay)}
+                  strokeStyle="dashed" // 선 모양
+                />
+                {places.map(
+                  ({ id, x: lng, y: lat }, placeIndex) =>
+                    lng &&
+                    lat &&
+                    !isNaN(lng) &&
+                    !isNaN(lat) && (
+                      <CustomOverlayMap
+                        key={`${currentDay}-${id}`}
+                        position={{ lng, lat }}
+                        yAnchor={0.5}
+                      >
+                        <S.CustomMarker
+                          style={{ backgroundColor: getColor(currentDay) }}
+                        >
+                          {placeIndex + 1}
+                        </S.CustomMarker>
+                      </CustomOverlayMap>
+                    )
+                )}
+              </div>
+            ) : null;
+          })
         )}
       </Map>
     </S.KakaoContainer>

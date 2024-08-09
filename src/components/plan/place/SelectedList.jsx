@@ -11,7 +11,7 @@ import Portal from '@/utils/Portal';
 import * as S from '@styles/plan/place/SelectedList.style';
 
 const SelectedList = () => {
-  const { placeList, movePlace, movePlaceBetweenDays, setDay } =
+  const { placeList, movePlace, movePlaceBetweenDays, setDay, day } =
     usePlaceStore();
   const days = useDateStore((state) => state.getDays());
   const [isVisible, setIsVisible] = useState(false);
@@ -92,6 +92,7 @@ const SelectedList = () => {
                       >
                         {(provided) => (
                           <PlaceListItem
+                            key={place.id}
                             day={day}
                             place={place}
                             index={index + 1}

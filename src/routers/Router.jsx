@@ -7,6 +7,7 @@ import PlanPage from '@pages/PlanPage';
 import MyPage from '@pages/MyPage'; // MyPage 컴포넌트 추가
 import PlanBoardsPage from '@pages/PlanBoardsPage';
 import ProtectedRoute from '@components/ProtectedRoute'; // ProtectedRoute 추가
+import PlanDetailPage from '@pages/PlanDetailPage';
 
 const Router = () => {
   return (
@@ -15,7 +16,7 @@ const Router = () => {
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route 
+        <Route
           path="/profile"
           element={
             <ProtectedRoute>
@@ -39,7 +40,9 @@ const Router = () => {
             </ProtectedRoute>
           }
         />
-        <Route path="/plans" element={<PlanBoardsPage />} />
+        <Route path="/board" element={<PlanBoardsPage />} />
+        <Route path="/board/:id" element={<PlanDetailPage />} />
+        <Route path="/board/edit/:id" element={<PlanPage mode="edit" />} />
       </Routes>
     </BrowserRouter>
   );
