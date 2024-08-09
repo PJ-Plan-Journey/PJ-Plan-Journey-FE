@@ -1,5 +1,3 @@
-// src/components/main/Header.jsx
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaBell } from 'react-icons/fa';
@@ -7,6 +5,7 @@ import logo from '@assets/Logo.jpg';
 import * as S from '@styles/main/Header.styles'; // 스타일 경로
 import DropdownMenu from './DropdownMenu';
 import NotificationMenu from './NotificationMenu';
+import useAuthStore from '@zustands/authStore';
 
 const Header = () => {
   const [isUserMenuOpen, setUserMenuOpen] = useState(false);
@@ -15,6 +14,12 @@ const Header = () => {
   const [shouldRenderNotificationMenu, setShouldRenderNotificationMenu] = useState(false);
   const userMenuRef = useRef();
   const notificationMenuRef = useRef();
+
+  const { isAuthenticated, user, logout } = useAuthStore((state) => ({
+    isAuthenticated: state.isAuthenticated,
+    user: state.user,
+    logout: state.logout,
+  }));
 
   const toggleUserMenu = () => {
     if (isUserMenuOpen) {
@@ -64,7 +69,14 @@ const Header = () => {
       <S.NavWrapper>
         <S.Nav>
           <S.NavLink as={Link} to="/board">게시판</S.NavLink>
-          <S.NavLink as={Link} to="/login">로그인</S.NavLink>
+          {isAuthenticated ? (
+            <>
+              <S.NavLink as={Link} to="/profile">{user.nickname}님</S.NavLink>
+              <S.NavLink onClick={logout}>로그아웃</S.NavLink>
+            </>
+          ) : (
+            <S.NavLink as={Link} to="/login">로그인</S.NavLink>
+          )}
           <S.IconWrapper ref={userMenuRef} onClick={toggleUserMenu}>
             <FaUser />
             {shouldRenderUserMenu && (

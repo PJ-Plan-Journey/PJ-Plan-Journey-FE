@@ -8,14 +8,28 @@ dotenv.config();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+console.log('VITE_SERVER_URL:', process.env.VITE_SERVER_URL);
+
 export default defineConfig({
   plugins: [react()],
+  server: {
+    proxy: {
+      '/api': {
+        target: process.env.VITE_SERVER_URL,
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => {
+          console.log({ path });
+          const newPath = path.replace(/^\/api/, '');
+          console.log({ newPath });
+          return newPath;
+        },
+      },
+    },
+  },
   resolve: {
     alias: [
-      {
-        find: '@components',
-        replacement: resolve(__dirname, 'src/components'),
-      },
+      { find: '@components', replacement: resolve(__dirname, 'src/components') },
       { find: '@hooks', replacement: resolve(__dirname, 'src/hooks') },
       { find: '@pages', replacement: resolve(__dirname, 'src/pages') },
       { find: '@routers', replacement: resolve(__dirname, 'src/routers') },

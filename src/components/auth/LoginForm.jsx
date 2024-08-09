@@ -1,28 +1,29 @@
-// src/auth/LoginForm.jsx
+// src/components/auth/LoginForm.jsx
 import React, { useState } from 'react';
-import * as S from '@styles/auth/Login.styles'; // 스타일 경로
+import * as S from '@styles/auth/Login.styles';
 import api from '@axios/api';
 import { useMutation } from '@tanstack/react-query';
-import useBearStore from '@zustands/bearStore';
+import useAuthStore from '@zustands/useAuthStore';
 import KakaoLogo from '@assets/Kakao_logo.jpg';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const setUser = useBearStore((state) => state.setUser);
+
+  const login = useAuthStore((state) => state.login);
 
   const mutation = useMutation({
-    mutationFn: (data) => api.post('/auth/login', data),
+    mutationFn: (data) => api.post('/users/login', data),
     onSuccess: (response) => {
-      const { accessToken, refreshToken } = response.data;
+      const { accessToken, refreshToken, ...user } = response.data.data;
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
-      setUser(response.data.user);
+      login(user, accessToken, refreshToken);
       console.log('Login successful:', response.data);
       window.location.href = '/';
     },
     onError: (error) => {
-      console.error('Login failed:', error);
+      console.log('Login failed:', error);
       alert('로그인에 실패했습니다.');
     },
   });
@@ -36,12 +37,16 @@ const LoginForm = () => {
     window.Kakao.Auth.login({
       success: (authObj) => {
         console.log('카카오 로그인 성공', authObj);
-        // 사용자 정보 요청
         window.Kakao.API.request({
           url: '/v2/user/me',
           success: (res) => {
             console.log('카카오 사용자 정보', res);
-            // TODO: 서버로 사용자 정보를 보내어 토큰 발급 및 세션 처리
+            const user = {
+              email: res.kakao_account.email,
+              nickname: res.properties.nickname,
+            };
+            login(user);
+            window.location.href = '/';
           },
           fail: (error) => {
             console.error('카카오 사용자 정보 요청 실패', error);
