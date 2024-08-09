@@ -19,7 +19,7 @@ const LoginForm = () => {
   
       // 헤더에서 토큰을 추출
       const accessToken = response.headers['authorization']?.split(' ')[1];
-      const refreshToken = response.headers['refresh-token'];
+      const refreshToken = response.headers['refreshtoken'];
   
       // 유저 정보는 여전히 response.data.data에서 가져옵니다.
       const user = response.data.data;
@@ -40,6 +40,7 @@ const LoginForm = () => {
       alert('로그인에 실패했습니다.');
     },
   });
+  
 
   const handleLogin = (e) => {
     e.preventDefault();
