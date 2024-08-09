@@ -4,15 +4,23 @@ import usePlaceStore from '@zustands/plan/usePlaceStore';
 
 const PlaceListItem = ({ day, place, index, provided }) => {
   const { place_name } = place;
-  const { removePlace, setDay } = usePlaceStore();
+  const { removePlace, setDay, placeList } = usePlaceStore();
 
   const remveItem = () => {
     setDay(day);
     removePlace(day, place.id);
   };
 
+  const colors = ['#156bf0', '#f01562', '#15f062', '#f0d215'];
+  const getColor = (day) =>
+    colors[Object.keys(placeList).indexOf(day) % colors.length];
+
   return (
-    <S.PlaceItem ref={provided.innerRef} {...provided.draggableProps}>
+    <S.PlaceItem
+      ref={provided.innerRef}
+      {...provided.draggableProps}
+      $color={getColor(day)}
+    >
       <button className="drag" {...provided.dragHandleProps}>
         <DragIcon />
       </button>

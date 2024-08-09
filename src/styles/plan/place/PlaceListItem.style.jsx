@@ -30,7 +30,7 @@ export const PlaceItem = styled.div`
     height: var(--marker-size);
     border: 2px solid white;
     border-radius: 50%;
-    background: #156bf0;
+    background: ${({ $color }) => $color};
     color: white;
     font-weight: bold;
     font-size: 12px;

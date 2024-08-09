@@ -18,10 +18,11 @@ export default defineConfig({
         target: process.env.VITE_SERVER_URL,
         changeOrigin: true,
         secure: false,
+        ws: true,
         rewrite: (path) => {
-          console.log('Original Path:', path);
+          console.log({ path });
           const newPath = path.replace(/^\/api/, '');
-          console.log('Rewritten Path:', newPath);
+          console.log({ newPath });
           return newPath;
         },
       },

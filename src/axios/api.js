@@ -13,8 +13,9 @@ const handleLogout = () => {
 // Axios 인스턴스 생성
 const api = axios.create({
   baseURL,
+  withCredentials: true,
 });
-//   withCredentials: true, // 쿠키를 사용하려면 이 옵션을 활성화해야 합니다.
+//   // 쿠키를 사용하려면 이 옵션을 활성화해야 합니다.
 
 // 요청 인터셉터
 api.interceptors.request.use(
@@ -23,6 +24,13 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    // const userId = 1;
+
+    // if (userId) {
+    //   config.headers['USERID'] = userId; // 사용자 ID를 헤더에 추가
+    // }
+
     return config;
   },
   (error) => Promise.reject(error)

@@ -1,6 +1,5 @@
 import SelectedDate from '@components/plan/date/SelectedDate';
 import KakaoMap from '@components/plan/KakaoMap';
-import Step from '@components/plan/Step';
 import useStepStore from '@/zustands/plan/useStepStore';
 import * as S from '@styles/plan/PlanPage.style';
 import { useEffect, useRef, useState } from 'react';
@@ -9,14 +8,14 @@ import { FaGripLinesVertical as WidthSizeIcon } from 'react-icons/fa6';
 import TItleForm from '@components/plan/TitleForm';
 import useDateStore from '@zustands/plan/useDateStore';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
-import { px } from 'framer-motion';
+import Step from '@components/plan/Step';
 
 const MINWIDTH = 37;
 
 const PlanPage = () => {
   const { step, setStep, setTitle } = useStepStore();
   const { setDates } = useDateStore();
-  const { initList } = usePlaceStore();
+  const { initList, setDay } = usePlaceStore();
   const [width, setWidth] = useState(MINWIDTH);
   const [isDragging, setIsDragging] = useState(false);
   const widthRef = useRef(width);
@@ -76,6 +75,7 @@ const PlanPage = () => {
       initList();
       setStep(1);
       setTitle('');
+      setDay('');
     };
   }, [setDates, initList, setStep, setTitle]);
 

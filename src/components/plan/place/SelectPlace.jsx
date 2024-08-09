@@ -30,8 +30,11 @@ const SelectPlace = ({ isVisible, day, setIsVisible }) => {
   };
 
   const SubmitDayList = (day) => {
-    setDay(day);
-    addPlace(day, dayPlaceList);
+    if (dayPlaceList.length > 0) {
+      setDay(day);
+      addPlace(day, dayPlaceList);
+    }
+
     setDayPlaceList([]);
     setIsVisible(false);
   };
