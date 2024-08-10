@@ -9,6 +9,8 @@ const TravelManagement = () => {
     queryKey: ['travels'],
     queryFn: () => api.get('/users/mypage').then((res) => res.data.data),
   });
+  
+console.log(travels)
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -34,12 +36,12 @@ const TravelManagement = () => {
               <S.TravelInfo>
                 <S.TravelName>{travel.title}</S.TravelName>
                 <S.TravelDate>
-                  <S.ScheduleLabel>여행일자:</S.ScheduleLabel>{' '}
-                  {new Date(travel.createdAt).toLocaleDateString()}
+                  <S.ScheduleLabel>여행일자</S.ScheduleLabel>{' '}
+                  <S.DateLabel>{new Date(travel.createAt).toLocaleDateString()}</S.DateLabel>
                 </S.TravelDate>
                 <S.LastModified>
-                  <S.ScheduleLabel>최종 수정일:</S.ScheduleLabel>{' '}
-                  {new Date(travel.publishedAt).toLocaleDateString()}
+                  <S.ScheduleLabel>최종수정</S.ScheduleLabel>{' '}
+                  <S.DateLabel>{new Date(travel.publishedAt).toLocaleDateString()}</S.DateLabel>
                 </S.LastModified>
               </S.TravelInfo>
             </S.TravelCard>
