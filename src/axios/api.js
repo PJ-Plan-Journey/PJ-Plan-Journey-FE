@@ -44,31 +44,31 @@ api.interceptors.request.use(
 // 응답 인터셉터 설정
 api.interceptors.response.use(
   (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-    if (
-      error.response &&
-      error.response.status === 401 &&
-      !originalRequest._retry
-    ) {
-      originalRequest._retry = true;
-      const refreshToken = localStorage.getItem('refreshToken');
-      if (refreshToken) {
-        try {
-          const { data } = await api.post('/auth/refresh', { refreshToken });
-          localStorage.setItem('accessToken', data.accessToken);
-          originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
-          return api(originalRequest);
-        } catch (err) {
-          console.error('리프레시 토큰을 통한 액세스 토큰 재발급 실패:', err);
-          handleLogout();
-        }
-      } else {
-        handleLogout();
-      }
-    }
-    return Promise.reject(error);
-  }
+  // async (error) => {
+  //   const originalRequest = error.config;
+  //   if (
+  //     error.response &&
+  //     error.response.status === 401 &&
+  //     !originalRequest._retry
+  //   ) {
+  //     originalRequest._retry = true;
+  //     const refreshToken = localStorage.getItem('refreshToken');
+  //     if (refreshToken) {
+  //       try {
+  //         const { data } = await api.post('/auth/refresh', { refreshToken });
+  //         localStorage.setItem('accessToken', data.accessToken);
+  //         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+  //         return api(originalRequest);
+  //       } catch (err) {
+  //         console.error('리프레시 토큰을 통한 액세스 토큰 재발급 실패:', err);
+  //         handleLogout();
+  //       }
+  //     } else {
+  //       handleLogout();
+  //     }
+  //   }
+  //   return Promise.reject(error);
+  // }
 );
 
 export default api;
