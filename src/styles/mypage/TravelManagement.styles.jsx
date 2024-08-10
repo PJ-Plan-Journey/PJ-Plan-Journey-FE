@@ -54,8 +54,10 @@ export const TravelInfo = styled.div`
 `;
 
 export const TravelName = styled.h3`
-  font-size: 1.2rem;
+  font-weight: bold;
+  font-size: 1.3rem;
   padding-left: 1rem;
+  padding-bottom: 0.5rem;
   margin: 0;
 `;
 
@@ -72,4 +74,12 @@ export const LastModified = styled.p`
 // 새로운 스타일 컴포넌트 추가
 export const ScheduleLabel = styled.span`
   font-weight: bold;
+  font-size: 1.1rem;
+  padding-right: 0.2rem;
 `;
+
+export const DateLabel = styled.span`
+  font-size: 1.1rem;
+  color: #7e7e7e
+`;
+

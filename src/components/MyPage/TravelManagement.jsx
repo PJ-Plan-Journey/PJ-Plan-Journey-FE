@@ -1,34 +1,24 @@
-// src/components/MyPage/TravelManagement.jsx
-
 import React from 'react';
+import { useQuery } from '@tanstack/react-query';
 import * as S from '@styles/mypage/TravelManagement.styles'; // 스타일 경로
+import api from '@axios/api';
 
 const TravelManagement = () => {
-  // 임시 데이터 설정
-  const travels = [
-    {
-      id: 1,
-      image: 'https://via.placeholder.com/150', // 임시 이미지 URL
-      name: '서울 투어',
-      date: '2024.08.10',
-      lastModified: '2024.08.02',
-    },
-    {
-      id: 2,
-      image: 'https://via.placeholder.com/150', // 임시 이미지 URL
-      name: '부산 여행',
-      date: '2024.09.15',
-      lastModified: '2024.09.05',
-    },
-    {
-      id: 3,
-      image: 'https://via.placeholder.com/150', // 임시 이미지 URL
-      name: '제주도 탐험',
-      date: '2024.10.20',
-      lastModified: '2024.10.01',
-    },
-    // 더 많은 임시 데이터 추가 가능
-  ];
+  // 여행 데이터 가져오기
+  const { data: travels = [], isLoading, error } = useQuery({
+    queryKey: ['travels'],
+    queryFn: () => api.get('/users/mypage').then((res) => res.data.data),
+  });
+  
+console.log(travels)
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>여행 데이터를 불러오는 중에 오류가 발생했습니다.</p>;
+  }
 
   return (
     <S.TravelContainer>
@@ -37,20 +27,21 @@ const TravelManagement = () => {
         {travels.length > 0 ? (
           travels.map((travel) => (
             <S.TravelCard
-              key={travel.id}
-              onClick={() => (window.location.href = `/travel/${travel.id}`)}
+              key={travel.planId}
+              onClick={() => (window.location.href = `/travel/${travel.planId}`)}
             >
               <S.ImageContainer>
-                <img src={travel.image} alt={travel.name} />
+                <img src={'https://via.placeholder.com/150'} alt={travel.title} />
               </S.ImageContainer>
               <S.TravelInfo>
-                <S.TravelName>{travel.name}</S.TravelName>
+                <S.TravelName>{travel.title}</S.TravelName>
                 <S.TravelDate>
-                  <S.ScheduleLabel>여행일자:</S.ScheduleLabel> {travel.date}
+                  <S.ScheduleLabel>여행일자</S.ScheduleLabel>{' '}
+                  <S.DateLabel>{new Date(travel.createAt).toLocaleDateString()}</S.DateLabel>
                 </S.TravelDate>
                 <S.LastModified>
-                  <S.ScheduleLabel>최종 수정일:</S.ScheduleLabel>{' '}
-                  {travel.lastModified}
+                  <S.ScheduleLabel>최종수정</S.ScheduleLabel>{' '}
+                  <S.DateLabel>{new Date(travel.publishedAt).toLocaleDateString()}</S.DateLabel>
                 </S.LastModified>
               </S.TravelInfo>
             </S.TravelCard>
