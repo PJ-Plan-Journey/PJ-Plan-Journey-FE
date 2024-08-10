@@ -30,12 +30,6 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    // const userId = 1;
-
-    // if (userId) {
-    //   config.headers['USERID'] = userId; // 사용자 ID를 헤더에 추가
-    // }
-
     return config;
   },
   (error) => Promise.reject(error)
@@ -43,7 +37,7 @@ api.interceptors.request.use(
 
 // 응답 인터셉터 설정
 api.interceptors.response.use(
-  (response) => response,
+  (response) => response
   // async (error) => {
   //   const originalRequest = error.config;
   //   if (

@@ -42,7 +42,6 @@ const Router = () => {
         />
         <Route path="/board" element={<PlanBoardsPage />} />
         <Route path="/board/:id" element={<PlanDetailPage />} />
-        <Route path="/board/edit/:id" element={<PlanPage mode="edit" />} />
       </Routes>
     </BrowserRouter>
   );

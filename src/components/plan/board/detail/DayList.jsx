@@ -1,5 +1,6 @@
 import usePlaceStore from '@zustands/plan/usePlaceStore';
 import * as S from '@styles/plan/board/detail/DayList.style';
+import useAuthStore from '@zustands/authStore';
 
 const daylist = [
   {
@@ -22,6 +23,9 @@ const daylist = [
 
 const DayList = ({ toggleComment, changeEditMode, isEditMode, savePlan }) => {
   const { setDay } = usePlaceStore();
+  const { user } = useAuthStore();
+
+  console.log({ user });
 
   return (
     <S.DayListContainer>

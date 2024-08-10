@@ -5,49 +5,45 @@ import { MdInfo as InfoIcon } from 'react-icons/md';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
 import { convertToPlanDetails } from '@/utils/formatRequestForm';
 import * as S from '@styles/plan/TitleForm.style';
+import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 const TItleForm = () => {
-  const { setTitle, title, setStep } = useStepStore();
+  const { setStep } = useStepStore();
   const { placeList } = usePlaceStore();
   const [inputValue, setInputValue] = useState('');
+  const navigate = useNavigate();
 
   const onChange = (e) => {
     setInputValue(e.target.value);
   };
 
-  //   {
-  //     “title”: ,
-  //      “city”: ,
-  //      “planDetails” :
-  //        [{
-  //               “sequence”: ,
-  //               “date”: ,
-  //               “placeName”:,
-  //               “latitude”:,
-  //               “longitude”:,
-  //         }]
-  // }
-
-  // tanstack-qeury로 변경하기
-  const asyncSubmit = async () => {
-    setTitle(inputValue);
-    const planDetails = convertToPlanDetails(placeList);
-
+  const addPlaceSchedule = async () => {
     try {
-      // api 명세서 컬럼값으로 변경하기
       const plan = {
         title: inputValue,
         city: '서울',
-        planDetails,
+        planDetails: convertToPlanDetails(placeList),
       };
 
       const { data } = await api.post('/plans', plan);
-
-      console.log(data);
+      return data;
     } catch (error) {
       console.log({ error });
     }
   };
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ['addPlan'],
+    mutationFn: addPlaceSchedule,
+    onSuccess: ({ data }) => {
+      navigate(`/board/${data.planId}`);
+    },
+  });
+
+  if (isPending) {
+    return <div>일정 저장 중...</div>;
+  }
 
   return (
     <S.TItleFormContainer>
@@ -70,7 +66,7 @@ const TItleForm = () => {
           <button className="cancel" onClick={() => setStep(2)}>
             취소
           </button>
-          <button className="complete" onClick={asyncSubmit}>
+          <button className="complete" onClick={mutate}>
             완료
           </button>
         </div>
