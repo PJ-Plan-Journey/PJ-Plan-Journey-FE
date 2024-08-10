@@ -13,7 +13,7 @@ import Step from '@components/plan/Step';
 const MINWIDTH = 37;
 
 const PlanPage = () => {
-  const { step, setStep, setTitle } = useStepStore();
+  const { step, setStep } = useStepStore();
   const { setDates } = useDateStore();
   const { initList, setDay } = usePlaceStore();
   const [width, setWidth] = useState(MINWIDTH);
@@ -74,10 +74,9 @@ const PlanPage = () => {
       setDates({ startDate: null, endDate: null });
       initList();
       setStep(1);
-      setTitle('');
       setDay('');
     };
-  }, [setDates, initList, setStep, setTitle]);
+  }, [setDates, initList, setStep]);
 
   return (
     <S.PlanPageContainer>
