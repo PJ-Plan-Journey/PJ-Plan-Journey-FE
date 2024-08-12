@@ -1,5 +1,4 @@
-// src/components/auth/LoginForm.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as S from '@styles/auth/Login.styles';
 import api from '@axios/api';
 import { useMutation } from '@tanstack/react-query';
@@ -9,30 +8,36 @@ import KakaoLogo from '@assets/Kakao_logo.jpg';
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const login = useAuthStore((state) => state.login);
 
+  useEffect(() => {
+    if (window.Kakao) {
+      if (!window.Kakao.isInitialized()) {
+        window.Kakao.init(import.meta.env.VITE_KAKAO_APP_KEY); // .env 파일의 Kakao 앱 키 사용
+      }
+    } else {
+      console.log('Kakao SDK가 로드되지 않았습니다.');
+    }
+  }, []);
+  
   const mutation = useMutation({
     mutationFn: (data) => api.post('/users/login', data),
     onSuccess: (response) => {
       console.log('Response headers:', response.headers);
-  
-      // 헤더에서 토큰을 추출
+
       const accessToken = response.headers['authorization']?.split(' ')[1];
       const refreshToken = response.headers['refreshtoken'];
-  
-      // 유저 정보는 여전히 response.data.data에서 가져옵니다.
+
       const user = response.data.data;
-  
-      // 토큰이 존재하면 로컬 스토리지에 저장하고 로그인 처리
+
       if (accessToken && refreshToken) {
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
+        console.log(response)
         login(user, accessToken, refreshToken);
       } else {
         console.error('토큰이 헤더에 없습니다.');
       }
-  
       window.location.href = '/';
     },
     onError: (error) => {
@@ -40,7 +45,6 @@ const LoginForm = () => {
       alert('로그인에 실패했습니다.');
     },
   });
-  
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -48,28 +52,13 @@ const LoginForm = () => {
   };
 
   const handleKakaoLogin = () => {
-    window.Kakao.Auth.login({
-      success: (authObj) => {
-        console.log('카카오 로그인 성공', authObj);
-        window.Kakao.API.request({
-          url: '/v2/user/me',
-          success: (res) => {
-            console.log('카카오 사용자 정보', res);
-            const user = {
-              email: res.kakao_account.email,
-              nickname: res.properties.nickname,
-            };
-            login(user);
-            window.location.href = '/';
-          },
-          fail: (error) => {
-            console.error('카카오 사용자 정보 요청 실패', error);
-          },
-        });
-      },
-      fail: (err) => {
-        console.error('카카오 로그인 실패', err);
-      },
+    if (!window.Kakao) {
+      alert('Kakao SDK가 로드되지 않았습니다.');
+      return;
+    }
+
+    window.Kakao.Auth.authorize({
+      redirectUri: import.meta.env.VITE_KAKAO_REDIRECT_URI, // .env 파일의 리디렉션 URI를 설정
     });
   };
 
@@ -94,10 +83,15 @@ const LoginForm = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder=" "
           />
-          <S.InputLabel htmlFor="password">비밀번호를 입력해주세요</S.InputLabel>
+          <S.InputLabel htmlFor="password">
+            비밀번호를 입력해주세요
+          </S.InputLabel>
         </S.InputWrapper>
         <S.SignUpPrompt>
-          처음이신가요? <S.SignUpLink onClick={() => window.location.href = '/signup'}>회원가입하기</S.SignUpLink>
+          처음이신가요?{' '}
+          <S.SignUpLink onClick={() => (window.location.href = '/signup')}>
+            회원가입하기
+          </S.SignUpLink>
         </S.SignUpPrompt>
       </S.InputContainer>
       <S.Button type="submit">로그인</S.Button>

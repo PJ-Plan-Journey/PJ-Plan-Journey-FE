@@ -1,16 +1,18 @@
+// src/components/MyPage/TravelManagement.jsx
 import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import * as S from '@styles/mypage/TravelManagement.styles'; // 스타일 경로
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import * as S from '@styles/mypage/TravelManagement.styles';
 import api from '@axios/api';
+import ShareButton from '@components/MyPage/ShareButton'; // 새로 만든 ShareButton 컴포넌트 경로
 
 const TravelManagement = () => {
+  const queryClient = useQueryClient();
+
   // 여행 데이터 가져오기
   const { data: travels = [], isLoading, error } = useQuery({
     queryKey: ['travels'],
     queryFn: () => api.get('/users/mypage').then((res) => res.data.data),
   });
-  
-console.log(travels)
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -25,11 +27,8 @@ console.log(travels)
       <S.LoginText>나의 여행</S.LoginText>
       <S.TravelList>
         {travels.length > 0 ? (
-          travels.map((travel) => (
-            <S.TravelCard
-              key={travel.planId}
-              onClick={() => (window.location.href = `/travel/${travel.planId}`)}
-            >
+          travels.map((travel, index) => (
+            <S.TravelCard key={travel.planId || `travel-${index}`}>
               <S.ImageContainer>
                 <img src={'https://via.placeholder.com/150'} alt={travel.title} />
               </S.ImageContainer>
@@ -37,12 +36,15 @@ console.log(travels)
                 <S.TravelName>{travel.title}</S.TravelName>
                 <S.TravelDate>
                   <S.ScheduleLabel>여행일자</S.ScheduleLabel>{' '}
-                  <S.DateLabel>{new Date(travel.createAt).toLocaleDateString()}</S.DateLabel>
+                  <S.DateLabel>{new Date(travel.createdAt).toLocaleDateString()}</S.DateLabel>
                 </S.TravelDate>
                 <S.LastModified>
                   <S.ScheduleLabel>최종수정</S.ScheduleLabel>{' '}
                   <S.DateLabel>{new Date(travel.publishedAt).toLocaleDateString()}</S.DateLabel>
                 </S.LastModified>
+                <S.ButtonContainer>
+                  <ShareButton planId={travel.planId} />
+                </S.ButtonContainer>
               </S.TravelInfo>
             </S.TravelCard>
           ))

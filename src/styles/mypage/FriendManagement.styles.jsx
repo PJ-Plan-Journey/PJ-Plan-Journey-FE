@@ -1,14 +1,15 @@
 import styled from 'styled-components';
 
 export const FriendContainer = styled.div`
-  margin-bottom: 2rem;
+  padding-bottom: 5rem;
 `;
 
 export const LoginText = styled.h2`
   font-size: 1.5rem;
   margin-bottom: 1rem;
   &:not(:first-child) {
-    margin-top: 5rem;
+    margin-top: 2rem;
+    padding-bottom: 2rem;
   }
 `;
 
@@ -61,16 +62,21 @@ export const Button = styled.button`
   &:hover {
     background-color: #0056b3;
   }
+  height: 2.8rem;
 `;
 
 export const Input = styled.input`
-  padding: 0.5rem;
+  padding: 0.8rem;
   border: 1px solid #ccc;
   border-radius: 5px;
   flex-grow: 1;
   margin-right: 0.5rem;
+  max-width: 350px;
+  width: 70%;
+  height: 2.8rem;
 `;
 
 export const AddFriendSection = styled.div`
-  margin-top: 2rem;
+  display: flex;
+  align-items: center; /* input과 버튼을 가로 정렬 */
 `;

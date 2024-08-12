@@ -1,5 +1,3 @@
-// src/components/main/DropdownMenu.jsx
-
 import React from 'react';
 import * as S from '@styles/main/Header.styles'; // 스타일 경로
 
