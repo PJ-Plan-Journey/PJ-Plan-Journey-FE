@@ -8,11 +8,15 @@ const TravelManagement = () => {
   const queryClient = useQueryClient();
 
   // 여행 데이터 가져오기
-  const { data: travels = [], isLoading, error } = useQuery({
+  const {
+    data: travels = [],
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['travels'],
     queryFn: () => api.get('/users/mypage').then((res) => res.data.data),
   });
-  console.log(travels)
+  console.log(travels);
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -20,6 +24,8 @@ const TravelManagement = () => {
   if (error) {
     return <p>여행 데이터를 불러오는 중에 오류가 발생했습니다.</p>;
   }
+
+  console.log({ travels });
 
   return (
     <S.TravelContainer>
@@ -29,19 +35,24 @@ const TravelManagement = () => {
           travels.map((travel, index) => (
             <S.TravelCard key={travel.planId || `travel-${index}`}>
               <S.ImageContainer>
-                <img src={'https://via.placeholder.com/150'} alt={travel.title} />
+                <img
+                  src={'https://via.placeholder.com/150'}
+                  alt={travel.title}
+                />
               </S.ImageContainer>
               <S.TravelInfo>
                 <S.TravelName>{travel.title}</S.TravelName>
                 <S.TravelDate>
                   <S.ScheduleLabel>여행일자</S.ScheduleLabel>{' '}
                   <S.DateLabel>
-                    {(travel.startDate)} ~ {(travel.endDate)}
+                    {travel.startDate} ~ {travel.endDate}
                   </S.DateLabel>
                 </S.TravelDate>
                 <S.LastModified>
                   <S.ScheduleLabel>최종수정</S.ScheduleLabel>{' '}
-                  <S.DateLabel>{new Date(travel.endDate).toLocaleDateString()}</S.DateLabel>
+                  <S.DateLabel>
+                    {new Date(travel.endDate).toLocaleDateString()}
+                  </S.DateLabel>
                 </S.LastModified>
                 <S.ButtonContainer>
                   <ShareButton planId={travel.planId} />

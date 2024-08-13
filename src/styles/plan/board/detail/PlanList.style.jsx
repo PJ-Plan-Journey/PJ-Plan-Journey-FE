@@ -1,24 +1,6 @@
 import { flex, flexColumn, ScrollStyle } from '@styles/common/common.style';
 import styled from 'styled-components';
 
-export const PlanInfo = styled.div`
-  width: 100%;
-  ${flex}
-  align-items: flex-end;
-  gap: 10px;
-  padding: 30px 20px;
-  border-bottom: 1px solid #ccc;
-
-  .city {
-    font-weight: bold;
-    font-size: 30px;
-  }
-
-  .date {
-    color: #9d9d9d;
-  }
-`;
-
 export const SelectedListContainer = styled.div`
   ${flexColumn}
   width: 100%;
@@ -68,6 +50,78 @@ export const SelectedListContainer = styled.div`
     height: 100%;
     font-size: 20px;
     font-weight: bold;
+  }
+`;
+
+export const PlanInfo = styled.div`
+  width: 100%;
+  ${flexColumn}
+  align-items: flex-start;
+  gap: 15px;
+  padding: 30px 20px;
+  border-bottom: 1px solid #ccc;
+
+  .city {
+    font-size: 16px;
+    border: 2px solid #156bf0;
+    color: #156bf0;
+    font-weight: bold;
+    border-radius: 15px;
+    padding: 5px 12px;
+  }
+
+  .date {
+    color: #9d9d9d;
+  }
+
+  .title-box {
+    width: 100%;
+    ${flex}
+    gap: 10px;
+  }
+
+  .title {
+    font-weight: bold;
+    font-size: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .edit {
+    background-color: #156bf0;
+    color: white;
+    box-shadow: none;
+  }
+
+  input {
+    width: 50%;
+    padding: 5px 12px;
+    border: none;
+    box-shadow: 0 0 1px black;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 20px;
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+
+  svg {
+    cursor: pointer;
+    color: #bbbbbb;
+  }
+
+  button {
+    height: 100%;
+    font-size: 12px;
+    cursor: pointer;
+    border: none;
+    background-color: white;
+    box-shadow: 0 0 1px black;
+    padding: 5px 12px;
+    border-radius: 10px;
   }
 `;
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import CustomCalendar from '@components/plan/date/CustomCalendar';
 import useDateStore from '@zustands/plan/useDateStore';
 import Modal from '../Modal';

@@ -1,4 +1,4 @@
-import { FaCheck as CheckIcon } from 'react-icons/fa6';
+import { FaCheck as CheckIcon } from '@react-icons/all-files/fa/FaCheck';
 import * as S from '@styles/plan/Step.style';
 import useStepStore from '@zustands/plan/useStepStore';
 import useModal from '@hooks/useModal';

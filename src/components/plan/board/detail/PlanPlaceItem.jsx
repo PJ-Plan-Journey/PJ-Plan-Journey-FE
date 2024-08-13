@@ -1,14 +1,27 @@
 import { FaBars as DragIcon, FaTrashAlt as RemoveIcon } from 'react-icons/fa';
 import * as S from '@styles/plan/place/PlaceListItem.style';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
+import useStompStore from '@zustands/plan/useStompStore';
 
-const PlanPlaceItem = ({ day, place, index, provided, isEditMode }) => {
+const PlanPlaceItem = ({ day, place, index, provided, isEditMode, data }) => {
   const { placeName } = place;
   const { removePlace, setDay, placeList } = usePlaceStore();
+  const { sendMessage } = useStompStore();
 
   const remveItem = () => {
     setDay(day);
     removePlace(day, place.id);
+
+    if (isEditMode) {
+      const deletePlan = {
+        type: 'DELETE',
+        planId: data.id,
+        fromDate: place.date,
+        fromSeq: place.sequence,
+      };
+
+      sendMessage(`/pub/edit/room/${data.id}`, JSON.stringify(deletePlan));
+    }
   };
 
   const colors = ['#156bf0', '#f01562', '#15f062', '#f0d215'];

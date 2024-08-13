@@ -2,10 +2,9 @@ import Portal from '@/utils/Portal';
 import CalendarModal from '@components/plan/date/CalendarModal';
 import { useState } from 'react';
 import DateRangeDisplay from '@components/plan/date/DateRangeDisplay';
-import { ko } from 'date-fns/locale';
-import { format } from 'date-fns';
 import * as S from '@styles/plan/date/SelectedDate.style';
 import useDateStore from '@zustands/plan/useDateStore';
+import { formatDate } from '@/utils/formatDate';
 
 const SelectedDate = () => {
   const { startDate, endDate } = useDateStore();
@@ -19,11 +18,11 @@ const SelectedDate = () => {
     setIsvisible(false);
   };
 
-  const onClickTicketing = () => {
-    const formatDateToKorean = (date) => {
-      return date ? format(date, 'yyyyMMdd', { locale: ko }) : null;
-    };
+  const formatDateToKorean = (date) => {
+    return formatDate('yyyyMMdd', date);
+  };
 
+  const onClickTicketing = () => {
     const origin = 'SEL'; // 출발지 (IATA 코드)
     const destination = 'PUS'; // 도착지 (IATA 코드)
     const formattedStartDate = formatDateToKorean(startDate);

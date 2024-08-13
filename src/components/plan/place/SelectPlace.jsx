@@ -1,16 +1,25 @@
 import { useEffect, useState } from 'react';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
-import { FaPlus as AddIcon, FaCheck as CheckIcon } from 'react-icons/fa';
-import { IoSearch as SearchIcon } from 'react-icons/io5';
-import { IoIosCloseCircle as CloseIcon } from 'react-icons/io';
+import { FaPlus as AddIcon } from '@react-icons/all-files/fa/FaPlus';
+import { FaCheck as CheckIcon } from '@react-icons/all-files/fa/FaCheck';
+import { IoSearch as SearchIcon } from '@react-icons/all-files/io5/IoSearch';
+import { IoIosCloseCircle as CloseIcon } from '@react-icons/all-files/io/IoIosCloseCircle';
 import { v4 as uuidv4 } from 'uuid';
 import * as S from '@styles/plan/place/SelectPlace.style';
+import useStompStore from '@zustands/plan/useStompStore';
 
-const SelectPlace = ({ isVisible, day, setIsVisible }) => {
+const SelectPlace = ({
+  isVisible,
+  day,
+  setIsVisible,
+  isEditMode = false,
+  data,
+}) => {
   const [inputValue, setInputValue] = useState('');
   const [searchList, setSearchList] = useState([]);
   const [dayPlaceList, setDayPlaceList] = useState([]);
   const { addPlace, placeList, setDay } = usePlaceStore();
+  const { sendMessage } = useStompStore();
 
   const onAddPlace = (place) => {
     const newPlace = {
@@ -30,6 +39,19 @@ const SelectPlace = ({ isVisible, day, setIsVisible }) => {
   };
 
   const SubmitDayList = (day) => {
+    if (isEditMode) {
+      const newPlace = {
+        type: 'INSERT',
+        planId: 4,
+        fromDate: '2024-07-30',
+        placeName: '카페',
+        latitude: 432.51,
+        longitude: 123.12,
+      };
+
+      sendMessage(`/pub/edit/room/${data.id}`, newPlace);
+    }
+
     if (dayPlaceList.length > 0) {
       setDay(day);
       addPlace(day, dayPlaceList);

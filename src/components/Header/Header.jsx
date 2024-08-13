@@ -12,7 +12,8 @@ const Header = () => {
   const [isUserMenuOpen, setUserMenuOpen] = useState(false);
   const [isNotificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const [shouldRenderUserMenu, setShouldRenderUserMenu] = useState(false);
-  const [shouldRenderNotificationMenu, setShouldRenderNotificationMenu] = useState(false);
+  const [shouldRenderNotificationMenu, setShouldRenderNotificationMenu] =
+    useState(false);
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const userMenuRef = useRef();
@@ -75,7 +76,10 @@ const Header = () => {
       setUserMenuOpen(false);
       setTimeout(() => setShouldRenderUserMenu(false), 300);
     }
-    if (notificationMenuRef.current && !notificationMenuRef.current.contains(event.target)) {
+    if (
+      notificationMenuRef.current &&
+      !notificationMenuRef.current.contains(event.target)
+    ) {
       setNotificationMenuOpen(false);
       setTimeout(() => setShouldRenderNotificationMenu(false), 300);
     }
@@ -92,19 +96,29 @@ const Header = () => {
     <S.HeaderWrapper>
       <S.LogoWrapper>
         <Link to="/">
-          <img src={logo} alt="Logo" style={{ height: '50px', cursor: 'pointer' }} />
+          <img
+            src={logo}
+            alt="Logo"
+            style={{ height: '50px', cursor: 'pointer' }}
+          />
         </Link>
       </S.LogoWrapper>
       <S.NavWrapper>
         <S.Nav>
-          <S.NavLink as={Link} to="/board">게시판</S.NavLink>
+          <S.NavLink as={Link} to="/board">
+            게시판
+          </S.NavLink>
           {isAuthenticated ? (
             <>
-              <S.NavLink as={Link} to="/profile">{user ? `${user.nickname}님` : 'Loading...'}</S.NavLink>
+              <S.NavLink as={Link} to="/profile">
+                {user ? `${user.nickname}님` : 'Loading...'}
+              </S.NavLink>
               <S.NavLink onClick={logout}>로그아웃</S.NavLink>
             </>
           ) : (
-            <S.NavLink as={Link} to="/login">로그인</S.NavLink>
+            <S.NavLink as={Link} to="/login">
+              로그인
+            </S.NavLink>
           )}
           <S.IconWrapper ref={userMenuRef} onClick={toggleUserMenu}>
             <FaUser />
@@ -112,11 +126,18 @@ const Header = () => {
               <DropdownMenu isVisible={isUserMenuOpen} />
             )}
           </S.IconWrapper>
-          <S.IconWrapper ref={notificationMenuRef} onClick={toggleNotificationMenu}>
+          <S.IconWrapper
+            ref={notificationMenuRef}
+            onClick={toggleNotificationMenu}
+          >
             <FaBell />
-            {unreadCount > 0 && <S.NotificationBadge />} {/* 읽지 않은 알림이 있으면 빨간 점 표시 */}
+            {unreadCount > 0 && <S.NotificationBadge />}{' '}
+            {/* 읽지 않은 알림이 있으면 빨간 점 표시 */}
             {shouldRenderNotificationMenu && (
-              <NotificationMenu isVisible={isNotificationMenuOpen} notifications={notifications} />
+              <NotificationMenu
+                isVisible={isNotificationMenuOpen}
+                notifications={notifications}
+              />
             )}
           </S.IconWrapper>
         </S.Nav>
