@@ -1,14 +1,20 @@
 // src/components/main/NotificationMenu.jsx
 
 import React from 'react';
-import * as S from '@styles/main/Header.styles'; // 스타일 경로
+import * as S from '@styles/main/Header.styles';
 
-const NotificationMenu = ({ isVisible }) => {
+const NotificationMenu = ({ isVisible, notifications }) => {
   return (
     <S.NotificationMenuWrapper isVisible={isVisible}>
-      <S.NotificationItem>{'{user}'}님이 친구요청을 하였습니다.</S.NotificationItem>
-      <S.NotificationItem>{'{user}'}님이 여행 일정에 초대했습니다.</S.NotificationItem>
-      <S.NotificationItem>수정된 일정이 있습니다.</S.NotificationItem>
+      {notifications.length > 0 ? (
+        notifications.map((notification, index) => (
+          <S.NotificationItem key={index}>
+            {notification.message}
+          </S.NotificationItem>
+        ))
+      ) : (
+        <S.NoNotificationMessage>알림이 없습니다.</S.NoNotificationMessage>
+      )}
     </S.NotificationMenuWrapper>
   );
 };
