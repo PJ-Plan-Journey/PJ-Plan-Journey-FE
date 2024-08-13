@@ -33,18 +33,17 @@ const LoginForm = () => {
 
   const mutation = useMutation({
     mutationFn: (data) => api.post('/users/login', data),
-    onSuccess: (response) => {
-      console.log('Response headers:', response.headers);
+    onSuccess: ({ data }) => {
+      console.log('Response headers:', { data });
 
-      const accessToken = response.headers['authorization']?.split(' ')[1];
-      const refreshToken = response.headers['refreshtoken'];
+      const accessToken = data.data.accessToken?.split(' ')[1];
+      const refreshToken = data.data.refreshToken;
 
-      const user = response.data.data;
+      const user = data.data;
 
       if (accessToken && refreshToken) {
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
-        console.log(response);
         login(user, accessToken, refreshToken);
       } else {
         console.error('토큰이 헤더에 없습니다.');
@@ -92,7 +91,9 @@ const LoginForm = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder=" "
           />
-          <S.InputLabel htmlFor="password">비밀번호를 입력해주세요</S.InputLabel>
+          <S.InputLabel htmlFor="password">
+            비밀번호를 입력해주세요
+          </S.InputLabel>
         </S.InputWrapper>
         <S.SignUpPrompt>
           처음이신가요?{' '}

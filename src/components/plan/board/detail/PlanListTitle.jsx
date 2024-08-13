@@ -33,8 +33,9 @@ const PlanListTitle = ({ data }) => {
   const { mutate: eidtTitleMutate } = useMutation({
     mutationKey: ['editTitle'],
     mutationFn: (planId) => editTitle(planId),
-    onSuccess: () => {
+    onSuccess: ({ data }) => {
       console.log('제목 변경완료');
+      console.log(data);
       setIsEditTitle(false);
       queryClient.invalidateQueries(['getPlanDetail', data.id]);
     },
@@ -47,7 +48,7 @@ const PlanListTitle = ({ data }) => {
     if (data) {
       setTitle(data.title);
     }
-  }, []);
+  }, [data]);
 
   return (
     <S.PlanInfo>
