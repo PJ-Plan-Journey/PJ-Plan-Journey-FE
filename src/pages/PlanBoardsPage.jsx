@@ -3,10 +3,10 @@ import Header from '@components/Header/Header';
 import BoradList from '@components/plan/board/BoradList';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import useStompStore from '@zustands/plan/useStompStore';
+import { useNavigate } from 'react-router-dom';
 
 const PlanBoardsPage = () => {
-  const { sendMessage } = useStompStore();
-
+  const navigate = useNavigate();
   const getInviteList = async () => {
     try {
       const { data } = await api.get(`/invites`);
@@ -35,7 +35,7 @@ const PlanBoardsPage = () => {
     mutationFn: (userPlanId) => inviteAcceptance(userPlanId),
     onSuccess: ({ data }) => {
       console.log('tjdrhd');
-      sendMessage(`/pub/room/${data.planId}/entered`);
+      navigate(`/board/${data.planId}`);
     },
     onError: () => {
       console.log('dpfj');

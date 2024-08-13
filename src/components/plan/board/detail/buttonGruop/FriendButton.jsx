@@ -9,6 +9,8 @@ const FriendButton = ({ planId }) => {
     try {
       const { data } = await api.get(`/friends`);
 
+      console.log({ data });
+
       return data;
     } catch (error) {
       console.log({ error });
