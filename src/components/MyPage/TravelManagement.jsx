@@ -1,9 +1,8 @@
-// src/components/MyPage/TravelManagement.jsx
 import React from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import * as S from '@styles/mypage/TravelManagement.styles';
 import api from '@axios/api';
-import ShareButton from '@components/MyPage/ShareButton'; // 새로 만든 ShareButton 컴포넌트 경로
+import ShareButton from '@components/MyPage/ShareButton';
 
 const TravelManagement = () => {
   const queryClient = useQueryClient();
@@ -13,7 +12,7 @@ const TravelManagement = () => {
     queryKey: ['travels'],
     queryFn: () => api.get('/users/mypage').then((res) => res.data.data),
   });
-
+  console.log(travels)
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -36,11 +35,13 @@ const TravelManagement = () => {
                 <S.TravelName>{travel.title}</S.TravelName>
                 <S.TravelDate>
                   <S.ScheduleLabel>여행일자</S.ScheduleLabel>{' '}
-                  <S.DateLabel>{new Date(travel.createdAt).toLocaleDateString()}</S.DateLabel>
+                  <S.DateLabel>
+                    {(travel.startDate)} ~ {(travel.endDate)}
+                  </S.DateLabel>
                 </S.TravelDate>
                 <S.LastModified>
                   <S.ScheduleLabel>최종수정</S.ScheduleLabel>{' '}
-                  <S.DateLabel>{new Date(travel.publishedAt).toLocaleDateString()}</S.DateLabel>
+                  <S.DateLabel>{new Date(travel.endDate).toLocaleDateString()}</S.DateLabel>
                 </S.LastModified>
                 <S.ButtonContainer>
                   <ShareButton planId={travel.planId} />

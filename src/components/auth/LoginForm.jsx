@@ -19,7 +19,18 @@ const LoginForm = () => {
       console.log('Kakao SDK가 로드되지 않았습니다.');
     }
   }, []);
-  
+
+  const doKakaoLogin = () => {
+    const url =
+      'https://kauth.kakao.com/oauth/authorize?client_id=' +
+      import.meta.env.VITE_KAKAO_APP_KEY +
+      '&redirect_uri=' +
+      import.meta.env.VITE_KAKAO_REDIRECT_URI +
+      '&response_type=code&scope=account_email,birthday,gender,profile_nickname,profile_image';
+
+    window.location.href = url;
+  };
+
   const mutation = useMutation({
     mutationFn: (data) => api.post('/users/login', data),
     onSuccess: (response) => {
@@ -33,7 +44,7 @@ const LoginForm = () => {
       if (accessToken && refreshToken) {
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
-        console.log(response)
+        console.log(response);
         login(user, accessToken, refreshToken);
       } else {
         console.error('토큰이 헤더에 없습니다.');
@@ -57,9 +68,7 @@ const LoginForm = () => {
       return;
     }
 
-    window.Kakao.Auth.authorize({
-      redirectUri: import.meta.env.VITE_KAKAO_REDIRECT_URI, // .env 파일의 리디렉션 URI를 설정
-    });
+    doKakaoLogin(); // 카카오 로그인 함수 호출
   };
 
   return (
@@ -83,9 +92,7 @@ const LoginForm = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder=" "
           />
-          <S.InputLabel htmlFor="password">
-            비밀번호를 입력해주세요
-          </S.InputLabel>
+          <S.InputLabel htmlFor="password">비밀번호를 입력해주세요</S.InputLabel>
         </S.InputWrapper>
         <S.SignUpPrompt>
           처음이신가요?{' '}

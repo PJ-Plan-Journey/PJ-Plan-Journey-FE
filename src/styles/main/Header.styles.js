@@ -117,7 +117,6 @@ export const DropdownMenuWrapper = styled.div`
         `};
 `;
 
-
 export const DropdownItem = styled.a`
   text-decoration: none;
   padding: 0.5rem;
@@ -151,4 +150,20 @@ export const NotificationItem = styled.div`
   &:last-child {
     border-bottom: none;
   }
+`;
+
+export const NoNotificationMessage = styled.div`
+  padding: 0.5rem 0;
+  text-align: center;
+  color: #999;
+`;
+
+export const NotificationBadge = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
 `;
