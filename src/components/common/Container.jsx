@@ -7,7 +7,7 @@ const Container = styled.div.withConfig({
   width: 12cm;
   height: 12cm;
   margin-top: -4cm;
-  background-color: ${(props) => props.bgColor || '#e0e0e0'}; /* 배경 색상 */
+  background-color: ${(props) => props.bgColor || '#E0E0E0'}; /* 배경 색상 */
   border-radius: 15px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   display: flex;

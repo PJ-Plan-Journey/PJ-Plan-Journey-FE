@@ -3,7 +3,10 @@
 import React, { useRef } from 'react';
 import * as S from '@styles/main/TravelRecommendations.style'; // 스타일 파일 경로
 import { FaMapMarkerAlt, FaShareSquare } from 'react-icons/fa';
-import { TbMapPlus } from 'react-icons/tb';
+import { 
+  TbMapPlus,
+  TbTableShare,
+} from 'react-icons/tb';
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
@@ -28,7 +31,7 @@ import minecraft from '@assets/minecraft.jpg';
 
 const TravelRecommendations = () => {
   const items = [
-    <S.Container key={1} bgColor="#ffdddd">
+    <S.Container>
       <S.Overlay>
         <div className="text-wrapper">
           <div className="subtitle">서울특별시 종로구</div>
@@ -38,7 +41,7 @@ const TravelRecommendations = () => {
       <img src={testImage1} alt="Test Image 1" />
     </S.Container>,
 
-    <S.Container key={2} bgColor="#ddffdd">
+    <S.Container>
       <S.Overlay>
         <div className="text-wrapper">
           <div className="subtitle">서울특별시 종로구</div>
@@ -47,7 +50,7 @@ const TravelRecommendations = () => {
       </S.Overlay>
       <img src={testImage2} alt="Test Image 2" />
     </S.Container>,
-    <S.Container key={3} bgColor="#ddddff">
+    <S.Container>
       <S.Overlay>
         <div className="text-wrapper">
           <div className="subtitle">강원도 강릉시 왕산면</div>
@@ -56,7 +59,7 @@ const TravelRecommendations = () => {
       </S.Overlay>
       <img src={testImage3} alt="Test Image 3" />
     </S.Container>,
-    <S.Container key={4} bgColor="#ffffdd">
+    <S.Container>
       <S.Overlay>
         <div className="text-wrapper">
           <div className="subtitle">경상남도 창녕군 유어면</div>
@@ -65,7 +68,7 @@ const TravelRecommendations = () => {
       </S.Overlay>
       <img src={testImage4} alt="Test Image 4" />
     </S.Container>,
-    <S.Container key={5} bgColor="#ffddff">
+    <S.Container>
       <S.Overlay>
         <div className="text-wrapper">
           <div className="subtitle">경상북도 영주시 부석면</div>
@@ -74,7 +77,7 @@ const TravelRecommendations = () => {
       </S.Overlay>
       <img src={testImage5} alt="Test Image 5" />
     </S.Container>,
-    <S.Container key={6} bgColor="#d0d0d0">
+    <S.Container>
       <S.Overlay>
         <div className="text-wrapper">
           <div className="subtitle">경상남도 남해군 상주면</div>
@@ -83,7 +86,7 @@ const TravelRecommendations = () => {
       </S.Overlay>
       <img src={testImage6} alt="Test Image 6" />
     </S.Container>,
-    <S.Container key={7} bgColor="#d0e0f0">
+    <S.Container>
       <S.Overlay>
         <div className="text-wrapper">
           <div className="subtitle"> 경상남도 합천군 합천읍</div>
@@ -94,7 +97,7 @@ const TravelRecommendations = () => {
     </S.Container>,
     <S.Container key={8} bgColor="#f0d0d0">
       <S.Overlay>
-        <div className="text-wrapper">
+        <div>
           <div className="subtitle">보조 설명 8</div>
           <div className="main-text">메인 소개 8</div>
         </div>
@@ -104,7 +107,7 @@ const TravelRecommendations = () => {
   ];
 
   const extraItems = [
-    <S.ExtraContainer key={1} bgColor="#ffdddd">
+    <S.ExtraContainer>
       <S.SmallContainerText1>
         방콕 다이어트 파괴범 길거리 음식!
       </S.SmallContainerText1>
@@ -113,21 +116,21 @@ const TravelRecommendations = () => {
         <img src={food} alt="Food Image" />
       </S.SmallContainer>
     </S.ExtraContainer>,
-    <S.ExtraContainer key={2} bgColor="#ddffdd">
+    <S.ExtraContainer>
       <S.SmallContainerText1>빵빵이의 포장마차 ~!</S.SmallContainerText1>
       <S.SmallContainerText2>옥지님의 일정 1박 2일</S.SmallContainerText2>
       <S.SmallContainer>
         <img src={BBangBBang} alt="BBangBBang Image" />
       </S.SmallContainer>
     </S.ExtraContainer>,
-    <S.ExtraContainer key={3} bgColor="#ddddff">
+    <S.ExtraContainer>
       <S.SmallContainerText1>아빠 어릴 땐 이러고 놀았어~</S.SmallContainerText1>
       <S.SmallContainerText2>기훈이형님의 일정 30박 31일</S.SmallContainerText2>
       <S.SmallContainer>
         <img src={game} alt="Game Image" />
       </S.SmallContainer>
     </S.ExtraContainer>,
-    <S.ExtraContainer key={4} bgColor="#ffdddd">
+    <S.ExtraContainer>
       <S.SmallContainerText1>
         좀비 세상에서 살아남기: 나의 브이로그
       </S.SmallContainerText1>
@@ -136,14 +139,16 @@ const TravelRecommendations = () => {
         <img src={zombie} alt="Zombie Image" />
       </S.SmallContainer>
     </S.ExtraContainer>,
-    <S.ExtraContainer key={5} bgColor="#ddffdd">
-      <S.SmallContainerText1>전목사님과 함께하는 집캉스~!</S.SmallContainerText1>
+    <S.ExtraContainer>
+      <S.SmallContainerText1>
+        전목사님과 함께하는 집캉스~!
+      </S.SmallContainerText1>
       <S.SmallContainerText2>강인구님의 일정 7박 8일</S.SmallContainerText2>
       <S.SmallContainer>
         <img src={surinam} alt="Surinam Image" />
       </S.SmallContainer>
     </S.ExtraContainer>,
-    <S.ExtraContainer key={6} bgColor="#ddddff">
+    <S.ExtraContainer>
       <S.SmallContainerText1>멋봉리에 힐링하러왔어요~</S.SmallContainerText1>
       <S.SmallContainerText2>동숙님의 일정 5박 6일</S.SmallContainerText2>
       <S.SmallContainer>
@@ -215,6 +220,12 @@ const TravelRecommendations = () => {
             <FaShareSquare />
           </S.MenuIcon>
           <S.MenuText>일정공유</S.MenuText>
+        </S.MenuItem>
+        <S.MenuItem onClick={() => scrollToRef(journeyRef)}>
+          <S.MenuIcon>
+          <TbTableShare />
+          </S.MenuIcon>
+          <S.MenuText>게시판</S.MenuText>
         </S.MenuItem>
       </S.MenuWrapper>
       <S.Subtitle ref={journeyRef}>

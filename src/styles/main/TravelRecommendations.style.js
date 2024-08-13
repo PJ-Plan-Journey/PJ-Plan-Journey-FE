@@ -57,11 +57,24 @@ export const MenuItem = styled.div`
 export const MenuIcon = styled.div`
   font-size: 2.5rem; /* 아이콘 크기 */
   margin-bottom: 1rem; /* 아이콘과 텍스트 사이의 간격 */
+  color: #B0B8C1;
+  cursor: pointer;
+
+  &:hover {
+    color: #0056b3;
+  }
 `;
 
 export const MenuText = styled.div`
-  font-size: 1rem; /* 메뉴 이름 폰트 사이즈 */
+  font-size: 1.1rem; /* 메뉴 이름 폰트 사이즈 */
   text-align: center; /* 텍스트 중앙 정렬 */
+  font-weight: bold;
+  color: #B0B8C1;
+  cursor: pointer;
+
+  &:hover {
+    color: #0056b3;
+  }
 `;
 
 export const Subtitle = styled.h2`
@@ -81,7 +94,7 @@ export const CarouselWrapper = styled.div`
   display: flex;
   align-items: center;
   overflow: hidden;
-  margin-top: -63px;
+  margin-top: -64px;
 
   .alice-carousel__stage {
     width: 110cm !important;
@@ -116,7 +129,6 @@ export const Container = styled.div.withConfig({
   width: 12cm;
   height: 12cm;
   margin-top: -4cm;
-  background-color: ${(props) => props.bgColor || '#e0e0e0'}; /* 배경 색상 */
   border-radius: 15px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -185,9 +197,9 @@ export const ExtraContainer = styled.div`
   height: 10cm;
   margin-bottom: 6cm;
   margin-left: -4cm;
-  background-color: #e0e0e0; /* 기본 배경 색상 설정 */
+  background-color: #ffffff; /* 기본 배경 색상 설정 */
   border-radius: 15px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   display: flex;
   justify-content: center;
   align-items: flex-start; /* 상단 정렬 */
@@ -260,7 +272,8 @@ export const SmallContainerText2 = styled.div`
   font-size: 1rem;
   margin-left: 0.8cm;
   margin-bottom: -0.5cm;
-  color: #6e6e73;
+
+  color: #020202;
 `;
 
 export const ExtraContainerWrapper = styled.div`

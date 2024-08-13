@@ -49,9 +49,9 @@ const TravelManagement = () => {
                   </S.DateLabel>
                 </S.TravelDate>
                 <S.LastModified>
-                  <S.ScheduleLabel>최종수정</S.ScheduleLabel>{' '}
+                  <S.ScheduleLabel>생성일자</S.ScheduleLabel>{' '}
                   <S.DateLabel>
-                    {new Date(travel.endDate).toLocaleDateString()}
+                    {new Date(travel.createdAt).toLocaleDateString()}
                   </S.DateLabel>
                 </S.LastModified>
                 <S.ButtonContainer>

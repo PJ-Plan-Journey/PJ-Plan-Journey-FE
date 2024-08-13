@@ -93,7 +93,7 @@ const removeFriendMutation = useMutation({
       alert('친구 요청에 실패했습니다.');
     },
   });
-
+  console.log(friendEmail)
   const handleAddFriend = (e) => {
     e.preventDefault();
     const trimmedEmail = friendEmail.trim();
@@ -116,7 +116,7 @@ return (
         value={friendEmail}
         onChange={(e) => setFriendEmail(e.target.value)}
       />
-      <S.Button onClick={handleAddFriend}>친구 추가</S.Button>
+      <S.Button onClick={handleAddFriend}>친구추가</S.Button>
     </S.AddFriendSection>
     <S.LoginText>친구요청</S.LoginText>
     {isRequestsLoading ? (

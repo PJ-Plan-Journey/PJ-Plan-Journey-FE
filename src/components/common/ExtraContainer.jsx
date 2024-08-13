@@ -5,7 +5,7 @@ const ExtraContainer = styled.div`
   height: 10cm;
   margin-bottom: 6cm;
   margin-left: -4cm;
-  background-color: #e0e0e0; /* 기본 배경 색상 설정 */
+  background-color: #E0E0E0; /* 기본 배경 색상 설정 */
   border-radius: 15px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
   display: flex;

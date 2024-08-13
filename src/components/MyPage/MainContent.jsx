@@ -32,7 +32,7 @@ const MainContent = ({ selectedMenu, days, setShowModal, travels }) => {
       case 'friends':
         return (
           <S.Section>
-            <S.SectionTitle>친구 관리</S.SectionTitle>
+            <S.SectionTitle>친구관리</S.SectionTitle>
             <S.Card>
               <FriendManagement />
             </S.Card>
@@ -41,7 +41,7 @@ const MainContent = ({ selectedMenu, days, setShowModal, travels }) => {
       case 'travel':
         return (
           <S.Section>
-            <S.SectionTitle>일정 관리</S.SectionTitle>
+            <S.SectionTitle>일정관리</S.SectionTitle>
             <S.Card>
               <TravelManagement travels={travels} />
             </S.Card>

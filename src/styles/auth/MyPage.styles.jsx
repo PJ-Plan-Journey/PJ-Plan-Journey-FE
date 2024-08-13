@@ -48,7 +48,7 @@ export const MenuItem = styled.div`
   cursor: pointer;
   font-size: 1.2rem; /* <MenuText> 폰트 사이즈 적용 */
   &:hover {
-    background: #e0e0e0;
+    background: #E0E0E0;
     border-radius: 5px;
   }
 `;
