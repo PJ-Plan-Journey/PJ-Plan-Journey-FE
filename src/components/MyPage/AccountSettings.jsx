@@ -1,5 +1,3 @@
-// src/components/MyPage/AccountSettings.jsx
-
 import React, { useState } from 'react';
 import * as S from '@styles/mypage/MainContent.styles';
 import api from '@axios/api';
@@ -10,34 +8,32 @@ const AccountSettings = ({ onDeleteAccount }) => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [isCurrentPasswordValid, setIsCurrentPasswordValid] = useState(false);
 
   const handlePasswordChange = async () => {
-    if (newPassword === confirmPassword && isCurrentPasswordValid) {
+    if (newPassword === confirmPassword) {
       try {
-        const response = await api.patch('/users', {
-          password: newPassword,
+        console.log(currentPassword); // 디버깅을 위해 사용
+        console.log(newPassword); // 디버깅을 위해 사용
+
+        const response = await api.patch('/users/password', {
+          password: currentPassword, // API에서 요구하는 필드 이름을 사용합니다.
+          newPassword,
         }, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`, // 헤더를 올바른 위치에 설정
           },
         });
+
         console.log('비밀번호 변경 성공:', response.data);
         alert('비밀번호가 성공적으로 변경되었습니다.');
+        // 비밀번호 변경 성공 후 필요한 추가 작업이 있으면 여기에 추가하세요.
       } catch (error) {
-        console.error('비밀번호 변경 실패:', error.response?.data || error);
+        console.log('비밀번호 변경 실패:', error.response?.data || error);
         alert('비밀번호 변경에 실패했습니다.');
       }
     } else {
-      console.log('비밀번호가 일치하지 않거나 현재 비밀번호가 유효하지 않습니다.');
+      alert('새 비밀번호가 일치하지 않습니다.');
     }
-  };
-
-  const handleCurrentPasswordValidation = async () => {
-    // 현재 비밀번호 검증 로직
-    // 여기에 실제 비밀번호 검증 로직이 필요합니다.
-    // 현재는 사용자에게 현재 비밀번호가 맞다고 가정합니다.
-    setIsCurrentPasswordValid(true);
   };
 
   return (
@@ -45,37 +41,33 @@ const AccountSettings = ({ onDeleteAccount }) => {
       <S.Card>
         <S.InputContainer>
           <S.InputWrapper>
+            <S.LoginText>비밀번호 수정</S.LoginText>
             <S.Input
               type="password"
               placeholder="현재 비밀번호"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
-              onBlur={handleCurrentPasswordValidation}
             />
           </S.InputWrapper>
-          {isCurrentPasswordValid && (
-            <>
-              <S.InputWrapper>
-                <S.Input
-                  type="password"
-                  placeholder="변경할 비밀번호"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                />
-              </S.InputWrapper>
-              <S.InputWrapper>
-                <S.Input
-                  type="password"
-                  placeholder="변경할 비밀번호 확인"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-              </S.InputWrapper>
-            </>
-          )}
+          <S.InputWrapper>
+            <S.Input
+              type="password"
+              placeholder="변경할 비밀번호"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+          </S.InputWrapper>
+          <S.InputWrapper>
+            <S.Input
+              type="password"
+              placeholder="변경할 비밀번호 확인"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </S.InputWrapper>
           <S.Button
             onClick={handlePasswordChange}
-            disabled={!isCurrentPasswordValid || newPassword !== confirmPassword}
+            disabled={newPassword !== confirmPassword || !currentPassword || !newPassword}
           >
             비밀번호 변경
           </S.Button>

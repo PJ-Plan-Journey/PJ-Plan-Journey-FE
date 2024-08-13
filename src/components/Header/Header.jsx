@@ -6,6 +6,7 @@ import * as S from '@styles/main/Header.styles';
 import DropdownMenu from './DropdownMenu';
 import NotificationMenu from './NotificationMenu';
 import useAuthStore from '@zustands/authStore';
+import api from '@axios/api';
 
 const Header = () => {
   const [isUserMenuOpen, setUserMenuOpen] = useState(false);
@@ -13,6 +14,8 @@ const Header = () => {
   const [shouldRenderUserMenu, setShouldRenderUserMenu] = useState(false);
   const [shouldRenderNotificationMenu, setShouldRenderNotificationMenu] =
     useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
   const userMenuRef = useRef();
   const notificationMenuRef = useRef();
 
@@ -21,6 +24,31 @@ const Header = () => {
     user: state.user,
     logout: state.logout,
   }));
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchUnreadNotifications();
+    }
+  }, [isAuthenticated]);
+
+  const fetchUnreadNotifications = async () => {
+    try {
+      const { data } = await api.get('/notifications/unread');
+      setNotifications(data);
+      setUnreadCount(data.length);
+    } catch (error) {
+      console.error('Unread notifications fetch failed:', error);
+    }
+  };
+
+  const markNotificationsAsRead = async () => {
+    try {
+      await api.patch('/notifications/read');
+      setUnreadCount(0);
+    } catch (error) {
+      console.error('Failed to mark notifications as read:', error);
+    }
+  };
 
   const toggleUserMenu = () => {
     if (isUserMenuOpen) {
@@ -39,6 +67,7 @@ const Header = () => {
     } else {
       setNotificationMenuOpen(true);
       setShouldRenderNotificationMenu(true);
+      markNotificationsAsRead(); // 알림 메뉴를 열 때 알림을 읽음 처리
     }
   };
 
@@ -102,8 +131,13 @@ const Header = () => {
             onClick={toggleNotificationMenu}
           >
             <FaBell />
+            {unreadCount > 0 && <S.NotificationBadge />}{' '}
+            {/* 읽지 않은 알림이 있으면 빨간 점 표시 */}
             {shouldRenderNotificationMenu && (
-              <NotificationMenu isVisible={isNotificationMenuOpen} />
+              <NotificationMenu
+                isVisible={isNotificationMenuOpen}
+                notifications={notifications}
+              />
             )}
           </S.IconWrapper>
         </S.Nav>

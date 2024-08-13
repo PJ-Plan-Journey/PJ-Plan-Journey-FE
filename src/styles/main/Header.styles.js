@@ -108,11 +108,14 @@ export const DropdownMenuWrapper = styled.div`
   padding: 0.5rem 1rem;
   min-width: 150px;
   animation: ${({ isVisible }) =>
-    isVisible
-      ? css`${fadeIn} 0.3s ease forwards`
-      : css`${fadeOut} 0.3s ease forwards`};
+   isVisible
+      ? css`
+          animation: ${fadeIn} 0.3s ease forwards;
+        `
+      : css`
+          animation: ${fadeOut} 0.3s ease forwards;
+        `};
 `;
-
 
 export const DropdownItem = styled.a`
   text-decoration: none;
@@ -147,4 +150,20 @@ export const NotificationItem = styled.div`
   &:last-child {
     border-bottom: none;
   }
+`;
+
+export const NoNotificationMessage = styled.div`
+  padding: 0.5rem 0;
+  text-align: center;
+  color: #999;
+`;
+
+export const NotificationBadge = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
 `;
