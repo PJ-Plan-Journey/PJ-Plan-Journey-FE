@@ -1,15 +1,13 @@
 import useDateStore from '@zustands/plan/useDateStore';
-import { format } from 'date-fns';
-import { ko } from 'date-fns/locale';
 import * as S from '@styles/plan/date/DateRangeDisplay.style';
-
-import { MdCalendarToday as CalendarIcon } from 'react-icons/md';
+import { FaCalendar as CalendarIcon } from '@react-icons/all-files/fa/FaCalendar';
+import { formatDate } from '@/utils/formatDate';
 
 const DateRangeDisplay = () => {
   const { startDate, endDate } = useDateStore();
 
   const formatDateToKorean = (date) => {
-    return date ? format(date, 'yyyy.MM.dd(EE)', { locale: ko }) : null;
+    return formatDate('yyyy.MM.dd(EE)', date);
   };
 
   return (

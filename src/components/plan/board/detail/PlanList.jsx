@@ -8,6 +8,8 @@ import { format, parseISO } from 'date-fns';
 import Portal from '@/utils/Portal';
 import * as S from '@styles/plan/board/detail/PlanList.style';
 import PlanPlaceItem from './PlanPlaceItem';
+import useStompStore from '@zustands/plan/useStompStore';
+import PlanListTitle from '@components/plan/board/detail/PlanListTitle';
 
 const PlanList = ({ isEditMode, data }) => {
   const {
@@ -17,9 +19,11 @@ const PlanList = ({ isEditMode, data }) => {
     day: selectDay,
     setDay,
   } = usePlaceStore();
-  const { getDays, startDate, endDate } = useDateStore();
+
+  const { getDays } = useDateStore();
   const [isVisible, setIsVisible] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
+  const { sendMessage } = useStompStore();
 
   const saveDay = (day) => {
     setDay(day);
@@ -45,6 +49,17 @@ const PlanList = ({ isEditMode, data }) => {
     }
 
     saveDay(destination.droppableId);
+
+    const payload = {
+      type: 'UPDATE',
+      planId: data.id,
+      fromSeq: 4,
+      toSeq: 2,
+      fromDate: '2024-07-30',
+      toDate: '2024-07-30',
+    };
+
+    sendMessage(`/pub/edit/room/${data.id}`, payload);
   };
 
   const visibleSearchBox = (day) => {
@@ -57,21 +72,9 @@ const PlanList = ({ isEditMode, data }) => {
     return format(date, 'yyyy.M.d(EE)', { locale: ko });
   };
 
-  // planDetailId: 3,
-  // placeName: '서울 강남',
-  // latitude: 36.789,
-  // longitude: 127.643,
-  // sequence: 2,
-  // date: '2024-07-25',
-
   return (
     <S.SelectedListContainer>
-      <S.PlanInfo>
-        <span className="city">{data.cityname}</span>
-        <span className="date">
-          {startDate} ~ {endDate}
-        </span>
-      </S.PlanInfo>
+      <PlanListTitle data={data} />
 
       {isEditMode ? (
         <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
@@ -116,6 +119,7 @@ const PlanList = ({ isEditMode, data }) => {
                               index={index + 1}
                               provided={provided}
                               isEditMode={isEditMode}
+                              data={data}
                             />
                           )}
                         </Draggable>
@@ -188,6 +192,8 @@ const PlanList = ({ isEditMode, data }) => {
             isVisible={isVisible}
             setIsVisible={setIsVisible}
             day={selectedDay}
+            isEditMode={isEditMode}
+            data={data}
           />
         )}
       </Portal>

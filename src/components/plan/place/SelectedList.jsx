@@ -4,11 +4,11 @@ import usePlaceStore from '@zustands/plan/usePlaceStore';
 import useDateStore from '@zustands/plan/useDateStore';
 import DateRangeDisplay from '@components/plan/date/DateRangeDisplay';
 import SelectPlace from '@components/plan/place/SelectPlace';
-import { ko } from 'date-fns/locale';
-import { format, parseISO } from 'date-fns';
+import { parseISO } from 'date-fns';
 import PlaceListItem from '@components/plan/place/PlaceListItem';
 import Portal from '@/utils/Portal';
 import * as S from '@styles/plan/place/SelectedList.style';
+import { formatDate } from '@/utils/formatDate';
 
 const SelectedList = () => {
   const { placeList, movePlace, movePlaceBetweenDays, setDay, day } =
@@ -48,9 +48,9 @@ const SelectedList = () => {
     setIsVisible(true);
   };
 
-  const formatDate = (dateString) => {
+  const parseAndFormatDate = (dateString) => {
     const date = parseISO(dateString); // 문자열을 Date 객체로 변환
-    return format(date, 'yy.M.d(EE)', { locale: ko });
+    return formatDate('yy.M.d(EE)', date);
   };
 
   return (
@@ -66,7 +66,7 @@ const SelectedList = () => {
                 </span>
 
                 <div className="info">
-                  <span>{formatDate(day)}</span>
+                  <span>{parseAndFormatDate(day)}</span>
                 </div>
               </div>
 

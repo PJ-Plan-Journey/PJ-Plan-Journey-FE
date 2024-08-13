@@ -67,8 +67,12 @@ export const TItleFormContainer = styled.div`
     ${flex}
     justify-content: space-between;
     border: none;
-    box-shadow: 0 0 2px 1px #c4c4c4;
+    border: 1px solid #c4c4c4;
     padding: 10px 15px;
     border-radius: 50px;
+
+    &:focus-visible {
+      outline: none;
+    }
   }
 `;

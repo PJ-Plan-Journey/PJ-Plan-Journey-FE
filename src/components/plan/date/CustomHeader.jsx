@@ -1,9 +1,7 @@
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import {
-  IoIosArrowDropleftCircle as LeftArrowIcon,
-  IoIosArrowDroprightCircle as RightArrowIcon,
-} from 'react-icons/io';
+import { IoIosArrowDroprightCircle as RightArrowIcon } from '@react-icons/all-files/io/IoIosArrowDroprightCircle';
+import { IoIosArrowDropleftCircle as LeftArrowIcon } from '@react-icons/all-files/io/IoIosArrowDropleftCircle';
 import * as S from '@styles/plan/date/CustomHeader.style';
 
 const CustomHeader = ({

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useKakaoLoader from '@hooks/plan/useKakaoLoader';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
 import { Map, Polyline, CustomOverlayMap } from 'react-kakao-maps-sdk';
@@ -16,9 +16,9 @@ const KakaoMap = () => {
   useKakaoLoader();
 
   // 맵 재생성
-  const handleMapCreate = (mapInstance) => {
+  const handleMapCreate = useCallback((mapInstance) => {
     setMap(mapInstance);
-  };
+  }, []);
 
   // 각 day에 대해 다른 색상 적용
   const colors = ['#156bf0', '#f01562', '#15f062', '#f0d215']; // 예시 색상 배열
@@ -109,7 +109,7 @@ const KakaoMap = () => {
           </div>
         ) : (
           // 날짜가 없을 때 모든 장소들 렌더링
-          Object.entries(placeList).map(([currentDay, places], index) => {
+          Object.entries(placeList).map(([currentDay, places]) => {
             const validPath = places
               .map(({ x: lng, y: lat }) => ({ lng, lat }))
               .filter(

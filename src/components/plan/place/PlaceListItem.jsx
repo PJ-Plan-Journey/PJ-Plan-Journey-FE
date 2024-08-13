@@ -1,4 +1,5 @@
-import { FaBars as DragIcon, FaTrashAlt as RemoveIcon } from 'react-icons/fa';
+import { FaBars as DragIcon } from '@react-icons/all-files/fa/FaBars';
+import { FaTrashAlt as RemoveIcon } from '@react-icons/all-files/fa/FaTrashAlt';
 import * as S from '@styles/plan/place/PlaceListItem.style';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
 

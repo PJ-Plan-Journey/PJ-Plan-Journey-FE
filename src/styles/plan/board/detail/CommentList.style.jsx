@@ -5,6 +5,7 @@ export const CommentListContainer = styled.div`
   width: 400px;
   height: 100%;
   border: 1px solid black;
+  background-color: white;
   ${flexColumn}
 
   .comment-list {
@@ -13,6 +14,7 @@ export const CommentListContainer = styled.div`
     ${flexColumn}
     gap: 10px;
     padding: 20px;
+    overflow: auto;
   }
 
   .comment-form {

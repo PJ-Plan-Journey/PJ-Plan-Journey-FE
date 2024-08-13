@@ -5,12 +5,14 @@ import api from '@axios/api';
 
 const TravelManagement = () => {
   // 여행 데이터 가져오기
-  const { data: travels = [], isLoading, error } = useQuery({
+  const {
+    data: travels = [],
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['travels'],
     queryFn: () => api.get('/users/mypage').then((res) => res.data.data),
   });
-  
-console.log(travels)
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -20,6 +22,8 @@ console.log(travels)
     return <p>여행 데이터를 불러오는 중에 오류가 발생했습니다.</p>;
   }
 
+  console.log({ travels });
+
   return (
     <S.TravelContainer>
       <S.LoginText>나의 여행</S.LoginText>
@@ -27,21 +31,28 @@ console.log(travels)
         {travels.length > 0 ? (
           travels.map((travel) => (
             <S.TravelCard
-              key={travel.planId}
-              onClick={() => (window.location.href = `/travel/${travel.planId}`)}
+              key={travel.id}
+              onClick={() => (window.location.href = `/board/${travel.planId}`)}
             >
               <S.ImageContainer>
-                <img src={'https://via.placeholder.com/150'} alt={travel.title} />
+                <img
+                  src={'https://via.placeholder.com/150'}
+                  alt={travel.title}
+                />
               </S.ImageContainer>
               <S.TravelInfo>
                 <S.TravelName>{travel.title}</S.TravelName>
                 <S.TravelDate>
                   <S.ScheduleLabel>여행일자</S.ScheduleLabel>{' '}
-                  <S.DateLabel>{new Date(travel.createAt).toLocaleDateString()}</S.DateLabel>
+                  <S.DateLabel>
+                    {new Date(travel.createAt).toLocaleDateString()}
+                  </S.DateLabel>
                 </S.TravelDate>
                 <S.LastModified>
                   <S.ScheduleLabel>최종수정</S.ScheduleLabel>{' '}
-                  <S.DateLabel>{new Date(travel.publishedAt).toLocaleDateString()}</S.DateLabel>
+                  <S.DateLabel>
+                    {new Date(travel.publishedAt).toLocaleDateString()}
+                  </S.DateLabel>
                 </S.LastModified>
               </S.TravelInfo>
             </S.TravelCard>

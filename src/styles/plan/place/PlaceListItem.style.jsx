@@ -28,13 +28,12 @@ export const PlaceItem = styled.div`
     justify-content: center;
     min-width: var(--marker-size);
     height: var(--marker-size);
-    border: 2px solid white;
+    border: none;
     border-radius: 50%;
     background: ${({ $color }) => $color};
     color: white;
     font-weight: bold;
     font-size: 12px;
-    box-shadow: 0 0 1px 1px gray;
   }
 
   .remove {

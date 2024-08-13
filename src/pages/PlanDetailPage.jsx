@@ -6,80 +6,42 @@ import { FaGripLinesVertical as WidthSizeIcon } from 'react-icons/fa6';
 import useDateStore from '@zustands/plan/useDateStore';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
 import { useEffect, useRef, useState } from 'react';
-import { Client } from '@stomp/stompjs';
 import * as S from '@styles/plan/PlanDetailPage.style';
-
-const initialData = {
-  planId: 1,
-  nickname: '작성자',
-  cityname: '서울',
-  title: 'title',
-  isPublished: true,
-  createdAt: '2024-07-27',
-  publishedAt: '2024-07-27',
-  likeCount: 30,
-  comment: [
-    {
-      commentId: 1,
-      content: '댓글입니다.',
-      nickname: '작성자',
-      createdAt: '2024-07-08',
-      childComment: [
-        {
-          childCommentId: 1,
-          content: '대댓글입니다.',
-          nickname: '대댓글작성자',
-          createdAt: '2024-07-09',
-        },
-      ],
-    },
-  ],
-  planDetails: [
-    {
-      planDetailId: 1,
-      placeName: '서울역',
-      latitude: 37.552987017,
-      longitude: 126.972591728,
-      sequence: 1,
-      date: '2024-07-24',
-    },
-    {
-      planDetailId: 2,
-      placeName: '서울남산타워',
-      latitude: 37.551425,
-      longitude: 126.988,
-      sequence: 2,
-      date: '2024-07-24',
-    },
-    {
-      planDetailId: 3,
-      placeName: '서울 강남',
-      latitude: 36.789,
-      longitude: 127.643,
-      sequence: 1,
-      date: '2024-07-25',
-    },
-  ],
-};
+import useStompStore from '@zustands/plan/useStompStore';
+import useAuthStore from '@zustands/authStore';
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
+import api from '@axios/api';
 
 const MINWIDTH = 37;
 
 const PlanDetailPage = () => {
-  const [data, setData] = useState(initialData);
   const [showComment, setShowComment] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [width, setWidth] = useState(MINWIDTH);
   const [isDragging, setIsDragging] = useState(false);
   const widthRef = useRef(width);
-
-  const [stompClient, setStompClient] = useState(null);
-
-  const stomp = new Client();
-
+  const { id } = useParams();
+  const { connect, subscribe, disconnect } = useStompStore();
   const { addPlace, day, initList, setDay } = usePlaceStore();
   const { setDates } = useDateStore();
+  const { user } = useAuthStore();
 
   const resizeContainerStyle = isEditMode || !day ? { width: `${width}%` } : {};
+
+  const getPlan = async () => {
+    try {
+      const { data } = await api.get(`/plans/${id}`);
+      return data.data;
+    } catch (error) {
+      console.log({ error });
+    }
+  };
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['getPlanDetail', id],
+    queryFn: getPlan,
+  });
 
   const changeEditMode = () => {
     setIsEditMode(true);
@@ -96,11 +58,15 @@ const PlanDetailPage = () => {
   };
 
   useEffect(() => {
+    if (!data) {
+      return;
+    }
+
     // 날짜별로 장소 정보를 그룹화하고 latitude/longitude를 x/y로 변경
     const placesByDate = data.planDetails.reduce((acc, place) => {
       const transformedPlace = {
         ...place,
-        id: place.planDetailId,
+        id: place.id,
         x: place.longitude,
         y: place.latitude,
       };
@@ -112,20 +78,23 @@ const PlanDetailPage = () => {
         acc[place.date] = [];
       }
       acc[place.date].push(transformedPlace);
+
       return acc;
     }, {});
 
-    // 그룹화된 장소 정보를 addPlace 함수로 전달
-    Object.entries(placesByDate).forEach(([date, places]) => {
-      addPlace(date, places);
-    });
+    if (placesByDate && Object.keys(placesByDate).length > 0) {
+      // 그룹화된 장소 정보를 addPlace 함수로 전달
+      Object.entries(placesByDate).forEach(([date, places]) => {
+        addPlace(date, places);
+      });
+    }
 
-    const sortedDates = data.planDetails.map((detail) => detail.date).sort();
+    const sortedDates = data.planDetails?.map((detail) => detail.date).sort();
     const startDate = sortedDates[0];
     const endDate = sortedDates[sortedDates.length - 1];
 
     setDates({ startDate, endDate });
-  }, [data, addPlace]);
+  }, [data, addPlace, id]);
 
   const handleMouseDown = () => {
     setIsDragging(true);
@@ -158,40 +127,34 @@ const PlanDetailPage = () => {
   }, [isDragging]);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
+    if (isEditMode) {
+      const handleMessage = (message) => {
+        console.log('Received message:', message.body);
+        try {
+          // 메시지 본문을 JSON.parse()로 변환하여 사용
+          const parsedMessage = JSON.parse(message.body);
+          console.log('Parsed message:', parsedMessage);
+          // 메시지 처리 로직 추가
+        } catch (error) {
+          console.error('Error parsing message:', error);
+        }
+      };
 
-    const connectStomp = new Client({
-      brokerURL: import.meta.env.VITE_WEB_SOCKET_URL,
-      connectHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-      debug: (str) => {
-        console.log('STOMP Debug:', str);
-      },
-      reconnectDelay: 5000, // 자동 재연결 설정
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000,
-      onConnect: (frame) => {
-        console.log('Connected:', frame);
-      },
-      onStompError: (frame) => {
-        console.error('STOMP Error:', frame);
-      },
-      onWebSocketClose: () => {
-        console.log('WebSocket Closed');
-      },
-    });
+      subscribe(`/sub/room/${id}`, handleMessage);
 
-    connectStomp.onConnect = (frame) => {
-      console.log('STOMP Connected:', frame);
-      // 서버에서 필요한 구독 및 초기 작업
-      // 예: connectStomp.subscribe('/topic/your-topic', (message) => { ... });
+      connect();
+
+      // STOMP 연결 후 /sub/room/{planId} 구독 수신될 때 콜백함수 호출
+
+      console.log(`Subscribed to /sub/room/${id}`);
+    } else {
+      disconnect();
+    }
+
+    return () => {
+      disconnect();
     };
-
-    connectStomp.onStompError = (frame) => {
-      console.error('STOMP Error:', frame);
-    };
-  }, []);
+  }, [isEditMode, subscribe, connect, disconnect, id]);
 
   useEffect(() => {
     return () => {
@@ -205,13 +168,14 @@ const PlanDetailPage = () => {
     <S.PlanDetailPageContainer>
       <div className="resize-container" style={resizeContainerStyle}>
         <DayList
+          data={data}
           toggleComment={toggleComment}
           isEditMode={isEditMode}
           changeEditMode={changeEditMode}
           savePlan={savePlan}
         />
         {showComment ? (
-          <CommentList />
+          <CommentList planId={data.id} />
         ) : (
           <>
             <PlanList isEditMode={isEditMode} data={data} />

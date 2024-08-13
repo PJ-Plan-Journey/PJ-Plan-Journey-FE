@@ -1,3 +1,4 @@
+import api from '@axios/api';
 import BoardItem from '@components/plan/board/BoardItem';
 import * as S from '@styles/plan/board/BoradList.style';
 import { useQuery } from '@tanstack/react-query';
@@ -18,7 +19,7 @@ const BoradList = () => {
     queryFn: getPlanlist,
   });
 
-  console.log({ data });
+  console.log(data);
 
   if (isLoading) {
     return <div>데이터 로딩 중...</div>;
@@ -27,7 +28,7 @@ const BoradList = () => {
   return (
     <S.BoradListContainer>
       <ul className="board-list">
-        {data?.map((item) => (
+        {data.data?.map((item) => (
           <BoardItem key={item.planId} item={item} />
         ))}
       </ul>

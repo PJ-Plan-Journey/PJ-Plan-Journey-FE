@@ -1,31 +1,34 @@
 import usePlaceStore from '@zustands/plan/usePlaceStore';
-import * as S from '@styles/plan/board/detail/DayList.style';
 import useAuthStore from '@zustands/authStore';
+import * as S from '@styles/plan/board/detail/DayList.style';
+import LikeButton from '@components/plan/board/detail/buttonGruop/LikeButton';
+import AddMyPlanButton from '@components/plan/board/detail/buttonGruop/AddMyPlanButton';
+import DeleteButton from '@components/plan/board/detail/buttonGruop/DeleteButton';
 
-const daylist = [
-  {
-    planDetailId: 1,
-    placeName: '서울역',
-    latitude: 36.789,
-    longitude: 127.643,
-    sequence: 1,
-    date: '2024-07-24',
-  },
-  {
-    planDetailId: 2,
-    placeName: '서울 강남',
-    latitude: 36.789,
-    longitude: 127.643,
-    sequence: 2,
-    date: '2024-07-25',
-  },
-];
+const groupByDate = (daylist) => {
+  const grouped = {};
+  daylist?.forEach((item) => {
+    if (!grouped[item.date]) {
+      grouped[item.date] = [];
+    }
+    grouped[item.date].push(item);
+  });
+  return Object.entries(grouped);
+};
 
-const DayList = ({ toggleComment, changeEditMode, isEditMode, savePlan }) => {
+const DayList = ({
+  toggleComment,
+  changeEditMode,
+  isEditMode,
+  savePlan,
+  data,
+}) => {
   const { setDay } = usePlaceStore();
   const { user } = useAuthStore();
 
-  console.log({ user });
+  const { isPublished, planDetails, id } = data || '';
+
+  const groupedDaylist = groupByDate(planDetails);
 
   return (
     <S.DayListContainer>
@@ -35,11 +38,11 @@ const DayList = ({ toggleComment, changeEditMode, isEditMode, savePlan }) => {
         </div>
 
         {!isEditMode &&
-          daylist.map((day, index) => (
+          groupedDaylist?.map((day, index) => (
             <div
-              key={day.planDetailId}
+              key={day[0] + index}
               className="day"
-              onClick={() => setDay(day.date)}
+              onClick={() => setDay(day[0])}
             >
               {index + 1}일차
             </div>
@@ -47,8 +50,13 @@ const DayList = ({ toggleComment, changeEditMode, isEditMode, savePlan }) => {
       </ul>
 
       <div className="button-group">
+        <LikeButton planId={id} />
+
         <button onClick={toggleComment}>댓글</button>
-        <button>내 일정 추가</button>
+
+        <button>{isPublished ? '공유취소' : '공유하기'}</button>
+
+        <AddMyPlanButton planId={id} />
 
         {isEditMode ? (
           <button onClick={savePlan}>편집완료</button>
@@ -56,7 +64,7 @@ const DayList = ({ toggleComment, changeEditMode, isEditMode, savePlan }) => {
           <button onClick={changeEditMode}>편집</button>
         )}
 
-        <button>삭제</button>
+        <DeleteButton planId={id} />
       </div>
     </S.DayListContainer>
   );
