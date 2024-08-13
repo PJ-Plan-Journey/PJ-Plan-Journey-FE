@@ -32,7 +32,6 @@ export const NavWrapper = styled.div`
   align-items: center;
   padding-right: 7rem;
   justify-content: space-between;
-  font-weight: bold;
   
   @media (max-width: 1200px) {
     width: 600px;
@@ -55,7 +54,7 @@ export const Nav = styled.nav`
 
 export const NavLink = styled.a`
   text-decoration: none;
-  color: #0056b3;
+  color: #020202;
   font-size: 1.1rem;
   display: flex;
   align-items: center;
@@ -70,7 +69,7 @@ export const IconWrapper = styled.div`
   position: relative;
   cursor: pointer;
   font-size: 1.2rem;
-  color: #0056b3;
+  color: #020202;
 
   cursor: pointer;
 

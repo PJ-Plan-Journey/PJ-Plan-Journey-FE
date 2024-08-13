@@ -25,12 +25,6 @@ const Sidebar = ({ setSelectedMenu }) => {
         </S.MenuItemIcon>
         <S.MenuText>일정관리</S.MenuText>
       </S.MenuItem>
-      <S.MenuItem onClick={() => alert('로그아웃 클릭')}>
-        <S.MenuItemIcon>
-          <FaSignOutAlt />
-        </S.MenuItemIcon>
-        <S.MenuText>로그아웃</S.MenuText>
-      </S.MenuItem>
     </S.SidebarContainer>
   );
 };

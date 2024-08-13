@@ -57,7 +57,7 @@ export const MenuItem = styled.div`
 export const MenuIcon = styled.div`
   font-size: 2.5rem; /* 아이콘 크기 */
   margin-bottom: 1rem; /* 아이콘과 텍스트 사이의 간격 */
-  color: #B0B8C1;
+  color: #020202;
   cursor: pointer;
 
   &:hover {
@@ -69,7 +69,7 @@ export const MenuText = styled.div`
   font-size: 1.1rem; /* 메뉴 이름 폰트 사이즈 */
   text-align: center; /* 텍스트 중앙 정렬 */
   font-weight: bold;
-  color: #B0B8C1;
+  color: #020202;
   cursor: pointer;
 
   &:hover {
@@ -149,8 +149,18 @@ export const Container = styled.div.withConfig({
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    font-family: SF Pro KR, SF Pro Display, SF Pro Icons, Apple Gothic, HY Gulim,
-      MalgunGothic, HY Dotum, Lexi Gulim, Helvetica Neue, Helvetica, Arial,
+    font-family:
+      SF Pro KR,
+      SF Pro Display,
+      SF Pro Icons,
+      Apple Gothic,
+      HY Gulim,
+      MalgunGothic,
+      HY Dotum,
+      Lexi Gulim,
+      Helvetica Neue,
+      Helvetica,
+      Arial,
       sans-serif;
   }
 
@@ -324,7 +334,12 @@ export const ArrowButton = styled.button`
   }
 
   & svg {
-    fill: rgba(224, 224, 224, 0.5); /* 원 부분을 흰색으로 변경하여 60% 투명도 적용 */
+    fill: rgba(
+      224,
+      224,
+      224,
+      0.5
+    ); /* 원 부분을 흰색으로 변경하여 60% 투명도 적용 */
   }
 `;
 

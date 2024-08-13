@@ -221,9 +221,9 @@ const TravelRecommendations = () => {
           </S.MenuIcon>
           <S.MenuText>일정공유</S.MenuText>
         </S.MenuItem>
-        <S.MenuItem onClick={() => scrollToRef(journeyRef)}>
+        <S.MenuItem onClick={() => navigate('/board')}>
           <S.MenuIcon>
-          <TbTableShare />
+            <TbTableShare />
           </S.MenuIcon>
           <S.MenuText>게시판</S.MenuText>
         </S.MenuItem>
