@@ -108,9 +108,13 @@ export const DropdownMenuWrapper = styled.div`
   padding: 0.5rem 1rem;
   min-width: 150px;
   animation: ${({ isVisible }) =>
-    isVisible
-      ? css`${fadeIn} 0.3s ease forwards`
-      : css`${fadeOut} 0.3s ease forwards`};
+   isVisible
+      ? css`
+          animation: ${fadeIn} 0.3s ease forwards;
+        `
+      : css`
+          animation: ${fadeOut} 0.3s ease forwards;
+        `};
 `;
 
 

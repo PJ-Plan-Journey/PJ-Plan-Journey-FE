@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaBell } from 'react-icons/fa';
 import logo from '@assets/Logo.jpg';
-import * as S from '@styles/main/Header.styles'; // 스타일 경로
+import * as S from '@styles/main/Header.styles';
 import DropdownMenu from './DropdownMenu';
 import NotificationMenu from './NotificationMenu';
 import useAuthStore from '@zustands/authStore';
@@ -71,7 +71,7 @@ const Header = () => {
           <S.NavLink as={Link} to="/board">게시판</S.NavLink>
           {isAuthenticated ? (
             <>
-              <S.NavLink as={Link} to="/profile">{user.nickname}님</S.NavLink>
+              <S.NavLink as={Link} to="/profile">{user ? `${user.nickname}님` : 'Loading...'}</S.NavLink>
               <S.NavLink onClick={logout}>로그아웃</S.NavLink>
             </>
           ) : (

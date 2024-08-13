@@ -25,7 +25,7 @@ const MainContent = ({ selectedMenu, days, setShowModal, travels }) => {
                 <strong>계정:</strong> {user?.email || '이메일 없음'}
               </p>
             </S.LoginTextContainer>
-            <S.LoginText>비밀번호 수정</S.LoginText>
+            
             <AccountSettings onDeleteAccount={() => setShowModal(true)} />
           </S.Section>
         );
