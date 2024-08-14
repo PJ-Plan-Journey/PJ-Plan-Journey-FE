@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaBell } from 'react-icons/fa';
-import { TbTableShare } from "react-icons/tb";
 import logo from '@assets/Logo.jpg';
 import * as S from '@styles/main/Header.styles';
 import DropdownMenu from './DropdownMenu';
@@ -19,10 +18,11 @@ const Header = () => {
   const userMenuRef = useRef();
   const notificationMenuRef = useRef();
 
-  const { isAuthenticated, user, logout } = useAuthStore((state) => ({
+  const { isAuthenticated, user, logout, accessToken } = useAuthStore((state) => ({
     isAuthenticated: state.isAuthenticated,
     user: state.user,
     logout: state.logout,
+    accessToken: state.accessToken, // 액세스 토큰 추가
   }));
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const Header = () => {
     try {
       const { data } = await api.get('/notifications/unread', {
         headers: {
-          Authorization: `Bearer ${yourAccessToken}`,
+          Authorization: `Bearer ${accessToken}`, // accessToken 사용
         },
       });
       setNotifications(data);
@@ -47,7 +47,11 @@ const Header = () => {
 
   const markNotificationsAsRead = async () => {
     try {
-      await api.patch('/notifications/read');
+      await api.patch('/notifications/read', {}, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`, // accessToken 사용
+        },
+      });
       setUnreadCount(0);
     } catch (error) {
       console.error('Failed to mark notifications as read:', error);
@@ -71,7 +75,7 @@ const Header = () => {
     } else {
       setNotificationMenuOpen(true);
       setShouldRenderNotificationMenuOpen(true);
-      markNotificationsAsRead(); // 알림 메뉴를 열 때 알림을 읽음 처리
+      markNotificationsAsRead();
     }
   };
 

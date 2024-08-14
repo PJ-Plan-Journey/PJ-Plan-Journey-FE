@@ -50,6 +50,7 @@ export const Nav = styled.nav`
   display: flex;
   align-items: center;
   gap: 1.3rem;
+  letter-spacing: 0.7px;
   `;
 
 export const NavLink = styled.a`

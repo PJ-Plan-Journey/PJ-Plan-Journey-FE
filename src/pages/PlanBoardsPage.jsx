@@ -65,3 +65,4 @@ const PlanBoardsPage = () => {
 };
 
 export default PlanBoardsPage;
+

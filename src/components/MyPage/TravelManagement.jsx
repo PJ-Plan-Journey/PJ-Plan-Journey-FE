@@ -30,7 +30,6 @@ const TravelManagement = () => {
 
   return (
     <S.TravelContainer>
-      <S.LoginText>나의 여행</S.LoginText>
       <S.TravelList>
         {travels.length > 0 ? (
           travels.map((travel, index) => (
