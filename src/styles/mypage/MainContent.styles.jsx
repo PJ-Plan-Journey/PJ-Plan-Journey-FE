@@ -117,3 +117,30 @@ export const Button = styled.button`
     cursor: not-allowed;
   }
 `;
+
+export const BoardWrapper = styled.div`
+  margin: 2cm;
+  margin-left: 7cm;
+  margin-right: 7cm;
+`;
+
+export const LoadMoreButton = styled.button`
+  margin: 2rem auto;
+  padding: 1rem 2rem;
+  background-color: #0056b3;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+
+  &:hover {
+    background-color: #003a82;
+  }
+
+  &:disabled {
+    background-color: #a0a0a0;
+    cursor: not-allowed;
+  }
+`;
