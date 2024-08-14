@@ -11,19 +11,45 @@ const FriendManagement = () => {
   const navigate = useNavigate();
   const [friendEmail, setFriendEmail] = useState('');
 
-  // 친구 요청 받은 목록 가져오기
-  const { data: friendRequests = [], isLoading: isRequestsLoading } = useQuery({
-    queryKey: ['friendRequests'],
-    queryFn: () =>
-      api.get('/friends/receivedLists').then((res) => res.data.data),
-  });
+ // 친구 요청 받은 목록 가져오기 (페이징 처리)
+const {
+  data: friendRequestsData, // 여기에 변수명 
+  isLoading: isRequestsLoading,
+  fetchNextPage: fetchNextFriendRequestsPage,
+  hasNextPage: hasNextFriendRequestsPage,
+  isError: isRequestsError,
+  error: friendRequestsError,
+} = useQuery({
+  queryKey: ['friendRequests'],
+  queryFn: ({ pageParam = 0 }) =>
+    api.get(`/friends/receivedLists?page=${pageParam}&size=10`).then((res) => res.data),
+  getNextPageParam: (lastPage) => lastPage?.nextPage ?? undefined,
+  onError: (error) => {
+    console.log('친구 요청 목록을 불러오는 중 오류가 발생했습니다:', error);
+  },
+});
 
-  // 친구 목록 가져오기
-  const { data: friends = [], isLoading: isFriendsLoading } = useQuery({
-    queryKey: ['friends'],
-    queryFn: () => api.get('/friends').then((res) => res.data.data),
-  }); 
-  
+// 친구 목록 가져오기 (페이징 처리)
+const {
+  data: friendsData,
+  isLoading: isFriendsLoading,
+  fetchNextPage: fetchNextFriendsPage,
+  hasNextPage: hasNextFriendsPage,
+  isError: isFriendsError,
+  error: friendsError,
+} = useQuery({
+  queryKey: ['friends'],
+  queryFn: ({ pageParam = 0 }) =>
+    api.get(`/friends?page=${pageParam}&size=10`).then((res) => res.data),
+  getNextPageParam: (lastPage) => lastPage?.nextPage ?? undefined,
+  onError: (error) => {
+    console.log('친구 목록을 불러오는 중 오류가 발생했습니다:', error);
+  },
+});
+
+
+
+
   // 친구 요청 수락
   const acceptFriendMutation = useMutation({
     mutationFn: (id) => api.post(`/friends/accept/${id}`),
@@ -49,42 +75,23 @@ const FriendManagement = () => {
     },
   });
 
-  const removeFriend = async(id) => {
-    if (!id) {
-      console.error('friendId가 정의되지 않았습니다.');
-      alert('친구를 삭제할 수 없습니다. 잠시 후 다시 시도하세요.');
-      return;
-    }
-    
-    try {
-      const response = await api.delete(`/friends/${id}`);
-      console.log('친구 삭제 요청 성공:', response);
-      return response.data;
-    } catch (error) {
+  // 친구 삭제
+  const removeFriendMutation = useMutation({
+    mutationFn: (id) => api.delete(`/friends/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['friends']);
+    },
+    onError: (error) => {
       console.log('친구 삭제 실패:', error);
-    }
-  }
-
- // 친구 삭제
-const removeFriendMutation = useMutation({
-  mutationKey: ['removeFriend'],
-  mutationFn: (id) => removeFriend(id),
-  onSuccess: (res) => {
-    console.log(res)
-    queryClient.invalidateQueries(['friends']);
-  },
-  onError: (error) => {
-    console.log('실패', {error})
-  }
-});
-
-
+      alert('친구 삭제에 실패했습니다.');
+    },
+  });
 
   // 친구 추가
   const addFriendMutation = useMutation({
     mutationFn: () =>
       api.post('/friends/request', { receiverEmail: friendEmail }),
-    onSuccess: (response) => {
+    onSuccess: () => {
       alert('친구 요청을 성공적으로 보냈습니다.');
       setFriendEmail('');
     },
@@ -100,79 +107,91 @@ const removeFriendMutation = useMutation({
     addFriendMutation.mutate({ receiverEmail: trimmedEmail });
   };
 
-  const uniqueFriends = Array.from(new Set(friends.map(friend => friend.friendId)))
-  .map(id => {
-    return friends.find(friend => friend.friendId === id);
-  });
+  // 데이터가 없는 경우 기본값 처리
+  const friendRequests = friendRequestsData?.pages?.flatMap(page => page.data) || [];
+  const friends = friendsData?.pages?.flatMap(page => page.data) || [];
 
+  return (
+    <S.FriendContainer>
+      <S.AddFriendSection>
+        <S.Input
+          type="email"
+          placeholder="친구 이메일을 입력하세요"
+          value={friendEmail}
+          onChange={(e) => setFriendEmail(e.target.value)}
+        />
+        <S.Button onClick={handleAddFriend}>친구 추가</S.Button>
+      </S.AddFriendSection>
 
-  console.log(friendRequests)
-return (
-  <S.FriendContainer>
-    <S.AddFriendSection>
-      <S.Input
-        type="email"
-        placeholder="친구 이메일을 입력하세요"
-        value={friendEmail}
-        onChange={(e) => setFriendEmail(e.target.value)}
-      />
-      <S.Button onClick={handleAddFriend}>친구 추가</S.Button>
-    </S.AddFriendSection>
-    <S.LoginText>친구요청</S.LoginText>
-    {isRequestsLoading ? (
-      <S.ErrorMessage>Loading friend requests...</S.ErrorMessage>
-    ) : friendRequests.length > 0 ? (
-      friendRequests.map((user) => (
-        <S.FriendRequestContainer key={user.friendRequestId}>
-          <div>
-            <strong>{user.senderNickname || 'No Nickname'}님</strong>
-          </div>
-          <S.FriendRequestActions>
-            <FaCheck
-              style={{ cursor: 'pointer' }}
-              onClick={() =>
-                acceptFriendMutation.mutate(user.friendRequestId)
-              }
-            />
-            <FaTrash
-              style={{ cursor: 'pointer' }}
-              onClick={() =>
-                rejectFriendMutation.mutate(user.friendRequestId)
-              }
-            />
-          </S.FriendRequestActions>
-        </S.FriendRequestContainer>
-      ))
-    ) : (
-      <S.ErrorMessage>No friend requests available</S.ErrorMessage>
-    )}
-    <S.LoginText>친구</S.LoginText>
-    {isFriendsLoading ? (
-      <p>Loading friends...</p>
-    ) : uniqueFriends.length > 0 ? (
-      uniqueFriends.map((user) => (
-        <S.FriendContainerInner key={user.friendId}>
-          <div>
-            <strong>{user.friendNickname|| 'No Nickname'}님</strong>
-          </div>
-          <S.FriendActions>
-            <MdGroupAdd
-              style={{ cursor: 'pointer' }}
-              onClick={() => inviteToEvent(user.id)}
-            />
-            <FaTrash
-              style={{ cursor: 'pointer' }}
-              onClick={() => removeFriendMutation.mutate(user.friendId)}
-            />
-          </S.FriendActions>
-        </S.FriendContainerInner>
-      ))
-    ) : (
-      <S.ErrorMessage>No friends found</S.ErrorMessage>
-    )}
-  </S.FriendContainer>
-);
+      <S.LoginText>친구 요청</S.LoginText>
+      {isRequestsLoading ? (
+        <S.ErrorMessage>Loading friend requests...</S.ErrorMessage>
+      ) : friendRequestsData.data.content.length > 0 ? (
+        <>
+          {friendRequestsData.data.content.map((user) => (
+            <S.FriendRequestContainer key={user.friendRequestId}>
+              <div>
+                <strong>{user.senderNickname || 'No Nickname'}님</strong>
+              </div>
+              <S.FriendRequestActions>
+                <FaCheck
+                  style={{ cursor: 'pointer' }}
+                  onClick={() =>
+                    acceptFriendMutation.mutate(user.friendRequestId)
+                  }
+                />
+                <FaTrash
+                  style={{ cursor: 'pointer' }}
+                  onClick={() =>
+                    rejectFriendMutation.mutate(user.friendRequestId)
+                  }
+                />
+              </S.FriendRequestActions>
+            </S.FriendRequestContainer>
+          ))}
+          {hasNextFriendRequestsPage && (
+            <S.LoadMoreButton onClick={fetchNextFriendRequestsPage}>
+              더 불러오기
+            </S.LoadMoreButton>
+          )}
+        </>
+      ) : (
+        <S.ErrorMessage>No friend requests available</S.ErrorMessage>
+      )}
 
+      <S.LoginText>친구 목록</S.LoginText>
+      {isFriendsLoading ? (
+        <S.ErrorMessage>Loading friends...</S.ErrorMessage>
+      ) : friendsData.data.content.length > 0 ? (
+        <>
+          {friendsData?.data.content.map((user) => (
+            <S.FriendContainerInner key={user.friendId}>
+              <div>
+                <strong>{user.friendNickname || 'No Nickname'}님</strong>
+              </div>
+              <S.FriendActions>
+                <MdGroupAdd
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => navigate(`/invite/${user.friendId}`)}
+                />
+                <FaTrash
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => removeFriendMutation.mutate(user.friendId)}
+                />
+              </S.FriendActions>
+            </S.FriendContainerInner>
+          ))}
+          {hasNextFriendsPage && (
+            <S.LoadMoreButton onClick={fetchNextFriendsPage}>
+              더 불러오기
+            </S.LoadMoreButton>
+          )}
+        </>
+      ) : (
+        <S.ErrorMessage>No friends found</S.ErrorMessage>
+      )}
+    </S.FriendContainer>
+  );
 };
 
 export default FriendManagement;
