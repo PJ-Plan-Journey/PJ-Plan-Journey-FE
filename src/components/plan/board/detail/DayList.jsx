@@ -23,7 +23,7 @@ const DayList = ({ toggleComment, data }) => {
   const { user } = useAuthStore();
   const navigate = useNavigate();
 
-  const { isPublished, planDetails, id } = data || '';
+  const { isPublished, planDetails, id, author } = data || '';
 
   const groupedDaylist = groupByDate(planDetails);
 
@@ -50,13 +50,17 @@ const DayList = ({ toggleComment, data }) => {
         <LikeButton planId={id} />
         <button onClick={toggleComment}>댓글</button>
 
-        <button>{isPublished ? '공유취소' : '공유하기'}</button>
+        {author === user.nickname ? (
+          <>
+            <button>{isPublished ? '공유취소' : '공유하기'}</button>
 
-        <AddMyPlanButton planId={id} />
+            <button onClick={() => navigate(`/board/${id}/edit`)}>편집</button>
 
-        <button onClick={() => navigate(`/board/${id}/edit`)}>편집</button>
-
-        <DeleteButton planId={id} />
+            <DeleteButton planId={id} />
+          </>
+        ) : (
+          <AddMyPlanButton planId={id} />
+        )}
       </div>
     </S.DayListContainer>
   );

@@ -38,7 +38,6 @@ const useStompStore = create((set, get) => ({
     const { stompClient } = get(); // 최신 상태를 가져옵니다.
     if (stompClient && stompClient.connected) {
       stompClient.subscribe(destination, (message) => {
-        console.log(message);
         callback(message);
       });
     } else {
@@ -50,7 +49,6 @@ const useStompStore = create((set, get) => ({
 
     if (stompClient && stompClient.connected) {
       stompClient.publish({ destination, body });
-      console.log('요청성공', { destination }, { body });
     } else {
       console.error('STOMP Client is not connected');
     }

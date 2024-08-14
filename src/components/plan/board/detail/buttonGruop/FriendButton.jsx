@@ -9,8 +9,6 @@ const FriendButton = ({ planId }) => {
     try {
       const { data } = await api.get(`/friends`);
 
-      console.log({ data });
-
       return data;
     } catch (error) {
       console.log({ error });
@@ -48,21 +46,18 @@ const FriendButton = ({ planId }) => {
     <div>
       <button>친구</button>
       <ul>
-        {friendList &&
-          friendList?.data.map((item) => {
-            return (
-              <div>
-                <li>{item.friendNickname}</li>
-                <button
-                  onClick={() =>
-                    inviteFriendMutate({ planId, friendId: item.friendId })
-                  }
-                >
-                  초대
-                </button>
-              </div>
-            );
-          })}
+        {friendList?.data.content.map((item) => (
+          <div key={item.friendNickname}>
+            <li>{item.friendNickname}</li>
+            <button
+              onClick={() =>
+                inviteFriendMutate({ planId, friendId: item.friendId })
+              }
+            >
+              초대
+            </button>
+          </div>
+        ))}
       </ul>
     </div>
   );

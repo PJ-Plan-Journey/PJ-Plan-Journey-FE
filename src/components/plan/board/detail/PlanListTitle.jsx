@@ -34,8 +34,6 @@ const PlanListTitle = ({ data }) => {
     mutationKey: ['editTitle'],
     mutationFn: (planId) => editTitle(planId),
     onSuccess: ({ data }) => {
-      console.log('제목 변경완료');
-      console.log(data);
       setIsEditTitle(false);
       queryClient.invalidateQueries(['getPlanDetail', data.id]);
     },
@@ -66,8 +64,9 @@ const PlanListTitle = ({ data }) => {
           <MdEdit onClick={ontoggleEditTitle} />
         </div>
       )}
+      <span>{data?.nickname}</span>
       <span className="city">{data?.cityName}</span>
-      <span className="date">나중에 일정 범위 추가</span>
+      <span className="date"></span>
     </S.PlanInfo>
   );
 };

@@ -35,7 +35,7 @@ const PlanBoardsPage = () => {
     mutationFn: (userPlanId) => inviteAcceptance(userPlanId),
     onSuccess: ({ data }) => {
       console.log('tjdrhd');
-      navigate(`/board/${data.planId}`);
+      navigate(`/board/${data.planId}/edit`);
     },
     onError: () => {
       console.log('dpfj');

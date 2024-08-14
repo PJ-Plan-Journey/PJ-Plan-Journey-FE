@@ -36,6 +36,7 @@ const KakaoMap = () => {
 
       if (day && placeList[day]?.length > 0) {
         // 선택된 day의 장소들로 경계 설정
+
         placeList[day].forEach(({ x: lng, y: lat }) => {
           if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
             bounds.extend(new window.kakao.maps.LatLng(lat, lng));

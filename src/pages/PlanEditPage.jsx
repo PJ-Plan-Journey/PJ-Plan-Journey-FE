@@ -11,21 +11,16 @@ import { useParams } from 'react-router-dom';
 import api from '@axios/api';
 import EditDayList from '@components/plan/board/edit/EditDayList';
 import EditPlanList from '@components/plan/board/edit/EditPlanList';
-
-const MINWIDTH = 37;
+import useReSizeWidth from '@hooks/plan/useReSizeWidth';
 
 const PlanEditPage = () => {
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [width, setWidth] = useState(MINWIDTH);
-  const [isDragging, setIsDragging] = useState(false);
-  const widthRef = useRef(width);
   const { id } = useParams();
-  const { connect, subscribe, disconnect } = useStompStore();
-  const { addPlace, day, initList, setDay } = usePlaceStore();
+  const { connect, subscribe, disconnect, sendMessage, stompClient } =
+    useStompStore();
+  const { addPlace, initList, setDay } = usePlaceStore();
   const { setDates } = useDateStore();
   const { user } = useAuthStore();
-
-  const resizeContainerStyle = isEditMode || !day ? { width: `${width}%` } : {};
+  const { reSizeOnlyStyle, handleMouseDown } = useReSizeWidth();
 
   const getPlan = async () => {
     try {
@@ -43,8 +38,6 @@ const PlanEditPage = () => {
 
   const savePlan = () => {
     // 저장 로직
-
-    setIsEditMode(false);
   };
 
   useEffect(() => {
@@ -86,61 +79,45 @@ const PlanEditPage = () => {
     setDates({ startDate, endDate });
   }, [data, addPlace, id]);
 
-  const handleMouseDown = () => {
-    setIsDragging(true);
-  };
+  // 웹소켓 수신 함수
+  const handleMessage = (message) => {
+    console.log('Received message:', JSON.parse(message.body));
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
+    const ReceivedData = JSON.parse(message.body);
 
-  const handleMouseMove = (event) => {
-    if (isDragging) {
-      // Ensure the new width is in a reasonable range
-      const newWidth = Math.min(
-        Math.max(MINWIDTH, (event.clientX / window.innerWidth) * 100),
-        100
-      );
-      widthRef.current = newWidth; // Update the ref value
-      setWidth(newWidth); // Trigger re-render with the new width
+    if (!ReceivedData.groupedByDate) {
+      return;
+    }
+
+    if (
+      ReceivedData.groupedByDate &&
+      Object.keys(ReceivedData.groupedByDate).length > 0
+    ) {
+      // 그룹화된 장소 정보를 addPlace 함수로 전달
+      Object.entries(ReceivedData.groupedByDate).forEach(([date, places]) => {
+        addPlace(date, places);
+      });
     }
   };
 
+  // 웹소켓 연결
   useEffect(() => {
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
+    const connectAndSend = async () => {
+      await connect();
     };
-  }, [isDragging]);
-
-  useEffect(() => {
-    const handleMessage = (message) => {
-      console.log('Received message:', message.body);
-      try {
-        // 메시지 본문을 JSON.parse()로 변환하여 사용
-        const parsedMessage = JSON.parse(message.body);
-        console.log('Parsed message:', parsedMessage);
-        // 메시지 처리 로직 추가
-      } catch (error) {
-        console.error('Error parsing message:', error);
-      }
-    };
-
-    subscribe(`/sub/room/${id}`, handleMessage);
-
-    connect();
-
-    // STOMP 연결 후 /sub/room/{planId} 구독 수신될 때 콜백함수 호출
-
-    console.log(`Subscribed to /sub/room/${id}`);
-
+    connectAndSend();
     return () => {
       disconnect();
     };
-  }, [isEditMode, subscribe, connect, disconnect, id]);
+  }, [connect, disconnect]);
+
+  // 웹소켓 연결 후 구독과 입장메세지보내기
+  useEffect(() => {
+    if (stompClient) {
+      subscribe(`/sub/room/${id}`, handleMessage);
+      sendMessage(`/pub/room/${id}/entered`);
+    }
+  }, [stompClient]);
 
   useEffect(() => {
     return () => {
@@ -152,7 +129,7 @@ const PlanEditPage = () => {
 
   return (
     <S.PlanDetailPageContainer>
-      <div className="resize-container" style={resizeContainerStyle}>
+      <div className="resize-container" style={reSizeOnlyStyle}>
         <EditDayList planId={id} />
 
         <EditPlanList data={data} />

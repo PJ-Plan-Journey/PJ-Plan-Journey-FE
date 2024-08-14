@@ -8,16 +8,11 @@ import { v4 as uuidv4 } from 'uuid';
 import * as S from '@styles/plan/place/SelectPlace.style';
 import useStompStore from '@zustands/plan/useStompStore';
 
-const AddPlace = ({
-  isVisible,
-  day,
-  setIsVisible,
-  isEditMode = false,
-  data,
-}) => {
+const AddPlace = ({ isVisible, day, setIsVisible, data }) => {
   const [inputValue, setInputValue] = useState('');
   const [searchList, setSearchList] = useState([]);
   const [dayPlaceList, setDayPlaceList] = useState([]);
+  const [addPlaceList, setAddPlaceList] = useState([]);
   const { addPlace, placeList, setDay } = usePlaceStore();
   const { sendMessage } = useStompStore();
 
@@ -27,14 +22,13 @@ const AddPlace = ({
       id: uuidv4(), // 새로운 UUID를 생성하여 사용
       placeName: place.place_name, // 장소 이름을 `placeName`으로 설정
       sequence: placeList[day].length + 1, // 시퀀스는 필요한 경우 동적으로 설정
-      x: parseFloat(place.x), // x 좌표를 숫자로 변환하여 설정
-      y: parseFloat(place.y), // y 좌표를 숫자로 변환하여 설정
+      latitude: parseFloat(place.y), // x 좌표를 숫자로 변환하여 설정
+      longitude: parseFloat(place.x), // y 좌표를 숫자로 변환하여 설정
     };
 
     setDayPlaceList((prev) => [...prev, newPlace]);
+    setAddPlaceList((prev) => [...prev, newPlace]);
   };
-
-  console.log(dayPlaceList);
 
   const removePlace = (placeName) => {
     const update = dayPlaceList.filter((item) => item.placeName !== placeName);
@@ -47,18 +41,13 @@ const AddPlace = ({
   };
 
   const SubmitDayList = (day) => {
-    if (isEditMode) {
-      const newPlace = {
-        type: 'INSERT',
-        planId: 4,
-        fromDate: '2024-07-30',
-        placeName: '카페',
-        latitude: 432.51,
-        longitude: 123.12,
-      };
+    const newPlace = {
+      type: 'INSERT',
+      planId: data.id,
+      details: addPlaceList,
+    };
 
-      sendMessage(`/pub/edit/room/${data.id}`, newPlace);
-    }
+    sendMessage(`/pub/edit/room/${data.id}`, JSON.stringify(newPlace));
 
     if (dayPlaceList.length > 0) {
       setDay(day);
@@ -90,8 +79,6 @@ const AddPlace = ({
       setSearchList([]);
     }
   }, [inputValue]);
-
-  console.log(dayPlaceList);
 
   return (
     <S.SelectPlaceContainer $isVisible={isVisible.toString()}>
@@ -125,7 +112,7 @@ const AddPlace = ({
                 <div className="place-address">{item.address_name}</div>
               </div>
 
-              {dayPlaceList.find(
+              {dayPlaceList?.find(
                 (place) => place.placeName === item.place_name
               ) ? (
                 <button

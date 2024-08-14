@@ -11,20 +11,15 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import api from '@axios/api';
 import DayList from '@components/plan/board/detail/DayList';
-
-const MINWIDTH = 37;
+import useReSizeWidth from '@hooks/plan/useReSizeWidth';
 
 const PlanDetailPage = () => {
   const [showComment, setShowComment] = useState(false);
-  const [width, setWidth] = useState(MINWIDTH);
-  const [isDragging, setIsDragging] = useState(false);
-  const widthRef = useRef(width);
   const { id } = useParams();
   const { addPlace, day, initList, setDay } = usePlaceStore();
   const { setDates } = useDateStore();
   const { user } = useAuthStore();
-
-  const resizeContainerStyle = !day ? { width: `${width}%` } : {};
+  const { reSizeStyle, handleMouseDown } = useReSizeWidth();
 
   const getPlan = async () => {
     try {
@@ -39,6 +34,8 @@ const PlanDetailPage = () => {
     queryKey: ['getPlanDetail', id],
     queryFn: getPlan,
   });
+
+  console.log(data);
 
   const toggleComment = () => {
     setShowComment((prev) => !prev);
@@ -83,36 +80,6 @@ const PlanDetailPage = () => {
     setDates({ startDate, endDate });
   }, [data, addPlace, id]);
 
-  const handleMouseDown = () => {
-    setIsDragging(true);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseMove = (event) => {
-    if (isDragging) {
-      // Ensure the new width is in a reasonable range
-      const newWidth = Math.min(
-        Math.max(MINWIDTH, (event.clientX / window.innerWidth) * 100),
-        100
-      );
-      widthRef.current = newWidth; // Update the ref value
-      setWidth(newWidth); // Trigger re-render with the new width
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [isDragging]);
-
   useEffect(() => {
     return () => {
       setDates({ startDate: null, endDate: null });
@@ -123,7 +90,7 @@ const PlanDetailPage = () => {
 
   return (
     <S.PlanDetailPageContainer>
-      <div className="resize-container" style={resizeContainerStyle}>
+      <div className="resize-container" style={reSizeStyle}>
         <DayList data={data} toggleComment={toggleComment} />
         {showComment ? (
           <CommentList planId={data.id} />

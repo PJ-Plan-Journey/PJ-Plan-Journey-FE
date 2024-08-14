@@ -1,75 +1,25 @@
-import { useState } from 'react';
-import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
 import useDateStore from '@zustands/plan/useDateStore';
-import { ko } from 'date-fns/locale';
-import { format, parseISO } from 'date-fns';
-import Portal from '@/utils/Portal';
+import { parseISO } from 'date-fns';
 import * as S from '@styles/plan/board/detail/PlanList.style';
 import PlanPlaceItem from './PlanPlaceItem';
-import useStompStore from '@zustands/plan/useStompStore';
 import PlanListTitle from '@components/plan/board/detail/PlanListTitle';
-import AddPlace from '@components/plan/board/detail/AddPlace';
+import { formatDate } from '@/utils/formatDate';
+import useAuthStore from '@zustands/useAuthStore';
 
 const PlanList = ({ data }) => {
-  const {
-    placeList,
-    movePlace,
-    movePlaceBetweenDays,
-    day: selectDay,
-    setDay,
-  } = usePlaceStore();
-
+  const { placeList, day: selectDay, setDay } = usePlaceStore();
   const { getDays } = useDateStore();
-  const [isVisible, setIsVisible] = useState(false);
-  const [selectedDay, setSelectedDay] = useState(null);
-  const { sendMessage } = useStompStore();
+  const { user } = useAuthStore();
+  console.log(user.nickname);
 
   const saveDay = (day) => {
     setDay(day);
   };
 
-  const onDragStart = ({ draggableId }) => {
-    const [_, day] = draggableId.split(' ');
-    saveDay(day);
-  };
-
-  const onDragEnd = ({ source, destination }) => {
-    if (!destination) return;
-
-    if (source.droppableId === destination.droppableId) {
-      movePlace(source.droppableId, source.index, destination.index);
-    } else {
-      movePlaceBetweenDays(
-        source.droppableId,
-        destination.droppableId,
-        source.index,
-        destination.index
-      );
-    }
-
-    saveDay(destination.droppableId);
-
-    const payload = {
-      type: 'UPDATE',
-      planId: data.id,
-      fromSeq: 4,
-      toSeq: 2,
-      fromDate: '2024-07-30',
-      toDate: '2024-07-30',
-    };
-
-    sendMessage(`/pub/edit/room/${data.id}`, payload);
-  };
-
-  const visibleSearchBox = (day) => {
-    setSelectedDay(day);
-    setIsVisible(true);
-  };
-
-  const formatDate = (dateString) => {
-    const date = parseISO(dateString); // 문자열을 Date 객체로 변환
-    return format(date, 'yyyy.M.d(EE)', { locale: ko });
+  const changeDate = (dateString) => {
+    const date = parseISO(dateString);
+    return formatDate('yyyy.M.d(EE)', date);
   };
 
   return (
@@ -87,7 +37,6 @@ const PlanList = ({ data }) => {
                 day={selectDay}
                 place={place}
                 index={index + 1}
-                isEditMode={isEditMode}
               />
             ))}
           </ul>
@@ -101,7 +50,7 @@ const PlanList = ({ data }) => {
                   </span>
 
                   <div className="info">
-                    <span>{formatDate(day)}</span>
+                    <span>{changeDate(day)}</span>
                   </div>
                 </div>
 
@@ -120,18 +69,6 @@ const PlanList = ({ data }) => {
           </>
         )}
       </S.DayList>
-
-      <Portal>
-        {isVisible && (
-          <AddPlace
-            isVisible={isVisible}
-            setIsVisible={setIsVisible}
-            day={selectedDay}
-            isEditMode={isEditMode}
-            data={data}
-          />
-        )}
-      </Portal>
     </S.SelectedListContainer>
   );
 };
