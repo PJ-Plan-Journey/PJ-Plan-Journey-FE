@@ -19,7 +19,7 @@ const EditDayList = ({ planId }) => {
 
       <div className="button-group">
         <FriendButton planId={planId} />
-        <button>편집완료</button>
+        <button onClick={() => navigate(`/board/${planId}`)}>편집완료</button>
       </div>
     </S.DayListContainer>
   );

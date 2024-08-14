@@ -36,9 +36,7 @@ const PlanEditPage = () => {
     queryFn: getPlan,
   });
 
-  const savePlan = () => {
-    // 저장 로직
-  };
+  console.log(data);
 
   useEffect(() => {
     if (!data) {

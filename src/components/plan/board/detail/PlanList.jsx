@@ -11,7 +11,6 @@ const PlanList = ({ data }) => {
   const { placeList, day: selectDay, setDay } = usePlaceStore();
   const { getDays } = useDateStore();
   const { user } = useAuthStore();
-  console.log(user.nickname);
 
   const saveDay = (day) => {
     setDay(day);

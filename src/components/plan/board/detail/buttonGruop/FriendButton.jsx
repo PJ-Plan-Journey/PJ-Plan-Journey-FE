@@ -43,7 +43,7 @@ const FriendButton = ({ planId }) => {
   });
 
   return (
-    <div>
+    <>
       <button>친구</button>
       <ul>
         {friendList?.data.content.map((item) => (
@@ -59,7 +59,7 @@ const FriendButton = ({ planId }) => {
           </div>
         ))}
       </ul>
-    </div>
+    </>
   );
 };
 

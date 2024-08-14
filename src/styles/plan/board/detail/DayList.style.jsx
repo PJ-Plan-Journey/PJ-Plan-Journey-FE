@@ -30,6 +30,7 @@ export const DayListContainer = styled.div`
     gap: 10px;
 
     button {
+      cursor: pointer;
       width: 100%;
       border: none;
       padding: 15px;

@@ -52,7 +52,7 @@ const DayList = ({ toggleComment, data }) => {
 
         {author === user.nickname ? (
           <>
-            <button>{isPublished ? '공유취소' : '공유하기'}</button>
+            <Published isPublished={isPublished} planId={id} />
 
             <button onClick={() => navigate(`/board/${id}/edit`)}>편집</button>
 

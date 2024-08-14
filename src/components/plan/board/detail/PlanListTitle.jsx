@@ -66,7 +66,9 @@ const PlanListTitle = ({ data }) => {
       )}
       <span>{data?.nickname}</span>
       <span className="city">{data?.cityName}</span>
-      <span className="date"></span>
+      <span className="date">
+        {data?.startDate} ~ {data?.endDate}
+      </span>
     </S.PlanInfo>
   );
 };

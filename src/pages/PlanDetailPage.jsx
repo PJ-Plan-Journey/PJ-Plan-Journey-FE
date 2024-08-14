@@ -35,8 +35,6 @@ const PlanDetailPage = () => {
     queryFn: getPlan,
   });
 
-  console.log(data);
-
   const toggleComment = () => {
     setShowComment((prev) => !prev);
   };
