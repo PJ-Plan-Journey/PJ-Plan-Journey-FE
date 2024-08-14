@@ -17,43 +17,45 @@ export const ErrorMessage = styled.p`
   font-size: 1rem;
   margin-bottom: 1rem;
   margin-left: 1rem;
+  color: #888
 `;
 
 
 export const FriendRequestContainer = styled.div`
-  background: #fff;
+  background: #F2F4F6;
   padding: 1rem;
+  margin-left: 1rem;
   margin-top: 0.5rem;
-  margin-bottom: 2rem;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 500px;
+  max-width: 463px;
 `;
 
 export const FriendRequestActions = styled.div`
   display: flex;
   gap: 1rem;
+  color: #020202;
 `;
 
 export const FriendContainerInner = styled.div`
-  background: #fff;
+  background: #F2F4F6;
   padding: 1rem;
   margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-left: 1rem;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 500px;
+  max-width: 463px;
 `;
 
 export const FriendActions = styled.div`
   display: flex;
   gap: 1rem;
+  color: #020202; 
 `;
 
 export const Button = styled.button`
@@ -91,3 +93,29 @@ export const AddFriendSection = styled.div`
   display: flex;
   align-items: center; /* input과 버튼을 가로 정렬 */
 `;
+
+export const LoadMoreButton = styled.button`
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  margin: 20px 0;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+
+  &:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+`;
+
