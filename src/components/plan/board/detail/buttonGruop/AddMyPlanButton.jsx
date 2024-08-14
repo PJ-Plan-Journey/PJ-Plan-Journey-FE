@@ -1,8 +1,10 @@
 import api from '@axios/api';
 import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 const AddMyPlanButton = ({ planId }) => {
-  // 나중에 api 따로 분리
+  const navigate = useNavigate();
+
   const addMyPlan = async (planId) => {
     try {
       const { data } = await api.post(`/plans/${planId}`);
@@ -17,6 +19,7 @@ const AddMyPlanButton = ({ planId }) => {
     mutationFn: (planId) => addMyPlan(planId),
     onSuccess: ({ data }) => {
       console.log('성공', { data });
+      navigate('/mypage');
     },
     onError: () => {
       console.log('실패');

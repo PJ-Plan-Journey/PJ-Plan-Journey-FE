@@ -86,7 +86,7 @@ const Reply = ({ commentId }) => {
 
       {isVisible && (
         <ul className="reply-list">
-          {data?.data.map((child) => (
+          {data?.data?.content.map((child) => (
             <div key={child.id}>
               <div>
                 <span className="username">{child.nickname}</span>

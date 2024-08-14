@@ -1,25 +1,26 @@
-import CommentList from '@components/plan/board/detail/CommentList';
-import PlanList from '@components/plan/board/detail/PlanList';
 import KakaoMap from '@components/plan/KakaoMap';
 import { FaGripLinesVertical as WidthSizeIcon } from 'react-icons/fa6';
 import useDateStore from '@zustands/plan/useDateStore';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
 import { useEffect, useRef, useState } from 'react';
 import * as S from '@styles/plan/PlanDetailPage.style';
+import useStompStore from '@zustands/plan/useStompStore';
 import useAuthStore from '@zustands/authStore';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import api from '@axios/api';
-import DayList from '@components/plan/board/detail/DayList';
+import EditDayList from '@components/plan/board/edit/EditDayList';
+import EditPlanList from '@components/plan/board/edit/EditPlanList';
 import useReSizeWidth from '@hooks/plan/useReSizeWidth';
 
-const PlanDetailPage = () => {
-  const [showComment, setShowComment] = useState(false);
+const PlanEditPage = () => {
   const { id } = useParams();
-  const { addPlace, day, initList, setDay } = usePlaceStore();
+  const { connect, subscribe, disconnect, sendMessage, stompClient } =
+    useStompStore();
+  const { addPlace, initList, setDay } = usePlaceStore();
   const { setDates } = useDateStore();
   const { user } = useAuthStore();
-  const { reSizeStyle, handleMouseDown } = useReSizeWidth();
+  const { reSizeOnlyStyle, handleMouseDown } = useReSizeWidth();
 
   const getPlan = async () => {
     try {
@@ -35,9 +36,7 @@ const PlanDetailPage = () => {
     queryFn: getPlan,
   });
 
-  const toggleComment = () => {
-    setShowComment((prev) => !prev);
-  };
+  console.log(data);
 
   useEffect(() => {
     if (!data) {
@@ -78,6 +77,46 @@ const PlanDetailPage = () => {
     setDates({ startDate, endDate });
   }, [data, addPlace, id]);
 
+  // 웹소켓 수신 함수
+  const handleMessage = (message) => {
+    console.log('Received message:', JSON.parse(message.body));
+
+    const ReceivedData = JSON.parse(message.body);
+
+    if (!ReceivedData.groupedByDate) {
+      return;
+    }
+
+    if (
+      ReceivedData.groupedByDate &&
+      Object.keys(ReceivedData.groupedByDate).length > 0
+    ) {
+      // 그룹화된 장소 정보를 addPlace 함수로 전달
+      Object.entries(ReceivedData.groupedByDate).forEach(([date, places]) => {
+        addPlace(date, places);
+      });
+    }
+  };
+
+  // 웹소켓 연결
+  useEffect(() => {
+    const connectAndSend = async () => {
+      await connect();
+    };
+    connectAndSend();
+    return () => {
+      disconnect();
+    };
+  }, [connect, disconnect]);
+
+  // 웹소켓 연결 후 구독과 입장메세지보내기
+  useEffect(() => {
+    if (stompClient) {
+      subscribe(`/sub/room/${id}`, handleMessage);
+      sendMessage(`/pub/room/${id}/entered`);
+    }
+  }, [stompClient]);
+
   useEffect(() => {
     return () => {
       setDates({ startDate: null, endDate: null });
@@ -88,20 +127,13 @@ const PlanDetailPage = () => {
 
   return (
     <S.PlanDetailPageContainer>
-      <div className="resize-container" style={reSizeStyle}>
-        <DayList data={data} toggleComment={toggleComment} />
-        {showComment ? (
-          <CommentList planId={data.id} />
-        ) : (
-          <>
-            <PlanList data={data} />
-            {!day && (
-              <div className="width-size-button" onMouseDown={handleMouseDown}>
-                <WidthSizeIcon />
-              </div>
-            )}
-          </>
-        )}
+      <div className="resize-container" style={reSizeOnlyStyle}>
+        <EditDayList planId={id} />
+
+        <EditPlanList data={data} />
+        <div className="width-size-button" onMouseDown={handleMouseDown}>
+          <WidthSizeIcon />
+        </div>
       </div>
 
       <KakaoMap />
@@ -109,4 +141,4 @@ const PlanDetailPage = () => {
   );
 };
 
-export default PlanDetailPage;
+export default PlanEditPage;
