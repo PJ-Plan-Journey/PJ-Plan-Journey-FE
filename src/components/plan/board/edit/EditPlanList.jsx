@@ -6,12 +6,12 @@ import { ko } from 'date-fns/locale';
 import { format, parseISO } from 'date-fns';
 import Portal from '@/utils/Portal';
 import * as S from '@styles/plan/board/detail/PlanList.style';
-import PlanPlaceItem from './PlanPlaceItem';
 import useStompStore from '@zustands/plan/useStompStore';
 import PlanListTitle from '@components/plan/board/detail/PlanListTitle';
 import AddPlace from '@components/plan/board/detail/AddPlace';
+import EditPlaceItem from '@components/plan/board/edit/EditPlaceItem';
 
-const PlanList = ({ data }) => {
+const EditPlanList = ({ data }) => {
   const {
     placeList,
     movePlace,
@@ -76,50 +76,62 @@ const PlanList = ({ data }) => {
     <S.SelectedListContainer>
       <PlanListTitle data={data} />
 
-      <S.DayList>
-        {selectDay && <div>{selectDay}</div>}
+      <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
+        <S.DayList>
+          {getDays().map((day, index) => (
+            <div className="item" key={day}>
+              <div className="day">
+                <span className="date">day{index + 1}</span>
 
-        {selectDay ? (
-          <ul className="list">
-            {placeList[selectDay]?.map((place, index) => (
-              <PlanPlaceItem
-                key={place.id}
-                day={selectDay}
-                place={place}
-                index={index + 1}
-                isEditMode={isEditMode}
-              />
-            ))}
-          </ul>
-        ) : (
-          <>
-            {getDays().map((day, index) => (
-              <div className="item" key={day}>
-                <div className="day">
-                  <span className="date" onClick={() => saveDay(day)}>
-                    day{index + 1}
-                  </span>
-
-                  <div className="info">
-                    <span>{formatDate(day)}</span>
-                  </div>
+                <div className="info">
+                  <span>{formatDate(day)}</span>
                 </div>
-
-                <ul className="list">
-                  {placeList[day]?.map((place, index) => (
-                    <PlanPlaceItem
-                      key={place.id}
-                      day={day}
-                      place={place}
-                      index={index + 1}
-                    />
-                  ))}
-                </ul>
               </div>
-            ))}
-          </>
-        )}
-      </S.DayList>
+
+              <Droppable droppableId={day}>
+                {(provided, snapshot) => (
+                  <div
+                    className="list"
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    style={{
+                      backgroundColor: snapshot.isDraggingOver
+                        ? '#f8f8f8'
+                        : 'white',
+                      borderRadius: '10px',
+                      padding: '20px 10px',
+                    }}
+                  >
+                    {placeList[day]?.map((place, index) => (
+                      <Draggable
+                        key={place.id}
+                        draggableId={`${place.id} ${day}`}
+                        index={index}
+                      >
+                        {(provided) => (
+                          <EditPlaceItem
+                            key={place.id}
+                            day={day}
+                            place={place}
+                            index={index + 1}
+                            provided={provided}
+                            data={data}
+                          />
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+
+              <div className="button-group">
+                <button onClick={() => visibleSearchBox(day)}>장소 추가</button>
+              </div>
+            </div>
+          ))}
+        </S.DayList>
+      </DragDropContext>
 
       <Portal>
         {isVisible && (
@@ -136,4 +148,4 @@ const PlanList = ({ data }) => {
   );
 };
 
-export default PlanList;
+export default EditPlanList;

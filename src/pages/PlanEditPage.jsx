@@ -1,30 +1,31 @@
-import CommentList from '@components/plan/board/detail/CommentList';
-import PlanList from '@components/plan/board/detail/PlanList';
 import KakaoMap from '@components/plan/KakaoMap';
 import { FaGripLinesVertical as WidthSizeIcon } from 'react-icons/fa6';
 import useDateStore from '@zustands/plan/useDateStore';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
 import { useEffect, useRef, useState } from 'react';
 import * as S from '@styles/plan/PlanDetailPage.style';
+import useStompStore from '@zustands/plan/useStompStore';
 import useAuthStore from '@zustands/authStore';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import api from '@axios/api';
-import DayList from '@components/plan/board/detail/DayList';
+import EditDayList from '@components/plan/board/edit/EditDayList';
+import EditPlanList from '@components/plan/board/edit/EditPlanList';
 
 const MINWIDTH = 37;
 
-const PlanDetailPage = () => {
-  const [showComment, setShowComment] = useState(false);
+const PlanEditPage = () => {
+  const [isEditMode, setIsEditMode] = useState(false);
   const [width, setWidth] = useState(MINWIDTH);
   const [isDragging, setIsDragging] = useState(false);
   const widthRef = useRef(width);
   const { id } = useParams();
+  const { connect, subscribe, disconnect } = useStompStore();
   const { addPlace, day, initList, setDay } = usePlaceStore();
   const { setDates } = useDateStore();
   const { user } = useAuthStore();
 
-  const resizeContainerStyle = !day ? { width: `${width}%` } : {};
+  const resizeContainerStyle = isEditMode || !day ? { width: `${width}%` } : {};
 
   const getPlan = async () => {
     try {
@@ -40,8 +41,10 @@ const PlanDetailPage = () => {
     queryFn: getPlan,
   });
 
-  const toggleComment = () => {
-    setShowComment((prev) => !prev);
+  const savePlan = () => {
+    // 저장 로직
+
+    setIsEditMode(false);
   };
 
   useEffect(() => {
@@ -114,6 +117,32 @@ const PlanDetailPage = () => {
   }, [isDragging]);
 
   useEffect(() => {
+    const handleMessage = (message) => {
+      console.log('Received message:', message.body);
+      try {
+        // 메시지 본문을 JSON.parse()로 변환하여 사용
+        const parsedMessage = JSON.parse(message.body);
+        console.log('Parsed message:', parsedMessage);
+        // 메시지 처리 로직 추가
+      } catch (error) {
+        console.error('Error parsing message:', error);
+      }
+    };
+
+    subscribe(`/sub/room/${id}`, handleMessage);
+
+    connect();
+
+    // STOMP 연결 후 /sub/room/{planId} 구독 수신될 때 콜백함수 호출
+
+    console.log(`Subscribed to /sub/room/${id}`);
+
+    return () => {
+      disconnect();
+    };
+  }, [isEditMode, subscribe, connect, disconnect, id]);
+
+  useEffect(() => {
     return () => {
       setDates({ startDate: null, endDate: null });
       initList();
@@ -124,19 +153,12 @@ const PlanDetailPage = () => {
   return (
     <S.PlanDetailPageContainer>
       <div className="resize-container" style={resizeContainerStyle}>
-        <DayList data={data} toggleComment={toggleComment} />
-        {showComment ? (
-          <CommentList planId={data.id} />
-        ) : (
-          <>
-            <PlanList data={data} />
-            {!day && (
-              <div className="width-size-button" onMouseDown={handleMouseDown}>
-                <WidthSizeIcon />
-              </div>
-            )}
-          </>
-        )}
+        <EditDayList planId={id} />
+
+        <EditPlanList data={data} />
+        <div className="width-size-button" onMouseDown={handleMouseDown}>
+          <WidthSizeIcon />
+        </div>
       </div>
 
       <KakaoMap />
@@ -144,4 +166,4 @@ const PlanDetailPage = () => {
   );
 };
 
-export default PlanDetailPage;
+export default PlanEditPage;

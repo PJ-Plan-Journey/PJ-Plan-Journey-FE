@@ -4,7 +4,8 @@ import * as S from '@styles/plan/board/detail/DayList.style';
 import LikeButton from '@components/plan/board/detail/buttonGruop/LikeButton';
 import AddMyPlanButton from '@components/plan/board/detail/buttonGruop/AddMyPlanButton';
 import DeleteButton from '@components/plan/board/detail/buttonGruop/DeleteButton';
-import FriendButton from '@components/plan/board/detail/buttonGruop/FriendButton';
+import { useNavigate } from 'react-router-dom';
+import { Logo } from '@styles/plan/Step.style';
 
 const groupByDate = (daylist) => {
   const grouped = {};
@@ -17,15 +18,10 @@ const groupByDate = (daylist) => {
   return Object.entries(grouped);
 };
 
-const DayList = ({
-  toggleComment,
-  changeEditMode,
-  isEditMode,
-  savePlan,
-  data,
-}) => {
+const DayList = ({ toggleComment, data }) => {
   const { setDay } = usePlaceStore();
   const { user } = useAuthStore();
+  const navigate = useNavigate();
 
   const { isPublished, planDetails, id } = data || '';
 
@@ -34,36 +30,31 @@ const DayList = ({
   return (
     <S.DayListContainer>
       <ul className="day-list">
+        <Logo />
         <div className="day" onClick={() => setDay('')}>
           전체
         </div>
 
-        {!isEditMode &&
-          groupedDaylist?.map((day, index) => (
-            <div
-              key={day[0] + index}
-              className="day"
-              onClick={() => setDay(day[0])}
-            >
-              {index + 1}일차
-            </div>
-          ))}
+        {groupedDaylist?.map((day, index) => (
+          <div
+            key={day[0] + index}
+            className="day"
+            onClick={() => setDay(day[0])}
+          >
+            {index + 1}일차
+          </div>
+        ))}
       </ul>
 
       <div className="button-group">
         <LikeButton planId={id} />
-        <FriendButton planId={id} />
         <button onClick={toggleComment}>댓글</button>
 
         <button>{isPublished ? '공유취소' : '공유하기'}</button>
 
         <AddMyPlanButton planId={id} />
 
-        {isEditMode ? (
-          <button onClick={savePlan}>편집완료</button>
-        ) : (
-          <button onClick={changeEditMode}>편집</button>
-        )}
+        <button onClick={() => navigate(`/board/${id}/edit`)}>편집</button>
 
         <DeleteButton planId={id} />
       </div>
