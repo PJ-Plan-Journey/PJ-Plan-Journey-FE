@@ -25,7 +25,7 @@ const MenuIcon = styled.div`
 `;
 
 const MenuText = styled.div`
-  font-size: 1rem; /* 메뉴 이름 폰트 사이즈 */
+  font-size: 0.9rem; /* 메뉴 이름 폰트 사이즈 */
   text-align: center; /* 텍스트 중앙 정렬 */
 `;
 

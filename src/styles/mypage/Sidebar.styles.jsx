@@ -2,12 +2,15 @@ import styled from 'styled-components';
 
 export const SidebarContainer = styled.div`
   min-width: 250px;
-  height: 100vh;
-  background-color: #f8f9fa;
+  height: 28vh;
+  background-color: #ffffff;
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  margin-top: 6rem;
+  padding-top: 2.6rem;
+
 `;
 
 export const MenuItem = styled.div`
@@ -26,6 +29,8 @@ export const MenuItemIcon = styled.div`
 `;
 
 export const MenuText = styled.div`
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: bold;
+  padding-top: 0.2rem;
+
 `;

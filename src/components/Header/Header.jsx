@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaBell } from 'react-icons/fa';
+import { TbTableShare } from "react-icons/tb";
 import logo from '@assets/Logo.jpg';
 import * as S from '@styles/main/Header.styles';
 import DropdownMenu from './DropdownMenu';
@@ -12,8 +13,7 @@ const Header = () => {
   const [isUserMenuOpen, setUserMenuOpen] = useState(false);
   const [isNotificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const [shouldRenderUserMenu, setShouldRenderUserMenu] = useState(false);
-  const [shouldRenderNotificationMenu, setShouldRenderNotificationMenu] =
-    useState(false);
+  const [shouldRenderNotificationMenuOpen, setShouldRenderNotificationMenuOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const userMenuRef = useRef();
@@ -33,7 +33,11 @@ const Header = () => {
 
   const fetchUnreadNotifications = async () => {
     try {
-      const { data } = await api.get('/notifications/unread');
+      const { data } = await api.get('/notifications/unread', {
+        headers: {
+          Authorization: `Bearer ${yourAccessToken}`,
+        },
+      });
       setNotifications(data);
       setUnreadCount(data.length);
     } catch (error) {
@@ -63,10 +67,10 @@ const Header = () => {
   const toggleNotificationMenu = () => {
     if (isNotificationMenuOpen) {
       setNotificationMenuOpen(false);
-      setTimeout(() => setShouldRenderNotificationMenu(false), 300);
+      setTimeout(() => setShouldRenderNotificationMenuOpen(false), 300);
     } else {
       setNotificationMenuOpen(true);
-      setShouldRenderNotificationMenu(true);
+      setShouldRenderNotificationMenuOpen(true);
       markNotificationsAsRead(); // 알림 메뉴를 열 때 알림을 읽음 처리
     }
   };
@@ -81,7 +85,7 @@ const Header = () => {
       !notificationMenuRef.current.contains(event.target)
     ) {
       setNotificationMenuOpen(false);
-      setTimeout(() => setShouldRenderNotificationMenu(false), 300);
+      setTimeout(() => setShouldRenderNotificationMenuOpen(false), 300);
     }
   };
 
@@ -110,8 +114,8 @@ const Header = () => {
           </S.NavLink>
           {isAuthenticated ? (
             <>
-              <S.NavLink as={Link} to="/profile">
-                {user ? `${user.nickname}님` : 'Loading...'}
+              <S.NavLink>
+                {user ? `${user.nickname} 님` : 'Loading...'}
               </S.NavLink>
               <S.NavLink onClick={logout}>로그아웃</S.NavLink>
             </>
@@ -123,19 +127,15 @@ const Header = () => {
           <S.IconWrapper ref={userMenuRef} onClick={toggleUserMenu}>
             <FaUser />
             {shouldRenderUserMenu && (
-              <DropdownMenu isVisible={isUserMenuOpen} />
+              <DropdownMenu $isVisible={isUserMenuOpen} />
             )}
           </S.IconWrapper>
-          <S.IconWrapper
-            ref={notificationMenuRef}
-            onClick={toggleNotificationMenu}
-          >
-            <FaBell />
-            {unreadCount > 0 && <S.NotificationBadge />}{' '}
-            {/* 읽지 않은 알림이 있으면 빨간 점 표시 */}
-            {shouldRenderNotificationMenu && (
+          <S.IconWrapper ref={notificationMenuRef}>
+            <FaBell onClick={toggleNotificationMenu} /> 
+            {unreadCount > 0 && <S.NotificationBadge />} {/* 빨간색 점 표시 */}
+            {shouldRenderNotificationMenuOpen && (
               <NotificationMenu
-                isVisible={isNotificationMenuOpen}
+                $isVisible={isNotificationMenuOpen}
                 notifications={notifications}
               />
             )}

@@ -8,10 +8,17 @@ export const LoginText = styled.h2`
   font-size: 1.5rem;
   margin-bottom: 1rem;
   &:not(:first-child) {
-    margin-top: 2rem;
     padding-bottom: 2rem;
+    padding: 1rem;
   }
 `;
+
+export const ErrorMessage = styled.p`
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+`;
+
 
 export const FriendRequestContainer = styled.div`
   background: #fff;
@@ -50,9 +57,10 @@ export const FriendActions = styled.div`
 `;
 
 export const Button = styled.button`
+  font-size: 0.9rem;
   padding: 0.5rem 1rem;
   margin-left: 0.5rem;
-  background-color: #156BF0;
+  background-color: #0056b3;
   color: white;
   border: none;
   border-radius: 5px;
@@ -60,7 +68,7 @@ export const Button = styled.button`
   display: flex;
   align-items: center;
   &:hover {
-    background-color: #0056b3;
+    background-color: #156BF0;
   }
   height: 2.8rem;
 `;
@@ -70,7 +78,9 @@ export const Input = styled.input`
   border: 1px solid #ccc;
   border-radius: 5px;
   flex-grow: 1;
+  margin-top: 1rem;
   margin-right: 0.5rem;
+  margin-left: 1rem;
   max-width: 350px;
   width: 70%;
   height: 2.8rem;

@@ -17,22 +17,20 @@ const MainContent = ({ selectedMenu, days, setShowModal, travels }) => {
           <S.Section>
             <S.SectionTitle>계정센터</S.SectionTitle>
             <S.LoginTextContainer>
-              <S.LoginText>개인정보</S.LoginText>
-              <p>
-                <strong>이름:</strong> {user?.nickname || '닉네임 없음'}
-              </p>
-              <p>
-                <strong>계정:</strong> {user?.email || '이메일 없음'}
-              </p>
+              <S.UserText>
+                {user?.nickname || '닉네임 없음'}
+                <strong> 님</strong>
+              </S.UserText>
+              <S.EmailText>{user?.email || '이메일 없음'}</S.EmailText>
             </S.LoginTextContainer>
-            
+
             <AccountSettings onDeleteAccount={() => setShowModal(true)} />
           </S.Section>
         );
       case 'friends':
         return (
           <S.Section>
-            <S.SectionTitle>친구 관리</S.SectionTitle>
+            <S.SectionTitle>친구관리</S.SectionTitle>
             <S.Card>
               <FriendManagement />
             </S.Card>
@@ -41,7 +39,7 @@ const MainContent = ({ selectedMenu, days, setShowModal, travels }) => {
       case 'travel':
         return (
           <S.Section>
-            <S.SectionTitle>일정 관리</S.SectionTitle>
+            <S.SectionTitle>일정관리</S.SectionTitle>
             <S.Card>
               <TravelManagement travels={travels} />
             </S.Card>
