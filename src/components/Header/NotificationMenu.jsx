@@ -3,9 +3,9 @@
 import React from 'react';
 import * as S from '@styles/main/Header.styles';
 
-const NotificationMenu = ({ isVisible, notifications }) => {
+const NotificationMenu = ({ $isVisible, notifications }) => {
   return (
-    <S.NotificationMenuWrapper isVisible={isVisible}>
+    <S.NotificationMenuWrapper $isVisible={$isVisible}>
       {notifications.length > 0 ? (
         notifications.map((notification, index) => (
           <S.NotificationItem key={index}>

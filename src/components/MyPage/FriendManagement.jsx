@@ -120,7 +120,7 @@ return (
     </S.AddFriendSection>
     <S.LoginText>친구요청</S.LoginText>
     {isRequestsLoading ? (
-      <p>Loading friend requests...</p>
+      <S.ErrorMessage>Loading friend requests...</S.ErrorMessage>
     ) : friendRequests.length > 0 ? (
       friendRequests.map((user) => (
         <S.FriendRequestContainer key={user.friendRequestId}>
@@ -144,7 +144,7 @@ return (
         </S.FriendRequestContainer>
       ))
     ) : (
-      <p>No friend requests available</p>
+      <S.ErrorMessage>No friend requests available</S.ErrorMessage>
     )}
     <S.LoginText>친구</S.LoginText>
     {isFriendsLoading ? (
@@ -168,7 +168,7 @@ return (
         </S.FriendContainerInner>
       ))
     ) : (
-      <p>No friends found</p>
+      <S.ErrorMessage>No friends found</S.ErrorMessage>
     )}
   </S.FriendContainer>
 );

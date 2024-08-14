@@ -71,9 +71,10 @@ const AccountSettings = ({ onDeleteAccount }) => {
           >
             비밀번호 변경
           </S.Button>
+          <S.Button onClick={onDeleteAccount}>회원탈퇴</S.Button>
         </S.InputContainer>
       </S.Card>
-      <S.Button onClick={onDeleteAccount}>회원탈퇴</S.Button>
+     
     </>
   );
 };

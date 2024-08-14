@@ -12,7 +12,6 @@ export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background-color: #f8f9fa;
+  background-color: #F2F4F6;
   padding: 1rem;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
 `;

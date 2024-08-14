@@ -1,7 +1,7 @@
-// src/components/MyPage/ShareButton.jsx
 import React from 'react';
 import { MdShare } from 'react-icons/md';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom'; // useNavigate 추가
 
 const StyledShareButton = styled.button`
   background-color: ${(props) => (props.disabled ? '#a0a0a0' : '#156BF0')};
@@ -20,9 +20,12 @@ const StyledShareButton = styled.button`
   }
 `;
 
-const ShareButton = ({ planId }) => {
-  const handleShare = () => {
-    window.location.href = `/board/${planId}`; // 공유 페이지로 리디렉션
+const ShareButton = () => {
+  const navigate = useNavigate(); // useNavigate 훅 초기화
+
+  const handleShare = (e) => {
+    e.stopPropagation(); // 이벤트 전파 중지
+    navigate('/board'); // '/board' 경로로 리디렉션
   };
 
   return (

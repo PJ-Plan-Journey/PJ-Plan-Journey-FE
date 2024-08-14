@@ -59,17 +59,32 @@ export const SectionTitle = styled.h2`
 
 export const LoginText = styled.h3`
   font-size: 1.5rem;
+  font-weight: normal;
   margin-bottom: 0.5rem;
   line-height: 2;
-  font-weight: normal;
 `;
+
+export const UserText = styled.div`
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0056b3;
+  margin-left: 0.8rem;
+  margin-top: 0.8rem;
+  padding-bottom: 0.8rem;
+`
+
+export const EmailText = styled.div`
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #020202;
+  margin-left: 0.8rem;
+`
 
 export const InputContainer = styled.div`
-  margin-bottom: 1rem;
+ margin: 1rem;
 `;
-
 export const InputWrapper = styled.div`
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.2rem;
 `;
 
 export const Input = styled.input`
@@ -77,18 +92,20 @@ export const Input = styled.input`
   max-width: 300px;
   padding: 0.5rem;
   margin-top: 0.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid #888;
   border-radius: 5px;
   &::placeholder {
-    color: #888;
+    color: #020202;
   }
 `;
 
 export const Button = styled.button`
   padding: 0.5rem 1rem;
   margin-top: 1rem;
-  background-color: #156BF0;
+  background-color: #0056b3;
   color: white;
+  font-size: 0.8rem;
+  margin-right: 1rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -96,7 +113,7 @@ export const Button = styled.button`
     background-color: #0056b3;
   }
   &:disabled {
-    background-color: #ccc;
+    background-color: #B0B8C1;
     cursor: not-allowed;
   }
 `;

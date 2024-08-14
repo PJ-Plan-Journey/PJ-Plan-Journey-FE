@@ -24,7 +24,7 @@ export const HeaderWrapper = styled.header`
 export const LogoWrapper = styled.div`
   display: flex;
   align-items: center;
-  padding-left: 7rem;
+  padding-left: 6.3rem;
 `;
 
 export const NavWrapper = styled.div`
@@ -49,13 +49,13 @@ export const NavWrapper = styled.div`
 export const Nav = styled.nav`
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-`;
+  gap: 1.3rem;
+  `;
 
 export const NavLink = styled.a`
   text-decoration: none;
-  color: #333;
-  font-size: 1rem;
+  color: #020202;
+  font-size: 1.1rem;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -68,6 +68,14 @@ export const NavLink = styled.a`
 export const IconWrapper = styled.div`
   position: relative;
   cursor: pointer;
+  font-size: 1.2rem;
+  color: #020202;
+
+  cursor: pointer;
+
+  &:hover {
+    color: #0056b3;
+  }
 `;
 
 const fadeIn = keyframes`
@@ -125,6 +133,7 @@ export const DropdownItem = styled.a`
   line-height: 1.5;
   width: 100%;
   text-align: left;
+  font-size: 1rem;
 
   &:hover {
     background: #f0f0f0;
@@ -155,7 +164,9 @@ export const NotificationItem = styled.div`
 export const NoNotificationMessage = styled.div`
   padding: 0.5rem 0;
   text-align: center;
-  color: #999;
+  color: #020202;
+  font-size: 1rem;
+  font-weight: 1rem;
 `;
 
 export const NotificationBadge = styled.div`
