@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
 import useDateStore from '@zustands/plan/useDateStore';
-import SelectPlace from '@components/plan/place/SelectPlace';
 import { ko } from 'date-fns/locale';
 import { format, parseISO } from 'date-fns';
 import Portal from '@/utils/Portal';
@@ -10,6 +9,7 @@ import * as S from '@styles/plan/board/detail/PlanList.style';
 import PlanPlaceItem from './PlanPlaceItem';
 import useStompStore from '@zustands/plan/useStompStore';
 import PlanListTitle from '@components/plan/board/detail/PlanListTitle';
+import AddPlace from '@components/plan/board/detail/AddPlace';
 
 const PlanList = ({ isEditMode, data }) => {
   const {
@@ -188,7 +188,7 @@ const PlanList = ({ isEditMode, data }) => {
 
       <Portal>
         {isVisible && (
-          <SelectPlace
+          <AddPlace
             isVisible={isVisible}
             setIsVisible={setIsVisible}
             day={selectedDay}

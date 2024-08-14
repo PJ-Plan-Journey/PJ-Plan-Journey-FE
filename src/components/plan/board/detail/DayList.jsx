@@ -4,6 +4,7 @@ import * as S from '@styles/plan/board/detail/DayList.style';
 import LikeButton from '@components/plan/board/detail/buttonGruop/LikeButton';
 import AddMyPlanButton from '@components/plan/board/detail/buttonGruop/AddMyPlanButton';
 import DeleteButton from '@components/plan/board/detail/buttonGruop/DeleteButton';
+import FriendButton from '@components/plan/board/detail/buttonGruop/FriendButton';
 
 const groupByDate = (daylist) => {
   const grouped = {};
@@ -51,7 +52,7 @@ const DayList = ({
 
       <div className="button-group">
         <LikeButton planId={id} />
-
+        <FriendButton planId={id} />
         <button onClick={toggleComment}>댓글</button>
 
         <button>{isPublished ? '공유취소' : '공유하기'}</button>
