@@ -115,7 +115,7 @@ const Header = () => {
           {isAuthenticated ? (
             <>
               <S.NavLink>
-                {user ? `${user.nickname}님` : 'Loading...'}
+                {user ? `${user.nickname} 님` : 'Loading...'}
               </S.NavLink>
               <S.NavLink onClick={logout}>로그아웃</S.NavLink>
             </>
