@@ -1,3 +1,4 @@
+import { flex } from '@styles/common/common.style';
 import styled, { keyframes, css } from 'styled-components';
 
 export const HeaderWrapper = styled.header`
@@ -32,7 +33,7 @@ export const NavWrapper = styled.div`
   align-items: center;
   padding-right: 7rem;
   justify-content: space-between;
-  
+
   @media (max-width: 1200px) {
     width: 600px;
   }
@@ -51,7 +52,7 @@ export const Nav = styled.nav`
   align-items: center;
   gap: 1.3rem;
   letter-spacing: 0.7px;
-  `;
+`;
 
 export const NavLink = styled.a`
   text-decoration: none;
@@ -117,7 +118,7 @@ export const DropdownMenuWrapper = styled.div`
   padding: 0.5rem 1rem;
   min-width: 150px;
   animation: ${({ isVisible }) =>
-   isVisible
+    isVisible
       ? css`
           animation: ${fadeIn} 0.3s ease forwards;
         `
@@ -152,10 +153,30 @@ export const NotificationMenuWrapper = styled(DropdownMenuWrapper)`
 `;
 
 export const NotificationItem = styled.div`
+  width: 100%;
+  ${flex}
+  justify-content: space-between;
   padding: 0.5rem 0;
   border-bottom: 1px solid #ddd;
   line-height: 1.5;
   text-align: left;
+
+  .button-group {
+    ${flex}
+    gap: 5px;
+  }
+
+  button {
+    cursor: pointer;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+
+    &.accept {
+      background-color: #156bf0;
+      color: white;
+    }
+  }
 
   &:last-child {
     border-bottom: none;

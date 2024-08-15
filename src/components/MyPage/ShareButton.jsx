@@ -6,7 +6,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'; // useMutat
 import api from '@axios/api';
 
 const StyledShareButton = styled.button`
-  background-color: ${(props) => (props.disabled ? '#a0a0a0' : '#156BF0')};
+  background-color: ${(props) =>
+    props.disabled ? '#a0a0a0' : '#156BF0'}!important;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -22,10 +23,11 @@ const StyledShareButton = styled.button`
   }
 `;
 
-const ShareButton = ( { planId }) => { // planId를 props로 받아옴
+const ShareButton = ({ planId }) => {
+  // planId를 props로 받아옴
   const navigate = useNavigate();
   const queryClient = useQueryClient(); // queryClient 초기화
-  console.log(planId)
+  console.log(planId);
   const publishPlanMutation = useMutation({
     mutationFn: (planId) => api.patch(`/plans/${planId}/publish`), // 일정 공개 API 호출
     onSuccess: () => {
@@ -39,13 +41,13 @@ const ShareButton = ( { planId }) => { // planId를 props로 받아옴
     },
   });
 
-  const handleShare = (e,planId) => {
+  const handleShare = (e, planId) => {
     e.stopPropagation(); // 이벤트 전파 중지
     publishPlanMutation.mutate(planId); // API 호출
   };
 
   return (
-    <StyledShareButton onClick={(e) => handleShare(e,planId)}>
+    <StyledShareButton onClick={(e) => handleShare(e, planId)}>
       <MdShare /> 공유하기
     </StyledShareButton>
   );

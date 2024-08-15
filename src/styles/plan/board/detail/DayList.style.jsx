@@ -1,4 +1,4 @@
-import { flexColumn } from '@styles/common/common.style';
+import { flex, flexColumn } from '@styles/common/common.style';
 import styled from 'styled-components';
 
 export const DayListContainer = styled.div`
@@ -38,5 +38,10 @@ export const DayListContainer = styled.div`
       border-radius: 10px;
       background-color: white;
     }
+  }
+
+  .like {
+    ${flex}
+    gap: 10px;
   }
 `;
