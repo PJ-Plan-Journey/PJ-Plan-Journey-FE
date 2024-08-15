@@ -70,6 +70,8 @@ export const Button = styled.button`
   cursor: pointer;
   display: flex;
   align-items: center;
+  transition: background-color 0.3s ease;
+
   &:hover {
     background-color: #156BF0;
   }
@@ -97,20 +99,22 @@ export const AddFriendSection = styled.div`
 export const LoadMoreButton = styled.button`
   display: block;
   width: 100%;
-  padding: 10px 20px;
+  max-width: 463px;
+  padding: 7px 20px;
   margin: 20px 0;
-  background-color: #007bff;
+  margin-left: 1rem;
+  background-color: #0056b3;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
   text-align: center;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 0.9rem;
+  font-weight: normal;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #007bff;
   }
 
   &:disabled {

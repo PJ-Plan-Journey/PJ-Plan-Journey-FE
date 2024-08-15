@@ -175,7 +175,7 @@ const FriendManagement = () => {
           ))}
           {hasNextFriendRequestsPage && (
             <S.LoadMoreButton onClick={() => fetchNextFriendRequestsPage()}>
-              더 불러오기
+              더 보기
             </S.LoadMoreButton>
           )}
         </>
@@ -206,7 +206,7 @@ const FriendManagement = () => {
           ))}
           {hasNextFriendsPage && (
             <S.LoadMoreButton onClick={() => fetchNextFriendsPage()}>
-              더 불러오기
+              더 보기
             </S.LoadMoreButton>
           )}
         </>
