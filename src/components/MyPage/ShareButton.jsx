@@ -6,7 +6,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '@axios/api';
 
 const StyledShareButton = styled.button`
-  background-color: ${(props) => (props.isPublished ? '#FF6347' : '#156BF0')}; /* isPublished에 따라 색상 변경 */
+  background-color: ${(props) =>
+    props.disabled ? '#a0a0a0' : '#156BF0'}!important;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -22,11 +23,11 @@ const StyledShareButton = styled.button`
   }
 `;
 
-const ShareButton = ({ planId, isPublished: initialPublishedState }) => { // planId와 초기 isPublished 상태를 받아옴
-  const [isPublished, setIsPublished] = useState(initialPublishedState); // 로컬 상태로 isPublished 관리
+const ShareButton = ({ planId }) => {
+  // planId를 props로 받아옴
   const navigate = useNavigate();
-  const queryClient = useQueryClient(); 
-
+  const queryClient = useQueryClient(); // queryClient 초기화
+  console.log(planId);
   const publishPlanMutation = useMutation({
     mutationFn: () => api.patch(`/plans/${planId}/publish`), 
     onSuccess: () => {
@@ -41,32 +42,14 @@ const ShareButton = ({ planId, isPublished: initialPublishedState }) => { // pla
     },
   });
 
-  const unpublishPlanMutation = useMutation({
-    mutationFn: () => api.patch(`/plans/${planId}/unpublish`), // 일정 비공개 API 호출
-    onSuccess: () => {
-      alert('일정 공개가 취소되었습니다.');
-      queryClient.invalidateQueries(['sharedPlans']); 
-      setIsPublished(false); // 성공 시 상태 변경
-      navigate('/board'); 
-    },
-    onError: (error) => {
-      console.error('일정 공개 취소에 실패했습니다.', error);
-      alert('일정 공개 취소에 실패했습니다.');
-    },
-  });
-
-  const handleShare = (e) => {
-    e.stopPropagation(); 
-    if (isPublished) {
-      unpublishPlanMutation.mutate(); // 공개 취소
-    } else {
-      publishPlanMutation.mutate(); // 공개
-    }
+  const handleShare = (e, planId) => {
+    e.stopPropagation(); // 이벤트 전파 중지
+    publishPlanMutation.mutate(planId); // API 호출
   };
 
   return (
-    <StyledShareButton isPublished={isPublished} onClick={handleShare}>
-      <MdShare /> {isPublished ? '취소하기' : '공유하기'}
+    <StyledShareButton onClick={(e) => handleShare(e, planId)}>
+      <MdShare /> 공유하기
     </StyledShareButton>
   );
 };

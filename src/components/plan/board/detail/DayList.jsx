@@ -6,6 +6,8 @@ import AddMyPlanButton from '@components/plan/board/detail/buttonGruop/AddMyPlan
 import DeleteButton from '@components/plan/board/detail/buttonGruop/DeleteButton';
 import { useNavigate } from 'react-router-dom';
 import { Logo } from '@styles/plan/Step.style';
+import ShareButton from '@components/MyPage/ShareButton';
+import { FaHeart } from 'react-icons/fa';
 
 const groupByDate = (daylist) => {
   const grouped = {};
@@ -23,14 +25,18 @@ const DayList = ({ toggleComment, data }) => {
   const { user } = useAuthStore();
   const navigate = useNavigate();
 
-  const { isPublished, planDetails, id, author } = data || '';
+  console.log(data);
+
+  const { isPublished, planDetails, id, author, likeCount } = data || '';
+
+  console.log(author, user.nickname);
 
   const groupedDaylist = groupByDate(planDetails);
 
   return (
     <S.DayListContainer>
       <ul className="day-list">
-        <Logo />
+        <Logo onClick={() => navigate('/')} />
         <div className="day" onClick={() => setDay('')}>
           전체
         </div>
@@ -47,12 +53,15 @@ const DayList = ({ toggleComment, data }) => {
       </ul>
 
       <div className="button-group">
+        <div className="like">
+          <FaHeart /> <div>{likeCount}</div>
+        </div>
         <LikeButton planId={id} />
         <button onClick={toggleComment}>댓글</button>
 
         {author === user.nickname ? (
           <>
-            <Published isPublished={isPublished} planId={id} />
+            <ShareButton planId={id} />
 
             <button onClick={() => navigate(`/board/${id}/edit`)}>편집</button>
 
