@@ -10,7 +10,6 @@ export const Wrapper = styled.div`
   margin: 3cm;
 `;
 
-
 export const TravelContainer = styled.div`
   padding: 1rem;
   width: 100%;

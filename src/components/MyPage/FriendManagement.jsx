@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import * as S from '@styles/mypage/FriendManagement.styles';
 import { FaCheck, FaTrash } from 'react-icons/fa';
-import { MdGroupAdd } from 'react-icons/md';
 import {
   useMutation,
   useQueryClient,
