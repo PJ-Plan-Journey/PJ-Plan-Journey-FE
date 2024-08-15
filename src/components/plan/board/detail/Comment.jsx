@@ -1,21 +1,31 @@
 import * as S from '@styles/plan/board/detail/Comment.style';
 import api from '@axios/api';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
-import Reply from './Reply';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useRef, useState } from 'react';
+import Reply from '@components/plan/board/detail/Reply';
+import useAuthStore from '@zustands/useAuthStore';
+import { MdMoreHoriz } from 'react-icons/md';
 
-const Comment = ({ planId, comment }) => {
+const Comment = ({ planId, comment, setReplyToCommentId }) => {
   const { id: commentId, content, nickname, createdAt } = comment || '';
   const queryClient = useQueryClient();
   const [editContent, setEditContent] = useState('');
-  const [replyContent, setReplyContent] = useState('');
+  const [isEdit, setIsEdit] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
+  const { user } = useAuthStore();
+  const infoBoxRef = useRef(null);
+  const infoRef = useRef(null);
 
   const onChange = (e) => {
     setEditContent(e.target.value);
   };
 
-  const replyInputChange = (e) => {
-    setReplyContent(e.target.value);
+  const toggle = () => {
+    setShowInfo((prev) => !prev);
+  };
+
+  const editMode = () => {
+    setIsEdit(true);
   };
 
   const editComment = async ({ planId, commentId }) => {
@@ -59,7 +69,7 @@ const Comment = ({ planId, comment }) => {
     },
   });
 
-  const { mutate: commentMutate } = useMutation({
+  const { mutate: deleteCommentMutate } = useMutation({
     mutationKey: ['deleteComment', planId, commentId],
     mutationFn: ({ planId, commentId }) => deleteComment({ planId, commentId }),
     onSuccess: () => {
@@ -71,49 +81,77 @@ const Comment = ({ planId, comment }) => {
     },
   });
 
-  const addReplyComment = async (commentId) => {
-    try {
-      const { data } = await api.post(`/comments/${commentId}/child-comments`, {
-        content: replyContent,
-      });
-      return data;
-    } catch (error) {
-      console.log({ error });
-    }
-  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        infoBoxRef.current &&
+        !infoBoxRef.current.contains(event.target) &&
+        infoRef.current &&
+        !infoRef.current.contains(event.target)
+      ) {
+        setShowInfo(false);
+      }
+    };
 
-  const { mutate: addReplyMutate } = useMutation({
-    mutationKey: ['addReply'],
-    mutationFn: (commentId) => addReplyComment(commentId),
-    onSuccess: () => {
-      console.log('대댓글 성공');
-      queryClient.invalidateQueries(['reply']); // 여기 대댓글 업데이트
-    },
-    onError: () => {
-      console.log('대댓글 실패');
-    },
-  });
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    setEditContent(content);
+  }, []);
 
   return (
     <S.CommentContainer>
-      <input value={editContent} onChange={onChange} />
-      <button onClick={() => editCommentContentMutate({ planId, commentId })}>
-        수정
-      </button>
-      <button onClick={() => commentMutate({ planId, commentId })}>삭제</button>
-
       <div className="main">
         <div>
-          <span className="username">{nickname}</span>
-          <div>{content}</div>
+          <div className="username">
+            <div>{nickname}</div>
+          </div>
+          {isEdit ? (
+            <>
+              <input value={editContent} onChange={onChange} />
+              <button
+                className="edit"
+                onClick={() => editCommentContentMutate({ planId, commentId })}
+              >
+                수정
+              </button>
+              <button className="edit" onClick={() => setIsEdit(false)}>
+                취소
+              </button>
+            </>
+          ) : (
+            <div>{content}</div>
+          )}
         </div>
       </div>
       <div className="sub">
         <div>{createdAt}</div>
-      </div>
-      <div>
-        <input value={replyContent} onChange={replyInputChange} />
-        <button onClick={() => addReplyMutate(commentId)}>답글 달기</button>
+
+        <div onClick={() => setReplyToCommentId({ id: commentId, nickname })}>
+          댓글달기
+        </div>
+
+        {nickname === user.nickname && (
+          <div className="info">
+            <div ref={infoRef}>
+              <MdMoreHoriz onClick={toggle} />
+            </div>
+
+            {showInfo && (
+              <div className="info-box" ref={infoBoxRef}>
+                <div onClick={editMode}>수정하기</div>
+                <div onClick={() => deleteCommentMutate({ planId, commentId })}>
+                  삭제하기
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       <Reply commentId={commentId} />
