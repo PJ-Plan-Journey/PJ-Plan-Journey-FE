@@ -3,92 +3,51 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaBell } from 'react-icons/fa';
 import logo from '@assets/Logo.jpg';
 import * as S from '@styles/main/Header.styles';
-import DropdownMenu from './DropdownMenu';
 import NotificationMenu from './NotificationMenu';
 import useAuthStore from '@zustands/authStore';
 import api from '@axios/api';
+import { useQuery } from '@tanstack/react-query';
 
 const Header = () => {
-  const [isUserMenuOpen, setUserMenuOpen] = useState(false);
   const [isNotificationMenuOpen, setNotificationMenuOpen] = useState(false);
-  const [shouldRenderUserMenu, setShouldRenderUserMenu] = useState(false);
-  const [shouldRenderNotificationMenuOpen, setShouldRenderNotificationMenuOpen] = useState(false);
-  const [notifications, setNotifications] = useState([]);
-  const [unreadCount, setUnreadCount] = useState(0);
+  const [
+    shouldRenderNotificationMenuOpen,
+    setShouldRenderNotificationMenuOpen,
+  ] = useState(false);
   const userMenuRef = useRef();
   const notificationMenuRef = useRef();
-  const navigate = useNavigate(); // useNavigate 추가
+  const navigate = useNavigate();
 
-  const { isAuthenticated, user, logout, accessToken } = useAuthStore((state) => ({
+  const { isAuthenticated, user, logout } = useAuthStore((state) => ({
     isAuthenticated: state.isAuthenticated,
     user: state.user,
     logout: state.logout,
-    accessToken: state.accessToken, // 액세스 토큰 추가
   }));
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      fetchUnreadNotifications();
-    }
-  }, [isAuthenticated]);
-
-  const fetchUnreadNotifications = async () => {
+  const getInviteList = async () => {
     try {
-      const { data } = await api.get('/notifications/unread', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`, // accessToken 사용
-        },
-      });
-      setNotifications(data);
-      setUnreadCount(data.length);
+      const { data } = await api.get(`/invites`);
+
+      return data;
     } catch (error) {
-      console.error('Unread notifications fetch failed:', error);
+      console.log({ error });
     }
   };
 
-  const markNotificationsAsRead = async () => {
-    try {
-      await api.patch('/notifications/read', {}, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`, // accessToken 사용
-        },
-      });
-      setUnreadCount(0);
-    } catch (error) {
-      console.error('Failed to mark notifications as read:', error);
-    }
-  };
-
-  const toggleUserMenu = () => {
-    if (isUserMenuOpen) {
-      setUserMenuOpen(false);
-      setTimeout(() => setShouldRenderUserMenu(false), 300);
-    } else {
-      setUserMenuOpen(true);
-      setShouldRenderUserMenu(true);
-    }
-  };
+  const { data: inviteList } = useQuery({
+    queryKey: ['getInviteList'],
+    queryFn: getInviteList,
+  });
 
   const handleUserIconClick = () => {
     navigate('/mypage'); // "/mypage"로 라우팅
   };
 
   const toggleNotificationMenu = () => {
-    if (isNotificationMenuOpen) {
-      setNotificationMenuOpen(false);
-      setTimeout(() => setShouldRenderNotificationMenuOpen(false), 300);
-    } else {
-      setNotificationMenuOpen(true);
-      setShouldRenderNotificationMenuOpen(true);
-      markNotificationsAsRead();
-    }
+    setNotificationMenuOpen((prev) => !prev);
   };
 
   const handleClickOutside = (event) => {
-    if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
-      setUserMenuOpen(false);
-      setTimeout(() => setShouldRenderUserMenu(false), 300);
-    }
     if (
       notificationMenuRef.current &&
       !notificationMenuRef.current.contains(event.target)
@@ -137,12 +96,13 @@ const Header = () => {
             <FaUser />
           </S.IconWrapper>
           <S.IconWrapper ref={notificationMenuRef}>
-            <FaBell onClick={toggleNotificationMenu} /> 
-            {unreadCount > 0 && <S.NotificationBadge />} {/* 빨간색 점 표시 */}
-            {shouldRenderNotificationMenuOpen && (
+            <FaBell onClick={toggleNotificationMenu} />
+            {inviteList?.data.length > 0 && <S.NotificationBadge />}
+            {/* 빨간색 점 표시 */}
+            {isNotificationMenuOpen && (
               <NotificationMenu
                 $isVisible={isNotificationMenuOpen}
-                notifications={notifications}
+                inviteList={inviteList}
               />
             )}
           </S.IconWrapper>

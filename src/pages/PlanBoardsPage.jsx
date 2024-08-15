@@ -7,19 +7,6 @@ import { useNavigate } from 'react-router-dom';
 
 const PlanBoardsPage = () => {
   const navigate = useNavigate();
-  const getInviteList = async () => {
-    try {
-      const { data } = await api.get(`/invites`);
-      return data;
-    } catch (error) {
-      console.log({ error });
-    }
-  };
-
-  const { data } = useQuery({
-    queryKey: ['getInviteList'],
-    queryFn: getInviteList,
-  });
 
   const inviteAcceptance = async (userPlanId) => {
     try {
@@ -65,4 +52,3 @@ const PlanBoardsPage = () => {
 };
 
 export default PlanBoardsPage;
-
