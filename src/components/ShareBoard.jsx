@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import * as S from '@styles/mypage/TravelManagement.styles';
 import api from '@axios/api';
 import PlaceholderImage from '@assets/150x150.png';
+import { FaHeart, FaComment } from 'react-icons/fa'; // 좋아요와 댓글 아이콘 추가
+import { flex } from '@styles/common/common.style';
 
 const ShareBoard = () => {
   const navigate = useNavigate();
@@ -12,7 +14,7 @@ const ShareBoard = () => {
     try {
       const { data } = await api.get(`/plans?page=${pageParam}&size=10`);
       return {
-        data: data.data.content, // 여기에서 data 구조를 확인하세요.
+        data: data.data.content,
         nextPage: pageParam + 1,
         isLast: data.data.content.length === 0,
       };
@@ -31,7 +33,6 @@ const ShareBoard = () => {
       console.log('일정을 불러오는 중 오류가 발생했습니다:', error);
     },
   });
-
 
   if (isLoading) {
     return <p>데이터 로딩 중...</p>;
@@ -63,6 +64,10 @@ const ShareBoard = () => {
               </S.ImageContainer>
               <S.TravelInfo>
                 <S.TravelName>{plan.title}</S.TravelName>
+                <S.Userdiv>
+                <S.AuthorName>{plan.author}</S.AuthorName>
+                <S.ScheduleLabel>님의 일정</S.ScheduleLabel>
+                </S.Userdiv>
                 <S.TravelDate>
                   <S.ScheduleLabel>여행일자</S.ScheduleLabel>{' '}
                   <S.DateLabel>
@@ -75,6 +80,12 @@ const ShareBoard = () => {
                     {new Date(plan.createdAt).toLocaleDateString()}
                   </S.DateLabel>
                 </S.LastModified>
+                <S.LikeCommentInfo> {/* 좋아요와 댓글 수 표시 */}
+                  <FaHeart style={{ marginRight: '0.3rem' }} />
+                  <span>{plan.likeCount}</span>
+                  <FaComment style={{ marginLeft: '1rem', marginRight: '0.3rem' }} />
+                  <span>{plan.commentCount}</span>
+                </S.LikeCommentInfo>
               </S.TravelInfo>
             </S.TravelCard>
           ));

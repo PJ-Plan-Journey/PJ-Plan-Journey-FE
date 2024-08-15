@@ -11,9 +11,9 @@ const ShareBoardsPage = () => {
       <Header />
       <S.BoardWrapper>
         <S.Section>
-          <S.SectionTitle>공유된 일정</S.SectionTitle> {/* 섹션 제목을 '공유된 일정'으로 변경 */}
+          <S.SectionTitle>일정 공유 게시판</S.SectionTitle> 
           <S.Card>
-            <ShareBoard /> {/* TravelManagement 대신 ShareBoard 컴포넌트를 사용 */}
+            <ShareBoard />
           </S.Card>
         </S.Section>
       </S.BoardWrapper>

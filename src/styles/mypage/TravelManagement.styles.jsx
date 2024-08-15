@@ -5,6 +5,15 @@ export const TravelContainer = styled.div`
   width: 100%;
 `;
 
+export const LikeCommentInfo = styled.div`
+  font-size: 1rem;
+  color: #7e7e7e;
+  display: flex;
+  align-items: center;
+  margin-left: 1.2rem;
+  margin-top: 0.7rem;
+`;
+
 export const LoginText = styled.h2`
   font-size: 1.5rem;
   margin-bottom: 1rem;
@@ -22,7 +31,7 @@ export const TravelCard = styled.div`
   display: flex;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  background-color: #ffffff;
   cursor: pointer;
   overflow: hidden;
   transition: transform 0.2s ease-in-out;
@@ -53,10 +62,11 @@ export const TravelInfo = styled.div`
 
 export const TravelName = styled.h3`
   font-weight: bold;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   padding-left: 1rem;
   padding-bottom: 0.5rem;
   margin: 0;
+  color: #0056b3;
 `;
 
 export const TravelDate = styled.p`
@@ -73,6 +83,7 @@ export const ScheduleLabel = styled.span`
   font-weight: bold;
   font-size: 1.1rem;
   padding-right: 0.2rem;
+  margin-top: 0.3rem;
 `;
 
 export const DateLabel = styled.span`
@@ -112,3 +123,16 @@ export const Button = styled.button`
 export const ShareButton = styled(Button)`
   background-color: ${(props) => (props.disabled ? '#a0a0a0' : '#156BF0')};
 `;
+
+export const AuthorName = styled.h4`
+  font-size: 1.1rem;
+  margin-left: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+  margin-top: 0.3rem;
+  color: #0056b3; /* 사용자 이름 텍스트 색상 */
+`;
+
+export const Userdiv = styled.div`
+  display: flex;
+`
