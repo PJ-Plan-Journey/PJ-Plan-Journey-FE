@@ -5,6 +5,7 @@ import * as S from '@styles/mypage/TravelManagement.styles';
 import api from '@axios/api';
 import PlaceholderImage from '@assets/150x150.png';
 import { FaHeart, FaComment } from 'react-icons/fa'; // 좋아요와 댓글 아이콘 추가
+import { flex } from '@styles/common/common.style';
 
 const ShareBoard = () => {
   const navigate = useNavigate();
@@ -63,6 +64,10 @@ const ShareBoard = () => {
               </S.ImageContainer>
               <S.TravelInfo>
                 <S.TravelName>{plan.title}</S.TravelName>
+                <S.Userdiv>
+                <S.AuthorName>{plan.author}</S.AuthorName>
+                <S.ScheduleLabel>님의 일정</S.ScheduleLabel>
+                </S.Userdiv>
                 <S.TravelDate>
                   <S.ScheduleLabel>여행일자</S.ScheduleLabel>{' '}
                   <S.DateLabel>
