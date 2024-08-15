@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaBell } from 'react-icons/fa';
 import logo from '@assets/Logo.jpg';
 import * as S from '@styles/main/Header.styles';
@@ -17,6 +17,7 @@ const Header = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const userMenuRef = useRef();
   const notificationMenuRef = useRef();
+  const navigate = useNavigate(); // useNavigate 추가
 
   const { isAuthenticated, user, logout, accessToken } = useAuthStore((state) => ({
     isAuthenticated: state.isAuthenticated,
@@ -66,6 +67,10 @@ const Header = () => {
       setUserMenuOpen(true);
       setShouldRenderUserMenu(true);
     }
+  };
+
+  const handleUserIconClick = () => {
+    navigate('/mypage'); // "/mypage"로 라우팅
   };
 
   const toggleNotificationMenu = () => {
@@ -128,11 +133,8 @@ const Header = () => {
               로그인
             </S.NavLink>
           )}
-          <S.IconWrapper ref={userMenuRef} onClick={toggleUserMenu}>
+          <S.IconWrapper ref={userMenuRef} onClick={handleUserIconClick}>
             <FaUser />
-            {shouldRenderUserMenu && (
-              <DropdownMenu $isVisible={isUserMenuOpen} />
-            )}
           </S.IconWrapper>
           <S.IconWrapper ref={notificationMenuRef}>
             <FaBell onClick={toggleNotificationMenu} /> 

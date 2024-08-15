@@ -25,8 +25,10 @@ const TravelManagement = () => {
   }
 
   const handleCardClick = (planId) => {
-    navigate(`/board/${planId}`); // 해당 planId로 리디렉션
+    navigate(`/board/${planId}`);
+    console.log(planId)
   };
+
 
   return (
     <S.TravelContainer>
@@ -58,10 +60,7 @@ const TravelManagement = () => {
                   </S.DateLabel>
                 </S.LastModified>
                 <S.ButtonContainer>
-                  <ShareButton onClick={(e) => {
-                    e.stopPropagation(); // 카드 클릭 이벤트 중단
-                    handleCardClick(travel.planId); // 공유 버튼을 통해 리디렉션
-                  }} />
+                  <ShareButton planId={travel.planId} />
                 </S.ButtonContainer>
               </S.TravelInfo>
             </S.TravelCard>
