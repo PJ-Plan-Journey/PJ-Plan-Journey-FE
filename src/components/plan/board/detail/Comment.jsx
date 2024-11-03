@@ -115,12 +115,12 @@ const Comment = ({ planId, comment, setReplyToCommentId }) => {
             <>
               <input value={editContent} onChange={onChange} />
               <button
-                className="edit"
+                className="button"
                 onClick={() => editCommentContentMutate({ planId, commentId })}
               >
                 수정
               </button>
-              <button className="edit" onClick={() => setIsEdit(false)}>
+              <button className="button" onClick={() => setIsEdit(false)}>
                 취소
               </button>
             </>

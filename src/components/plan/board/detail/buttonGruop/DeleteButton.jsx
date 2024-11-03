@@ -1,4 +1,5 @@
 import api from '@axios/api';
+import Button from '@components/common/Button';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,7 +28,7 @@ const DeleteButton = ({ planId }) => {
     },
   });
 
-  return <button onClick={() => deleteMutate(planId)}>삭제</button>;
+  return <Button variant='outline' onClick={() => deleteMutate(planId)}>삭제</Button>;
 };
 
 export default DeleteButton;

@@ -33,19 +33,4 @@ export const ModalStyle = styled.div`
     gap: 10px;
     justify-content: center;
   }
-
-  button {
-    width: 100px;
-    cursor: pointer;
-    ${flex}
-    justify-content: center;
-    padding: 10px 30px;
-    border: none;
-    border-radius: 10px;
-
-    &.confirm {
-      background-color: #156bf0;
-      color: white;
-    }
-  }
 `;

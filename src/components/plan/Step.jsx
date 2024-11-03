@@ -4,6 +4,7 @@ import useStepStore from '@zustands/plan/useStepStore';
 import useModal from '@hooks/useModal';
 import Modal from '@components/plan/Modal';
 import { useNavigate } from 'react-router-dom';
+import Button from '@components/common/Button';
 
 const STEPLIST = [{ name: '여행 일정 등록' }, { name: '여행 장소 등록' }];
 
@@ -44,7 +45,7 @@ const Step = () => {
         ))}
       </S.StepList>
 
-      {step < 3 && <S.Button onClick={nextStep}>다음</S.Button>}
+      {step < 3 && <Button onClick={nextStep}>다음</Button>}
 
       {isError && (
         <Modal onCancel={hideError} onConfirm={() => navigate('/')}>

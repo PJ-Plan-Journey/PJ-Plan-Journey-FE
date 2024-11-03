@@ -28,16 +28,6 @@ export const DayListContainer = styled.div`
     width: 100%;
     ${flexColumn};
     gap: 10px;
-
-    button {
-      cursor: pointer;
-      width: 100%;
-      border: none;
-      padding: 15px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      background-color: white;
-    }
   }
 
   .like {

@@ -6,6 +6,7 @@ import { IoSearch as SearchIcon } from '@react-icons/all-files/io5/IoSearch';
 import { IoIosCloseCircle as CloseIcon } from '@react-icons/all-files/io/IoIosCloseCircle';
 import { v4 as uuidv4 } from 'uuid';
 import * as S from '@styles/plan/place/SelectPlace.style';
+import Button from '@components/common/Button';
 
 const SelectPlace = ({ isVisible, day, setIsVisible }) => {
   const [inputValue, setInputValue] = useState('');
@@ -78,7 +79,7 @@ const SelectPlace = ({ isVisible, day, setIsVisible }) => {
           />
           {inputValue.length > 0 && (
             <button>
-              <CloseIcon className="close" onClick={initSearchValue} />
+              <CloseIcon onClick={initSearchValue} />
             </button>
           )}
         </S.SearchBox>
@@ -113,9 +114,9 @@ const SelectPlace = ({ isVisible, day, setIsVisible }) => {
             </S.SearchItem>
           ))}
         </S.SearchList>
-        <button className="complete" onClick={() => SubmitDayList(day)}>
+        <Button onClick={() => SubmitDayList(day)}>
           선택완료
-        </button>
+        </Button>
       </div>
     </S.SelectPlaceContainer>
   );

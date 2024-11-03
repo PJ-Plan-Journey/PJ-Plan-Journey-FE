@@ -5,6 +5,7 @@ import DateRangeDisplay from '@components/plan/date/DateRangeDisplay';
 import * as S from '@styles/plan/date/SelectedDate.style';
 import useDateStore from '@zustands/plan/useDateStore';
 import { formatDate } from '@/utils/formatDate';
+import Button from '@components/common/Button';
 
 const SelectedDate = () => {
   const { startDate, endDate } = useDateStore();
@@ -37,12 +38,12 @@ const SelectedDate = () => {
     <S.SelectedDateContainer>
       <DateRangeDisplay />
       <div className="button-group">
-        <button onClick={openCalendar} className="date">
+        <Button onClick={openCalendar}>
           일정 변경
-        </button>
-        <button className="ticketing" onClick={onClickTicketing}>
+        </Button>
+        <Button onClick={onClickTicketing} variant='outline'>
           항공권 알아보기
-        </button>
+        </Button>
       </div>
 
       <Portal>

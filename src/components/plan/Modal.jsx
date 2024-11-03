@@ -1,3 +1,4 @@
+import Button from '@components/common/Button';
 import * as S from '@styles/plan/Modal.style';
 
 const Modal = ({ type = 'confirm', children, onConfirm, onCancel }) => {
@@ -8,19 +9,19 @@ const Modal = ({ type = 'confirm', children, onConfirm, onCancel }) => {
 
         {type === 'confirm' ? (
           <div className="group">
-            <button className="cancel" onClick={onCancel}>
+            <Button onClick={onCancel} variant='outline'>
               취소
-            </button>
+            </Button>
 
-            <button className="confirm" onClick={onConfirm}>
+            <Button onClick={onConfirm}>
               확인
-            </button>
+            </Button>
           </div>
         ) : (
           <div className="group">
-            <button className="confirm" onClick={onConfirm}>
+            <Button onClick={onConfirm}>
               확인
-            </button>
+            </Button>
           </div>
         )}
       </S.ModalStyle>

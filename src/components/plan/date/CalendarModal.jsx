@@ -3,6 +3,7 @@ import useDateStore from '@zustands/plan/useDateStore';
 import Modal from '../Modal';
 import useModal from '@hooks/useModal';
 import * as S from '@styles/plan/date/CalendarModal.style';
+import Button from '@components/common/Button';
 
 const CalendarModal = ({ closeCalendar }) => {
   const { setDates, startDate, endDate } = useDateStore();
@@ -31,10 +32,10 @@ const CalendarModal = ({ closeCalendar }) => {
 
         <CustomCalendar />
         <S.ButtonGroup>
-          <button className="cancel" onClick={resetDates}>
+          <Button onClick={resetDates} variant='outline'>
             초기화
-          </button>
-          <button onClick={onClick}>확인</button>
+          </Button>
+          <Button onClick={onClick}>확인</Button>
         </S.ButtonGroup>
       </S.ModalBox>
 

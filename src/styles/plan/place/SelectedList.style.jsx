@@ -35,16 +35,6 @@ export const DayList = styled.ul`
 
   .button-group {
     padding: 10px 0 60px;
-
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: white;
-      border: 1px solid #c6c6c6;
-      border-radius: 10px;
-      font-weight: bold;
-      font-family: 'Nanum Gothic', sans-serif;
-    }
   }
 
   .toggle {

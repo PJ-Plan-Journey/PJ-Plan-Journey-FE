@@ -29,24 +29,6 @@ export const TItleFormContainer = styled.div`
     ${flex}
     justify-content: center;
     gap: 10px;
-
-    button {
-      cursor: pointer;
-      width: 100%;
-      border: none;
-      background-color: #156bf0;
-      color: white;
-      ${flex};
-      justify-content: center;
-      padding: 10px 0;
-      border-radius: 10px;
-      font-size: 18px;
-
-      &.cancel {
-        background-color: #b7b7b7;
-        color: white;
-      }
-    }
   }
 
   .info {
