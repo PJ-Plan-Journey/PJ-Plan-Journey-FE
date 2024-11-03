@@ -9,6 +9,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import useDateStore from '@zustands/plan/useDateStore';
 import { formatDate } from '@/utils/formatDate';
+import Button from '@components/common/Button';
 
 const TItleForm = () => {
   const { setStep } = useStepStore();
@@ -36,7 +37,6 @@ const TItleForm = () => {
       };
 
       const { data } = await api.post('/plans', plan);
-      console.log({ data });
       return data;
     } catch (error) {
       console.log({ error });
@@ -76,12 +76,12 @@ const TItleForm = () => {
         </p>
 
         <div className="button-group">
-          <button className="cancel" onClick={() => setStep(2)}>
+          <Button onClick={() => setStep(2)} variant='outline'>
             취소
-          </button>
-          <button className="complete" onClick={mutate}>
+          </Button>
+          <Button onClick={mutate}>
             완료
-          </button>
+          </Button>
         </div>
       </div>
     </S.TItleFormContainer>

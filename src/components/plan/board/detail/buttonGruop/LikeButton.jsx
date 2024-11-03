@@ -1,4 +1,5 @@
 import api from '@axios/api';
+import Button from '@components/common/Button';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const LikeButton = ({ planId }) => {
@@ -26,7 +27,7 @@ const LikeButton = ({ planId }) => {
     },
   });
 
-  return <button onClick={() => likeMutate(planId)}>좋아요</button>;
+  return <Button variant='outline' onClick={() => likeMutate(planId)}>좋아요</Button>;
 };
 
 export default LikeButton;

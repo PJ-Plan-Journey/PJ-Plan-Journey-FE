@@ -7,7 +7,6 @@ import { MdEdit } from '@react-icons/all-files/md/MdEdit';
 const PlanListTitle = ({ data }) => {
   const [title, setTitle] = useState('');
   const [isEditTitle, setIsEditTitle] = useState(false);
-
   const queryClient = useQueryClient();
 
   const ontoggleEditTitle = () => {

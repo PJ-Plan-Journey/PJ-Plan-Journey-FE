@@ -1,4 +1,5 @@
 import api from '@axios/api';
+import Button from '@components/common/Button';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,7 +28,7 @@ const AddMyPlanButton = ({ planId }) => {
   });
 
   return (
-    <button onClick={() => addMyPlanMutate(planId)}>내 일정으로 추가</button>
+    <Button variant='outline' onClick={() => addMyPlanMutate(planId)}>내 일정으로 추가</Button>
   );
 };
 

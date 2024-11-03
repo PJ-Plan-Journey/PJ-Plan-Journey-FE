@@ -85,14 +85,6 @@ export const SearchBox = styled.div`
     margin-left: 5px;
   }
 
-  button {
-    ${flex}
-    justify-content: center;
-    background-color: white;
-    border: none;
-    padding: 0;
-  }
-
   .close {
     cursor: pointer;
     color: #b4b4b4;

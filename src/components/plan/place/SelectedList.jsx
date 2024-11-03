@@ -9,6 +9,7 @@ import PlaceListItem from '@components/plan/place/PlaceListItem';
 import Portal from '@/utils/Portal';
 import * as S from '@styles/plan/place/SelectedList.style';
 import { formatDate } from '@/utils/formatDate';
+import Button from '@components/common/Button';
 
 const SelectedList = () => {
   const { placeList, movePlace, movePlaceBetweenDays, setDay, day } =
@@ -49,7 +50,7 @@ const SelectedList = () => {
   };
 
   const parseAndFormatDate = (dateString) => {
-    const date = parseISO(dateString); // 문자열을 Date 객체로 변환
+    const date = parseISO(dateString);
     return formatDate('yy.M.d(EE)', date);
   };
 
@@ -107,7 +108,7 @@ const SelectedList = () => {
               </Droppable>
 
               <div className="button-group">
-                <button onClick={() => visibleSearchBox(day)}>장소 추가</button>
+                <Button onClick={() => visibleSearchBox(day)} variant='outline'>장소 추가</Button>
               </div>
             </div>
           ))}

@@ -43,19 +43,6 @@ export const ButtonGroup = styled.div`
   gap: 20px;
 
   button {
-    cursor: pointer;
-    width: 100px;
-    border: none;
-    background-color: #156bf0;
-    color: white;
-    ${flex};
-    justify-content: center;
-    padding: 10px 0;
-    border-radius: 30px;
-    font-size: 1rem;
-
-    &.cancel {
-      background-color: #c2c2c2;
-    }
+    width: 200px;
   }
 `;

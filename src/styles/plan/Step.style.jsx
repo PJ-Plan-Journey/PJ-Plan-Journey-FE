@@ -52,11 +52,11 @@ export const Item = styled.li`
 
   .step-number {
     ${({ $status }) =>
-      $status === 'true'
-        ? css`
+    $status === 'true'
+      ? css`
             box-shadow: 0 0 2px #156bf0;
           `
-        : css`
+      : css`
             box-shadow: 0 0 2px black;
           `};
 
@@ -64,17 +64,4 @@ export const Item = styled.li`
     padding: 10px;
     border-radius: 30px;
   }
-`;
-
-export const Button = styled.button`
-  cursor: pointer;
-  width: 100%;
-  border: none;
-  background-color: #156bf0;
-  color: white;
-  ${flex};
-  justify-content: center;
-  padding: 10px 0;
-  border-radius: 30px;
-  font-size: 18px;
 `;
