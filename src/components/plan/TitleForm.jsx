@@ -1,7 +1,6 @@
 import api from '@axios/api';
 import useStepStore from '@zustands/plan/useStepStore';
 import { useState } from 'react';
-import { MdInfo as InfoIcon } from '@react-icons/all-files/md/MdInfo';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
 import { convertToPlanDetails } from '@/utils/formatRequestForm';
 import * as S from '@styles/plan/TitleForm.style';
@@ -9,14 +8,15 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import useDateStore from '@zustands/plan/useDateStore';
 import { formatDate } from '@/utils/formatDate';
-import Button from '@components/common/Button';
+import useModal from '@hooks/useModal';
 
-const TItleForm = () => {
+const TitleForm = () => {
   const { setStep } = useStepStore();
   const { startDate, endDate } = useDateStore();
   const { placeList } = usePlaceStore();
   const [inputValue, setInputValue] = useState('');
   const navigate = useNavigate();
+  const { Modal, Title, Content } = useModal();
 
   const onChange = (e) => {
     setInputValue(e.target.value);
@@ -59,33 +59,24 @@ const TItleForm = () => {
   }
 
   return (
-    <S.TItleFormContainer>
-      <div className="modal">
-        <h1>나의 일정 제목을 입력해주세요.</h1>
+    <Modal closeModal={() => setStep(2)} onConfirm={() => mutate()}>
+      <Title>일정 제목을 설정해 주세요.</Title>
+      <Content>
+        <S.TItleFormStyle>
+          <input
+            value={inputValue}
+            onChange={onChange}
+            placeholder="일정의 제목을 입력해 주세요."
+            autoFocus
+          />
 
-        <input
-          value={inputValue}
-          onChange={onChange}
-          placeholder="제목을 입력하세요."
-          autoFocus
-        />
-
-        <p className="info">
-          <InfoIcon />
-          <span> 해당 제목은 일정공유를 했을 경우 게시물의 제목이 됩니다</span>
-        </p>
-
-        <div className="button-group">
-          <Button onClick={() => setStep(2)} variant='outline'>
-            취소
-          </Button>
-          <Button onClick={mutate}>
-            완료
-          </Button>
-        </div>
-      </div>
-    </S.TItleFormContainer>
+          <p className="info">
+            이 제목은 일정 공유 시 게시물 제목으로 사용됩니다.
+          </p>
+        </S.TItleFormStyle>
+      </Content>
+    </Modal>
   );
 };
 
-export default TItleForm;
+export default TitleForm;
