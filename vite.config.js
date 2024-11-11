@@ -8,8 +8,6 @@ dotenv.config();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-console.log('VITE_SERVER_URL:', process.env.VITE_SERVER_URL);
-
 export default defineConfig({
   plugins: [react()],
   server: {
@@ -20,9 +18,7 @@ export default defineConfig({
         secure: false,
         ws: true,
         rewrite: (path) => {
-          console.log({ path });
           const newPath = path.replace(/^\/api/, '');
-          console.log({ newPath });
           return newPath;
         },
       },
