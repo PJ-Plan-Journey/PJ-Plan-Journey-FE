@@ -2,7 +2,6 @@ import { FaCheck as CheckIcon } from '@react-icons/all-files/fa/FaCheck';
 import * as S from '@styles/plan/Step.style';
 import useStepStore from '@zustands/plan/useStepStore';
 import useModal from '@hooks/useModal';
-import Modal from '@components/plan/Modal';
 import { useNavigate } from 'react-router-dom';
 import Button from '@components/common/Button';
 
@@ -10,7 +9,7 @@ const STEPLIST = [{ name: '여행 일정 등록' }, { name: '여행 장소 등�
 
 const Step = () => {
   const { step, setStep } = useStepStore();
-  const { isError, message, showError, hideError } = useModal();
+  const { isOpen, openModal, closeModal, Modal, Title, Content } = useModal();
   const navigate = useNavigate();
 
   const nextStep = () => {
@@ -22,7 +21,7 @@ const Step = () => {
   };
 
   const onClickLogo = () => {
-    showError('변경사항이 저장되지 않을 수 있습니다.');
+    openModal();
   };
 
   return (
@@ -47,9 +46,17 @@ const Step = () => {
 
       {step < 3 && <Button onClick={nextStep}>다음</Button>}
 
-      {isError && (
-        <Modal onCancel={hideError} onConfirm={() => navigate('/')}>
-          {message}
+      {isOpen && (
+        <Modal closeModal={closeModal} onConfirm={() => navigate(-1)}>
+          <Title>
+            <div>변경 사항이 저장되지 않았습니다.</div>
+          </Title>
+          <Content>
+            <div>
+              저장되지 않은 변경사항이 있습니다. 변경사항을 저장하지 않으면
+              데이터가 사라질 수 있습니다.
+            </div>
+          </Content>
         </Modal>
       )}
     </S.Container>

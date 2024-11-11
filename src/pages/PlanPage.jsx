@@ -5,7 +5,7 @@ import * as S from '@styles/plan/PlanPage.style';
 import { useEffect, useRef, useState } from 'react';
 import SelectedList from '@components/plan/place/SelectedList';
 import { FaGripLinesVertical as WidthSizeIcon } from 'react-icons/fa6';
-import TItleForm from '@components/plan/TitleForm';
+import TitleForm from '@components/plan/TitleForm';
 import useDateStore from '@zustands/plan/useDateStore';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
 import Step from '@components/plan/Step';
@@ -93,7 +93,7 @@ const PlanPage = () => {
           </>
         )}
 
-        {step >= 3 && <TItleForm />}
+        {step >= 3 && <TitleForm />}
       </div>
 
       <KakaoMap />

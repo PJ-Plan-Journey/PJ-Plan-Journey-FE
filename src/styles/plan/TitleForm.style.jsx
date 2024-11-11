@@ -1,51 +1,17 @@
-import { flex, flexColumn } from '@styles/common/common.style';
+import { flex } from '@styles/common/common.style';
 import styled from 'styled-components';
 
-export const TItleFormContainer = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 5;
-  background-color: rgba(0, 0, 0, 0.4);
-
-  .modal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    z-index: 6;
-    transform: translate(-50%, -50%);
-    width: 400px;
-    padding: 30px;
-    background-color: white;
-    border-radius: 20px;
-    ${flexColumn}
-    gap: 20px;
-  }
-
-  .button-group {
-    width: 100%;
-    ${flex}
-    justify-content: center;
-    gap: 10px;
-  }
-
+export const TItleFormStyle = styled.div`
   .info {
-    ${flex}
-    gap: 5px;
-    color: #b0b0b0;
+    text-align: left;
+    color: #888888;
     font-size: 12px;
-    margin-bottom: 30px;
-  }
-
-  h1 {
-    font-size: 20px;
-    margin-top: 30px;
+    padding: 10px;
+    word-break: keep-all;
   }
 
   input {
-    width: 90%;
+    width: 100%;
     ${flex}
     justify-content: space-between;
     border: none;
