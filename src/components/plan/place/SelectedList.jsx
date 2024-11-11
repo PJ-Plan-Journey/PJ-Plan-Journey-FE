@@ -6,17 +6,22 @@ import DateRangeDisplay from '@components/plan/date/DateRangeDisplay';
 import SelectPlace from '@components/plan/place/SelectPlace';
 import { parseISO } from 'date-fns';
 import PlaceListItem from '@components/plan/place/PlaceListItem';
-import Portal from '@/utils/Portal';
 import * as S from '@styles/plan/place/SelectedList.style';
 import { formatDate } from '@/utils/formatDate';
 import Button from '@components/common/Button';
+import useModal from '@hooks/useModal';
+
+const MODALCUSTOM = {
+  padding: '30px 20px 20px 20px',
+};
 
 const SelectedList = () => {
-  const { placeList, movePlace, movePlaceBetweenDays, setDay, day } =
+  const { placeList, movePlace, movePlaceBetweenDays, setDay, addPlace } =
     usePlaceStore();
+  const { isOpen, openModal, closeModal, Modal, Title, Content } = useModal();
   const days = useDateStore((state) => state.getDays());
-  const [isVisible, setIsVisible] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
+  const [dayPlaceList, setDayPlaceList] = useState([]);
 
   const saveDay = (day) => {
     setDay(day);
@@ -44,9 +49,19 @@ const SelectedList = () => {
     saveDay(destination.droppableId);
   };
 
+  const SubmitDayList = (day) => {
+    if (dayPlaceList.length > 0) {
+      setDay(day);
+      addPlace(day, dayPlaceList);
+    }
+
+    setDayPlaceList([]);
+    closeModal();
+  };
+
   const visibleSearchBox = (day) => {
     setSelectedDay(day);
-    setIsVisible(true);
+    openModal();
   };
 
   const parseAndFormatDate = (dateString) => {
@@ -108,21 +123,35 @@ const SelectedList = () => {
               </Droppable>
 
               <div className="button-group">
-                <Button onClick={() => visibleSearchBox(day)} variant='outline'>장소 추가</Button>
+                <Button onClick={() => visibleSearchBox(day)} variant="outline">
+                  장소 추가
+                </Button>
               </div>
             </div>
           ))}
         </S.DayList>
       </DragDropContext>
-      <Portal>
-        {isVisible && (
-          <SelectPlace
-            isVisible={isVisible}
-            setIsVisible={setIsVisible}
-            day={selectedDay}
-          />
-        )}
-      </Portal>
+
+      {isOpen && (
+        <Modal
+          closeModal={closeModal}
+          onConfirm={() => SubmitDayList(selectedDay)}
+          isCustom
+        >
+          <Title customStyles={MODALCUSTOM}>
+            <div>{selectedDay}</div>
+          </Title>
+
+          <Content>
+            <SelectPlace
+              day={selectedDay}
+              dayPlaceList={dayPlaceList}
+              setDayPlaceList={setDayPlaceList}
+              placeList={placeList}
+            />
+          </Content>
+        </Modal>
+      )}
     </S.SelectedListContainer>
   );
 };

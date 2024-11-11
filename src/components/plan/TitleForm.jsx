@@ -27,6 +27,10 @@ const TitleForm = () => {
   };
 
   const addPlaceSchedule = async () => {
+    if (inputValue.trim() === '') {
+      return;
+    }
+
     try {
       const plan = {
         title: inputValue,

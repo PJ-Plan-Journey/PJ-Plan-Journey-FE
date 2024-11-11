@@ -48,10 +48,14 @@ const Step = () => {
 
       {isOpen && (
         <Modal closeModal={closeModal} onConfirm={() => navigate(-1)}>
-          <Title>변경 사항이 저장되지 않았습니다.</Title>
+          <Title>
+            <div>변경 사항이 저장되지 않았습니다.</div>
+          </Title>
           <Content>
-            저장되지 않은 변경사항이 있습니다. 변경사항을 저장하지 않으면
-            데이터가 사라질 수 있습니다.
+            <div>
+              저장되지 않은 변경사항이 있습니다. 변경사항을 저장하지 않으면
+              데이터가 사라질 수 있습니다.
+            </div>
           </Content>
         </Modal>
       )}
