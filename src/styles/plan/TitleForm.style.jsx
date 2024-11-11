@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const TItleFormStyle = styled.div`
   .info {
     text-align: left;
-    color: #b0b0b0;
+    color: #888888;
     font-size: 12px;
     padding: 10px;
     word-break: keep-all;
