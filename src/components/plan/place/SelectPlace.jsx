@@ -1,46 +1,33 @@
-import { useEffect, useState } from 'react';
-import usePlaceStore from '@zustands/plan/usePlaceStore';
-import { FaPlus as AddIcon } from '@react-icons/all-files/fa/FaPlus';
-import { FaCheck as CheckIcon } from '@react-icons/all-files/fa/FaCheck';
+import { useCallback, useEffect, useState } from 'react';
 import { IoSearch as SearchIcon } from '@react-icons/all-files/io5/IoSearch';
 import { IoIosCloseCircle as CloseIcon } from '@react-icons/all-files/io/IoIosCloseCircle';
 import { v4 as uuidv4 } from 'uuid';
 import * as S from '@styles/plan/place/SelectPlace.style';
-import Button from '@components/common/Button';
 
-const SelectPlace = ({ isVisible, day, setIsVisible }) => {
+const SelectPlace = ({ day, placeList, dayPlaceList, setDayPlaceList }) => {
   const [inputValue, setInputValue] = useState('');
   const [searchList, setSearchList] = useState([]);
-  const [dayPlaceList, setDayPlaceList] = useState([]);
-  const { addPlace, placeList, setDay } = usePlaceStore();
 
-  const onAddPlace = (place) => {
-    const newPlace = {
-      ...place,
-      id: uuidv4(), // place id를 사용하면 같은 장소를 넣었을 때 오류가 나서 uuid로 각각 장소의 id를 다르게 설정
-    };
-    setDayPlaceList((prev) => [...prev, newPlace]);
-  };
-
-  const removePlace = (placeName) => {
-    console.log(placeName);
-    const update = dayPlaceList.filter((item) => item.place_name !== placeName);
-    console.log(update);
-    setDayPlaceList(update);
-  };
-
-  const initSearchValue = () => {
+  const initSearchValue = useCallback(() => {
     setInputValue('');
-  };
+  }, []);
 
-  const SubmitDayList = (day) => {
-    if (dayPlaceList.length > 0) {
-      setDay(day);
-      addPlace(day, dayPlaceList);
+  const togglePlace = (place) => {
+    const isExist = dayPlaceList.find(
+      (item) => item.place_name === place.place_name
+    );
+
+    if (isExist) {
+      setDayPlaceList(
+        dayPlaceList.filter((item) => item.place_name !== place.place_name)
+      );
+    } else {
+      const newPlace = {
+        ...place,
+        id: uuidv4(),
+      };
+      setDayPlaceList((prev) => [...prev, newPlace]);
     }
-
-    setDayPlaceList([]);
-    setIsVisible(false);
   };
 
   useEffect(() => {
@@ -52,7 +39,6 @@ const SelectPlace = ({ isVisible, day, setIsVisible }) => {
   }, [day, placeList]);
 
   useEffect(() => {
-    // 디바운스 적용 필요
     const ps = new window.kakao.maps.services.Places();
     if (inputValue) {
       ps.keywordSearch(inputValue, (data, status) => {
@@ -66,59 +52,55 @@ const SelectPlace = ({ isVisible, day, setIsVisible }) => {
   }, [inputValue]);
 
   return (
-    <S.SelectPlaceContainer $isVisible={isVisible.toString()}>
-      <div className="search-box">
-        <div>{day}</div>
-        <S.SearchBox>
-          <SearchIcon />
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="장소를 입력하세요"
-          />
-          {inputValue.length > 0 && (
-            <button>
-              <CloseIcon onClick={initSearchValue} />
-            </button>
-          )}
-        </S.SearchBox>
-        {inputValue && <div className="result">장소결과</div>}
+    <div className="search-box">
+      <S.SearchBox>
+        <SearchIcon />
+        <input
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="장소를 입력하세요"
+        />
+        {inputValue.length > 0 && (
+          <CloseIcon className="close" onClick={initSearchValue} />
+        )}
+      </S.SearchBox>
 
-        <S.SearchList>
-          {inputValue && searchList.length <= 0 && (
-            <div className="not-result">검색 결과가 없습니다</div>
-          )}
+      <S.SearchList>
+        {!inputValue && searchList.length === 0 && (
+          <div className="not-result">장소를 검색해주세요.</div>
+        )}
 
-          {searchList?.map((item) => (
-            <S.SearchItem key={item.id}>
+        {inputValue && searchList.length <= 0 && (
+          <div className="not-result">검색 결과가 없습니다</div>
+        )}
+
+        {searchList?.map((item) => {
+          const isSelected = dayPlaceList.find(
+            (place) => place.place_name === item.place_name
+          );
+          const order = isSelected
+            ? dayPlaceList.findIndex(
+                (place) => place.place_name === item.place_name
+              ) + 1
+            : null;
+
+          return (
+            <S.SearchItem
+              key={item.id}
+              className={isSelected && 'add'}
+              onClick={() => togglePlace(item)}
+            >
               <div className="item">
-                <h1 className="place-name">{item.place_name}</h1>
-                <div className="place-address">{item.address_name}</div>
+                <p className="place-name">{item.place_name}</p>
+                <p className="place-address">{item.address_name}</p>
               </div>
 
-              {dayPlaceList.find(
-                (place) => place.place_name === item.place_name
-              ) ? (
-                <button
-                  className="check"
-                  onClick={() => removePlace(item.place_name)}
-                >
-                  <CheckIcon />
-                </button>
-              ) : (
-                <button className="add" onClick={() => onAddPlace(item)}>
-                  <AddIcon />
-                </button>
-              )}
+              {isSelected && <div className="check">{order}</div>}
             </S.SearchItem>
-          ))}
-        </S.SearchList>
-        <Button onClick={() => SubmitDayList(day)}>
-          선택완료
-        </Button>
-      </div>
-    </S.SelectPlaceContainer>
+          );
+        })}
+      </S.SearchList>
+    </div>
   );
 };
 
