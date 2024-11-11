@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react';
 /**
  * 공통 모달 hook
  *
- * `Modal`에는 반드시 `Title`과 `Content` 컴포넌트를 포함해야 합니다.
+ * `Modal`에는 자식으로 반드시 `Title`과 `Content` 컴포넌트를 포함해야 합니다.
  *
  * `Modal`에는 반드시 `closeModal`을 props로 전달해야 `Overlay`가 클릭될 때 모달이 닫힙니다.
  *
