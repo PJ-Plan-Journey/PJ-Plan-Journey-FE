@@ -1,5 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
+import Portal from '@/utils/Portal';
+import { Children, cloneElement } from 'react';
+import styled, { css } from 'styled-components';
 
 /**
  * 공통 모달 컴포넌트
@@ -13,6 +14,8 @@ import styled from 'styled-components';
  * @param {Function} closeModal - 모달을 닫는 함수
  * @param {Function} onConfirm - 확인 버튼 클릭 시 실행되는 함수 (confirm 타입일 때 필수)
  * @param {string} [type="confirm"] - 모달의 타입. `confirm` 또는 `info`
+ * @param {Object} customStyles - 커스텀 스타일을 위한 props 객체
+ * @param {Boolean} isCustom - 커스텀 스타일 사용 여부
  */
 
 export const Modal = ({
@@ -20,11 +23,13 @@ export const Modal = ({
   closeModal,
   onConfirm,
   type = 'confirm',
+  customStyles,
+  isCustom = false,
 }) => {
-  const hasTitle = React.Children.toArray(children).some(
+  const hasTitle = Children.toArray(children).some(
     (child) => child.type === Title
   );
-  const hasContent = React.Children.toArray(children).some(
+  const hasContent = Children.toArray(children).some(
     (child) => child.type === Content
   );
 
@@ -33,10 +38,21 @@ export const Modal = ({
   }
 
   return (
-    <>
-      <Overlay onClick={closeModal} />
-      <ModalStyle>
-        <div className="body">{children}</div>
+    <Portal>
+      <Overlay
+        onClick={closeModal}
+        $isCustom={isCustom}
+        $customStyles={customStyles?.overlay}
+      />
+      <ModalStyle $isCustom={isCustom} $customStyles={customStyles?.modal}>
+        <div className="body">
+          {Children.map(children, (child) =>
+            cloneElement(child, {
+              isCustom,
+              customStyles: customStyles?.[child.type.name.toLowerCase()],
+            })
+          )}
+        </div>
 
         <div className="button-group">
           {type === 'confirm' && (
@@ -48,16 +64,24 @@ export const Modal = ({
           {type === 'info' && <button onClick={closeModal}>확인</button>}
         </div>
       </ModalStyle>
-    </>
+    </Portal>
   );
 };
 
-export const Title = ({ children }) => {
-  return <TitleStyle>{children}</TitleStyle>;
+export const Title = ({ children, isCustom, customStyles }) => {
+  return (
+    <TitleStyle $isCustom={isCustom} $customStyles={customStyles}>
+      {children}
+    </TitleStyle>
+  );
 };
 
-export const Content = ({ children }) => {
-  return <ContentStyle>{children}</ContentStyle>;
+export const Content = ({ children, isCustom, customStyles }) => {
+  return (
+    <ContentStyle $isCustom={isCustom} $customStyles={customStyles}>
+      {children}
+    </ContentStyle>
+  );
 };
 
 const Overlay = styled.div`
@@ -68,6 +92,8 @@ const Overlay = styled.div`
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   z-index: 10;
+  ${({ $isCustom, $customStyles }) =>
+    $isCustom && $customStyles && css($customStyles)};
 `;
 
 const ModalStyle = styled.div`
@@ -75,6 +101,7 @@ const ModalStyle = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 1px #d1d1d1;
   background: #fffffff0;
   border-radius: 15px;
   z-index: 20;
@@ -86,7 +113,6 @@ const ModalStyle = styled.div`
   flex-direction: column;
 
   .body {
-    padding: 20px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -120,18 +146,25 @@ const ModalStyle = styled.div`
       }
     }
   }
+
+  ${({ $isCustom, $customStyles }) =>
+    $isCustom && $customStyles && css($customStyles)};
 `;
 
 const TitleStyle = styled.div`
   font-size: 18px;
   font-weight: bold;
-  padding: 10px;
+  padding: 40px 40px 20px 40px;
+  ${({ $isCustom, $customStyles }) =>
+    $isCustom && $customStyles && css($customStyles)};
 `;
 
 const ContentStyle = styled.div`
   font-size: 14px;
   flex-grow: 1;
-  padding: 20px;
   color: #555555;
   line-height: 1.4;
+  padding: 20px 40px 40px 40px;
+  ${({ $isCustom, $customStyles }) =>
+    $isCustom && $customStyles && css($customStyles)};
 `;
