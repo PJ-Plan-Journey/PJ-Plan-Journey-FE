@@ -10,20 +10,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   plugins: [react()],
-  server: {
-    proxy: {
-      '/api': {
-        target: process.env.VITE_SERVER_URL,
-        changeOrigin: true,
-        secure: false,
-        ws: true,
-        rewrite: (path) => {
-          const newPath = path.replace(/^\/api/, '');
-          return newPath;
-        },
-      },
-    },
-  },
   resolve: {
     alias: [
       {
