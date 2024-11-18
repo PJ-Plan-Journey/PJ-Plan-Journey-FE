@@ -13,17 +13,17 @@ export const flexColumn = css`
 
 export const ScrollStyle = css`
   &::-webkit-scrollbar {
-    width: 4px;
+    width: 8px;
   }
 
   &::-webkit-scrollbar-thumb {
     background-color: #d0d0d0;
     border-radius: 2px;
+    cursor: pointer;
   }
 
   &::-webkit-scrollbar-track {
-    background-color: #ffffff;
+    background-color: initial;
     border-radius: 10px;
-    box-shadow: inset 0px 0px 5px white;
   }
 `;
