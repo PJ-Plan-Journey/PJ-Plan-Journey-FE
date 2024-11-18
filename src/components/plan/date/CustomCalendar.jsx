@@ -1,92 +1,95 @@
-import { useState, useEffect } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import {
-  startOfDay,
-  isSameDay,
-  isWithinInterval,
-  startOfMonth,
-  endOfMonth,
-} from 'date-fns';
-import useDateStore from '@zustands/plan/useDateStore';
-import CustomHeader from '@components/plan/date/CustomHeader';
+import useCalendar from '@hooks/plan/date/useCalendar';
 import * as S from '@styles/plan/date/CustomCalendar.style';
+import Button from '@components/common/Button';
+import useCalendarControl from '@hooks/plan/date/useCalendarControl';
+import { FaAngleUp, FaAngleDown } from 'react-icons/fa';
 
-const CustomCalendar = () => {
-  const { startDate: initStart, endDate: initEnd, setDates } = useDateStore();
-  const [startDate, setStartDate] = useState(
-    initStart ? new Date(initStart) : null
-  );
-  const [endDate, setEndDate] = useState(initEnd ? new Date(initEnd) : null);
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-
-  // date 값 변경 함수
-  const handleDateChange = (dates) => {
-    const [start, end] = dates;
-    setStartDate(start);
-    setEndDate(end);
-
-    setDates({
-      startDate: start ? start.toDateString() : null,
-      endDate: end ? end.toDateString() : null,
-    });
-  };
-
-  const isDateInCurrentMonth = (date) => {
-    return isWithinInterval(date, {
-      start: startOfMonth(currentMonth),
-      end: endOfMonth(currentMonth),
-    });
-  };
-
-  // 선택한 날짜 클래스 추가 함수
-  const dayClassName = (date) => {
-    if (startDate && isSameDay(date, startDate) && isDateInCurrentMonth(date)) {
-      return 'custom-selected';
-    }
-    if (endDate && isSameDay(date, endDate) && isDateInCurrentMonth(date)) {
-      return 'custom-selected';
-    }
-    return '';
-  };
-
-  useEffect(() => {
-    setStartDate(initStart ? new Date(initStart) : null);
-    setEndDate(initEnd ? new Date(initEnd) : null);
-  }, [initStart, initEnd]);
+const CustomCalendar = ({ dates, setDates }) => {
+  const { months, renderCalendar } = useCalendar(dates, setDates);
+  const {
+    year,
+    setYear,
+    setMonth,
+    month,
+    monthRefs,
+    yearOptions,
+    scrollToDate,
+    scrollToTop,
+    scrollToBottom,
+  } = useCalendarControl(months);
 
   return (
-    <S.CalendarContainer>
-      <DatePicker
-        locale={ko} // 한글 로케일 설정
-        selected={startDate} // 선택된 시작 날짜
-        startDate={startDate} // 날짜 범위 선택 시 시작 날짜
-        endDate={endDate} // 날짜 범위 선택 시 종료 날짜
-        onChange={handleDateChange} // 날짜 변경 시 호출되는 함수
-        onMonthChange={(date) => setCurrentMonth(date)} // 달 변경 시 호출되는 함수
-        selectsRange // 날짜 범위를 선택할 수 있도록 설정
-        inline // 인라인으로 캘린더를 표시
-        monthsShown={2} // 동시에 표시할 달의 수
-        minDate={startOfDay(new Date())} // 선택 가능한 최소 날짜 (오늘의 시작)
-        dayClassName={dayClassName} // 각 날짜에 클래스명을 추가하는 함수
-        renderCustomHeader={({
-          decreaseMonth,
-          increaseMonth,
-          prevMonthButtonDisabled,
-          nextMonthButtonDisabled,
-          monthDate,
-        }) => (
-          <CustomHeader
-            decreaseMonth={decreaseMonth} // 이전 달로 이동하는 함수
-            increaseMonth={increaseMonth} // 다음 달로 이동하는 함수
-            prevMonthButtonDisabled={prevMonthButtonDisabled} // 이전 달 버튼 비활성화 여부
-            nextMonthButtonDisabled={nextMonthButtonDisabled} // 다음 달 버튼 비활성화 여부
-            monthDate={monthDate} // 현재 표시된 달의 날짜
-          />
-        )}
-      />
-    </S.CalendarContainer>
+    <S.Wrapper>
+      <S.CalendarContainer>
+        {months.map((month, index) => (
+          <S.Calendar
+            key={index}
+            className={format(month, 'yyyy-MM')}
+            ref={(el) => (monthRefs.current[index] = el)}
+          >
+            <div className="header">
+              {format(month, 'yyyy년 MM월', { locale: ko })}
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th className="week">일</th>
+                  <th className="week">월</th>
+                  <th className="week">화</th>
+                  <th className="week">수</th>
+                  <th className="week">목</th>
+                  <th className="week">금</th>
+                  <th className="week">토</th>
+                </tr>
+              </thead>
+              <tbody>{renderCalendar(month)}</tbody>
+            </table>
+          </S.Calendar>
+        ))}
+      </S.CalendarContainer>
+
+      <S.Control>
+        <div className="content">
+          <div className="title">날짜 찾기</div>
+
+          <select value={year} onChange={(e) => setYear(e.target.value)}>
+            {yearOptions.map((y) => (
+              <option key={y} value={y}>
+                {y}년
+              </option>
+            ))}
+          </select>
+
+          <select value={month} onChange={(e) => setMonth(e.target.value)}>
+            {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+              <option key={m} value={String(m).padStart(2, '0')}>
+                {String(m).padStart(2, '0')}월
+              </option>
+            ))}
+          </select>
+
+          <Button variant="outline" onClick={scrollToDate}>
+            이동
+          </Button>
+
+          <div className="info">
+            <p>원하는 날짜를 선택하여 빠르게 이동할 수 있습니다.</p>
+            <p>현재부터 2년 후까지의 날짜가 표시됩니다.</p>
+          </div>
+        </div>
+
+        <div className="control-button">
+          <Button type="icon" variant="outline" onClick={scrollToTop}>
+            <FaAngleUp />
+          </Button>
+          <Button type="icon" variant="outline" onClick={scrollToBottom}>
+            <FaAngleDown />
+          </Button>
+        </div>
+      </S.Control>
+    </S.Wrapper>
   );
 };
 

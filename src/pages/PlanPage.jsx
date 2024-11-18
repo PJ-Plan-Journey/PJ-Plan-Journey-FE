@@ -1,4 +1,3 @@
-import SelectedDate from '@components/plan/date/SelectedDate';
 import KakaoMap from '@components/plan/KakaoMap';
 import useStepStore from '@/zustands/plan/useStepStore';
 import * as S from '@styles/plan/PlanPage.style';
@@ -9,12 +8,14 @@ import TitleForm from '@components/plan/TitleForm';
 import useDateStore from '@zustands/plan/useDateStore';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
 import Step from '@components/plan/Step';
+import DateContainer from '@components/plan/DateContainer';
+import useDate from '@hooks/plan/date/useDate';
 
 const MINWIDTH = 37;
 
 const PlanPage = () => {
   const { step, setStep } = useStepStore();
-  const { setDates } = useDateStore();
+  const { dates, setDates } = useDate();
   const { initList, setDay } = usePlaceStore();
   const [width, setWidth] = useState(MINWIDTH);
   const [isDragging, setIsDragging] = useState(false);
@@ -71,32 +72,29 @@ const PlanPage = () => {
 
   useEffect(() => {
     return () => {
-      setDates({ startDate: null, endDate: null });
       initList();
       setStep(1);
       setDay('');
     };
-  }, [setDates, initList, setStep]);
+  }, [initList, setStep]);
 
   return (
     <S.PlanPageContainer>
-      {/* 스타일컴포넌트 안에서 관리할 경우 여러개의 클래스이름이 생성되기 때문에 스타일 따로 분리 */}
-      <div className="resize-container" style={resizeContainerStyle}>
-        <Step />
-        {step == 1 && <SelectedDate />}
-        {step >= 2 && (
-          <>
+      <Step dates={dates} />
+      {step == 1 && <DateContainer dates={dates} setDates={setDates} />}
+      {step >= 2 && (
+        <>
+          <div className="resize-container" style={resizeContainerStyle}>
             <SelectedList />
             <div className="width-size-button" onMouseDown={handleMouseDown}>
               <WidthSizeIcon />
             </div>
-          </>
-        )}
+          </div>
+          <KakaoMap />
+        </>
+      )}
 
-        {step >= 3 && <TitleForm />}
-      </div>
-
-      <KakaoMap />
+      {step >= 3 && <TitleForm />}
     </S.PlanPageContainer>
   );
 };

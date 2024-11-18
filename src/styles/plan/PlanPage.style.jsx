@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { flex } from '@styles/common/common.style';
 
 export const PlanPageContainer = styled.div`
-  ${flex}
+  display: flex;
   height: 100%;
 
   .resize-container {
