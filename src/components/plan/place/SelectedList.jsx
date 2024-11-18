@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
 import useDateStore from '@zustands/plan/useDateStore';
-import DateRangeDisplay from '@components/plan/date/DateRangeDisplay';
 import SelectPlace from '@components/plan/place/SelectPlace';
 import { parseISO } from 'date-fns';
 import PlaceListItem from '@components/plan/place/PlaceListItem';
@@ -71,7 +70,6 @@ const SelectedList = () => {
 
   return (
     <S.SelectedListContainer>
-      <DateRangeDisplay />
       <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
         <S.DayList>
           {days.map((day, index) => (
