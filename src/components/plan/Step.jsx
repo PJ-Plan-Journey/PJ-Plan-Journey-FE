@@ -20,14 +20,10 @@ const Step = () => {
     setStep(index + 1);
   };
 
-  const onClickLogo = () => {
-    openModal();
-  };
-
   return (
     <S.Container>
       <S.StepList>
-        <S.Logo onClick={onClickLogo} />
+        <S.Logo onClick={openModal} />
 
         {STEPLIST.map((item, index) => (
           <S.Item
