@@ -3,30 +3,29 @@ import styled from 'styled-components';
 
 export const DayList = styled.ul`
   width: 100%;
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  overflow: auto;
+  height: 100%;
+  overflow: scroll;
   ${ScrollStyle}
   padding: 30px;
   border-bottom: 1px solid #d4d4d4;
+  background-color: inherit;
 
   .item {
     width: 300px;
-  }
-
-  .date {
-    font-weight: bold;
-    color: black;
   }
 
   .day {
     ${flex}
     align-items: flex-end;
     gap: 10px;
-    color: #c8c8c8;
+    color: #797979;
+    padding: 20px 0;
     font-weight: bold;
-    padding-bottom: 10px;
+  }
+
+  .date {
+    color: black;
+    font-size: 1.1rem;
   }
 
   .info {
@@ -49,12 +48,9 @@ export const DayList = styled.ul`
 
 export const SelectedListContainer = styled.div`
   ${flexColumn}
-  justify-content: center;
-  width: 100%;
   height: 100%;
-  background-color: white;
-  padding-right: 0;
-  padding-bottom: 100px;
+  background-color: inherit;
+  border-right: 1px solid #c4c4c4;
 
   .sub-box {
     display: flex;
@@ -87,16 +83,13 @@ export const SelectedListContainer = styled.div`
     gap: 15px;
     width: 100%;
     height: inherit;
-    padding: 2px 0 20px;
-    padding-right: 10px;
+    border-radius: 10px;
+    padding: 10px;
   }
 
-  .not-content {
-    ${flex}
-    justify-content: center;
-    height: 100%;
-    font-size: 20px;
-    font-weight: bold;
+  .submit {
+    width: 100%;
+    padding: 20px;
   }
 `;
 

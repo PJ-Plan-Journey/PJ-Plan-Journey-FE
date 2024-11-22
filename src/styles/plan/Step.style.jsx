@@ -37,7 +37,6 @@ export const StepList = styled.ol`
 
 export const Item = styled.li`
   min-height: 50px;
-  cursor: pointer;
   ${flexColumn}
   justify-content: center;
   gap: 10px;
@@ -52,11 +51,11 @@ export const Item = styled.li`
 
   .step-number {
     ${({ $status }) =>
-    $status === 'true'
-      ? css`
+      $status === 'true'
+        ? css`
             box-shadow: 0 0 2px #156bf0;
           `
-      : css`
+        : css`
             box-shadow: 0 0 2px black;
           `};
 

@@ -1,52 +1,30 @@
 import { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
-import useDateStore from '@zustands/plan/useDateStore';
-import SelectPlace from '@components/plan/place/SelectPlace';
+import SearchPlace from '@components/plan/place/SearchPlace';
 import { parseISO } from 'date-fns';
-import PlaceListItem from '@components/plan/place/PlaceListItem';
-import * as S from '@styles/plan/place/SelectedList.style';
+import PlaceItem from '@components/plan/place/PlaceItem';
+import * as S from '@styles/plan/place/Places.style';
 import { formatDate } from '@/utils/formatDate';
 import Button from '@components/common/Button';
 import useModal from '@hooks/useModal';
+import useStepStore from '@zustands/plan/useStepStore';
+import DateInfo from './DateInfo';
+import useDrag from '@hooks/plan/place/useDrag';
 
 const MODALCUSTOM = {
-  padding: '30px 20px 20px 20px',
+  title: { padding: '30px 20px 20px 20px' },
+  content: { padding: '0px' },
 };
 
-const SelectedList = () => {
-  const { placeList, movePlace, movePlaceBetweenDays, setDay, addPlace } =
-    usePlaceStore();
+const Places = ({ dates }) => {
+  const { days } = dates;
+  const { placeList, setDay, addPlace } = usePlaceStore();
   const { isOpen, openModal, closeModal, Modal, Title, Content } = useModal();
-  const days = useDateStore((state) => state.getDays());
+  const { onDragStart, onDragEnd } = useDrag();
   const [selectedDay, setSelectedDay] = useState(null);
   const [dayPlaceList, setDayPlaceList] = useState([]);
-
-  const saveDay = (day) => {
-    setDay(day);
-  };
-
-  const onDragStart = ({ draggableId }) => {
-    const [_, day] = draggableId.split(' ');
-    saveDay(day);
-  };
-
-  const onDragEnd = ({ source, destination }) => {
-    if (!destination) return;
-
-    if (source.droppableId === destination.droppableId) {
-      movePlace(source.droppableId, source.index, destination.index);
-    } else {
-      movePlaceBetweenDays(
-        source.droppableId,
-        destination.droppableId,
-        source.index,
-        destination.index
-      );
-    }
-
-    saveDay(destination.droppableId);
-  };
+  const { nextStep } = useStepStore();
 
   const SubmitDayList = (day) => {
     if (dayPlaceList.length > 0) {
@@ -70,13 +48,15 @@ const SelectedList = () => {
 
   return (
     <S.SelectedListContainer>
+      <DateInfo dates={dates} />
+
       <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
         <S.DayList>
           {days.map((day, index) => (
             <div className="item" key={day}>
               <div className="day">
-                <span className="date" onClick={() => saveDay(day)}>
-                  day{index + 1}
+                <span className="date" onClick={() => setDay(day)}>
+                  {index + 1}일차
                 </span>
 
                 <div className="info">
@@ -92,10 +72,8 @@ const SelectedList = () => {
                     ref={provided.innerRef}
                     style={{
                       backgroundColor: snapshot.isDraggingOver
-                        ? '#f8f8f8'
-                        : 'white',
-                      borderRadius: '10px',
-                      padding: '20px 10px',
+                        ? '#ffffff'
+                        : 'inherit',
                     }}
                   >
                     {placeList[day]?.map((place, index) => (
@@ -105,7 +83,7 @@ const SelectedList = () => {
                         index={index}
                       >
                         {(provided) => (
-                          <PlaceListItem
+                          <PlaceItem
                             key={place.id}
                             day={day}
                             place={place}
@@ -130,18 +108,23 @@ const SelectedList = () => {
         </S.DayList>
       </DragDropContext>
 
+      <div style={{ width: '100%', padding: '20px' }}>
+        <Button onClick={nextStep}>저장</Button>
+      </div>
+
       {isOpen && (
         <Modal
           closeModal={closeModal}
           onConfirm={() => SubmitDayList(selectedDay)}
+          customStyles={MODALCUSTOM}
           isCustom
         >
-          <Title customStyles={MODALCUSTOM}>
+          <Title>
             <div>{selectedDay}</div>
           </Title>
 
           <Content>
-            <SelectPlace
+            <SearchPlace
               day={selectedDay}
               dayPlaceList={dayPlaceList}
               setDayPlaceList={setDayPlaceList}
@@ -154,4 +137,4 @@ const SelectedList = () => {
   );
 };
 
-export default SelectedList;
+export default Places;

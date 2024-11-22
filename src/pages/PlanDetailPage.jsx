@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import api from '@axios/api';
 import DayList from '@components/plan/board/detail/DayList';
-import useReSizeWidth from '@hooks/plan/useReSizeWidth';
+import useReSizeWidth from '@hooks/plan/place/useReSizeWidth';
 
 const PlanDetailPage = () => {
   const [showComment, setShowComment] = useState(false);

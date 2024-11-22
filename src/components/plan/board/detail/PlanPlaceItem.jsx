@@ -1,4 +1,4 @@
-import * as S from '@styles/plan/place/PlaceListItem.style';
+import * as S from '@styles/plan/place/PlaceItem.style';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
 
 const PlanPlaceItem = ({ day, place, index }) => {

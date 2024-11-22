@@ -5,20 +5,12 @@ import useModal from '@hooks/useModal';
 import { useNavigate } from 'react-router-dom';
 import Button from '@components/common/Button';
 
-const STEPLIST = [{ name: '여행 일정 등록' }, { name: '여행 장소 등록' }];
+const STEPLIST = [{ name: '여행 일정' }, { name: '여행 장소' }];
 
 const Step = () => {
-  const { step, setStep } = useStepStore();
+  const { step } = useStepStore();
   const { isOpen, openModal, closeModal, Modal, Title, Content } = useModal();
   const navigate = useNavigate();
-
-  const nextStep = () => {
-    setStep(step + 1);
-  };
-
-  const moveStep = (index) => {
-    setStep(index + 1);
-  };
 
   return (
     <S.Container>
@@ -26,11 +18,7 @@ const Step = () => {
         <S.Logo onClick={openModal} />
 
         {STEPLIST.map((item, index) => (
-          <S.Item
-            key={index}
-            $status={String(index + 1 === step)}
-            onClick={() => moveStep(index)}
-          >
+          <S.Item key={index} $status={String(index + 1 === step)}>
             <span className="step-number">
               {index + 1 < step ? <CheckIcon /> : `step ${index + 1}`}
             </span>
@@ -39,8 +27,6 @@ const Step = () => {
           </S.Item>
         ))}
       </S.StepList>
-
-      {step < 3 && <Button onClick={nextStep}>다음</Button>}
 
       {isOpen && (
         <Modal closeModal={closeModal} onConfirm={() => navigate(-1)}>
