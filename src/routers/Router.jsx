@@ -1,14 +1,17 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ProtectedRoute from '@components/ProtectedRoute';
+
+import MainPage from '@pages/MainPage';
 import LoginPage from '@pages/LoginPage';
 import SignupPage from '@pages/SignupPage';
-import ProfilePage from '@pages/ProfilePage';
-import MainPage from '@pages/MainPage';
-import PlanPage from '@pages/PlanPage';
-import MyPage from '@pages/MyPage'; // MyPage 컴포넌트 추가
 import ShareBoardsPage from '@pages/ShareBoardsPage';
-import ProtectedRoute from '@components/ProtectedRoute'; // ProtectedRoute 추가
 import PlanDetailPage from '@pages/PlanDetailPage';
-import PlanEditPage from '@pages/PlanEditPage';
+
+const ProfilePage = lazy(() => import('@pages/ProfilePage'));
+const PlanPage = lazy(() => import('@pages/PlanPage'));
+const MyPage = lazy(() => import('@pages/MyPage'));
+const PlanEditPage = lazy(() => import('@pages/PlanEditPage'));
 
 const Router = () => {
   return (
@@ -17,33 +20,50 @@ const Router = () => {
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/board" element={<ShareBoardsPage />} />
+        <Route path="/board/:id" element={<PlanDetailPage />} />
+
         <Route
           path="/profile"
           element={
-            <ProtectedRoute>
-              <ProfilePage />
-            </ProtectedRoute>
+            <Suspense>
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            </Suspense>
           }
         />
         <Route
           path="/mypage"
           element={
-            <ProtectedRoute>
-              <MyPage />
-            </ProtectedRoute>
+            <Suspense>
+              <ProtectedRoute>
+                <MyPage />
+              </ProtectedRoute>
+            </Suspense>
           }
         />
         <Route
           path="/plan/create"
           element={
-            <ProtectedRoute>
-              <PlanPage />
-            </ProtectedRoute>
+            <Suspense>
+              <ProtectedRoute>
+                <PlanPage />
+              </ProtectedRoute>
+            </Suspense>
           }
         />
-        <Route path="/board" element={<ShareBoardsPage />} />
-        <Route path="/board/:id" element={<PlanDetailPage />} />
-        <Route path="/board/:id/edit" element={<PlanEditPage />} />
+
+        <Route
+          path="/board/:id/edit"
+          element={
+            <Suspense>
+              <ProtectedRoute>
+                <PlanEditPage />
+              </ProtectedRoute>
+            </Suspense>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
