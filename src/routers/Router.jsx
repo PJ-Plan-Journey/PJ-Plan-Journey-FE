@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ProtectedRoute from '@components/ProtectedRoute';
 
@@ -26,42 +26,34 @@ const Router = () => {
         <Route
           path="/profile"
           element={
-            <Suspense>
-              <ProtectedRoute>
-                <ProfilePage />
-              </ProtectedRoute>
-            </Suspense>
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
           }
         />
         <Route
           path="/mypage"
           element={
-            <Suspense>
-              <ProtectedRoute>
-                <MyPage />
-              </ProtectedRoute>
-            </Suspense>
+            <ProtectedRoute>
+              <MyPage />
+            </ProtectedRoute>
           }
         />
         <Route
           path="/plan/create"
           element={
-            <Suspense>
-              <ProtectedRoute>
-                <PlanPage />
-              </ProtectedRoute>
-            </Suspense>
+            <ProtectedRoute>
+              <PlanPage />
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/board/:id/edit"
           element={
-            <Suspense>
-              <ProtectedRoute>
-                <PlanEditPage />
-              </ProtectedRoute>
-            </Suspense>
+            <ProtectedRoute>
+              <PlanEditPage />
+            </ProtectedRoute>
           }
         />
       </Routes>
