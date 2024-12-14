@@ -1,29 +1,27 @@
 import { useCallback, useEffect, useState } from 'react';
-import useKakaoLoader from '@hooks/plan/useKakaoLoader';
+import useKakaoLoader from '@hooks/plan/place/useKakaoLoader';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
 import { Map, Polyline, CustomOverlayMap } from 'react-kakao-maps-sdk';
 import * as S from '@styles/plan/KakaoMap.style';
+import useModal from '@hooks/useModal';
 
 const KakaoMap = () => {
   const { placeList, day } = usePlaceStore();
   const [map, setMap] = useState(null);
+  const { isOpen, openModal, closeModal, Modal, Title, Content } = useModal();
   const [initialCenter, setInitialCenter] = useState({
     lat: 37.5665,
     lng: 126.978,
-  }); // 기본 중심 좌표
+  });
 
-  // 카카오 맵 로드 함수
   useKakaoLoader();
 
-  // 맵 재생성
   const handleMapCreate = useCallback((mapInstance) => {
     setMap(mapInstance);
   }, []);
 
-  // 각 day에 대해 다른 색상 적용
   const colors = ['#156bf0', '#f01562', '#15f062', '#f0d215']; // 예시 색상 배열
   const getColor = (day) => {
-    // day에 따라 색상을 결정
     const days = Object.keys(placeList);
     const dayIndex = days.indexOf(day);
     return dayIndex !== -1 ? colors[dayIndex % colors.length] : colors[0];
@@ -35,8 +33,6 @@ const KakaoMap = () => {
       let shouldSetBounds = false;
 
       if (day && placeList[day]?.length > 0) {
-        // 선택된 day의 장소들로 경계 설정
-
         placeList[day].forEach(({ x: lng, y: lat }) => {
           if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
             bounds.extend(new window.kakao.maps.LatLng(lat, lng));
@@ -44,11 +40,9 @@ const KakaoMap = () => {
           }
         });
       } else if (day && !placeList[day]) {
-        map.setCenter(initialCenter);
-        map.setLevel(3);
+        openModal();
         return;
       } else {
-        // 모든 장소들로 경계 설정
         Object.values(placeList)
           .flat()
           .forEach(({ x: lng, y: lat }) => {
@@ -75,7 +69,6 @@ const KakaoMap = () => {
         onCreate={handleMapCreate}
       >
         {day && placeList[day]?.length > 0 ? (
-          // 선택된 날짜의 장소들만 렌더링
           <div>
             <Polyline
               path={placeList[day]
@@ -83,10 +76,10 @@ const KakaoMap = () => {
                 .filter(
                   ({ lng, lat }) => lng && lat && !isNaN(lng) && !isNaN(lat)
                 )}
-              strokeWeight={8} // 선 굵기
+              strokeWeight={8}
               strokeOpacity={1}
-              strokeColor={getColor(day)} // 선택된 날짜에 대한 색상
-              strokeStyle="dashed" // 선 모양
+              strokeColor={getColor(day)}
+              strokeStyle="dashed"
             />
             {placeList[day].map(
               ({ id, x: lng, y: lat }, placeIndex) =>
@@ -99,9 +92,7 @@ const KakaoMap = () => {
                     position={{ lng, lat }}
                     yAnchor={0.5}
                   >
-                    <S.CustomMarker
-                      style={{ backgroundColor: getColor(day) }} // 마커 색상
-                    >
+                    <S.CustomMarker style={{ backgroundColor: getColor(day) }}>
                       {placeIndex + 1}
                     </S.CustomMarker>
                   </CustomOverlayMap>
@@ -109,7 +100,6 @@ const KakaoMap = () => {
             )}
           </div>
         ) : (
-          // 날짜가 없을 때 모든 장소들 렌더링
           Object.entries(placeList).map(([currentDay, places]) => {
             const validPath = places
               .map(({ x: lng, y: lat }) => ({ lng, lat }))
@@ -121,10 +111,10 @@ const KakaoMap = () => {
               <div key={currentDay}>
                 <Polyline
                   path={validPath}
-                  strokeWeight={8} // 선 굵기
+                  strokeWeight={8}
                   strokeOpacity={1}
                   strokeColor={getColor(currentDay)}
-                  strokeStyle="dashed" // 선 모양
+                  strokeStyle="dashed"
                 />
                 {places.map(
                   ({ id, x: lng, y: lat }, placeIndex) =>
@@ -150,6 +140,15 @@ const KakaoMap = () => {
           })
         )}
       </Map>
+
+      {isOpen && (
+        <Modal closeModal={closeModal} type="info">
+          <Title>장소를 추가해주세요</Title>
+          <Content>
+            해당 날짜에 아직 추가된 장소가 없습니다. 새로운 장소를 추가해보세요!
+          </Content>
+        </Modal>
+      )}
     </S.KakaoContainer>
   );
 };

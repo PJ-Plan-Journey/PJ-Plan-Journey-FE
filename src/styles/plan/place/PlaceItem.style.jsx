@@ -58,7 +58,7 @@ export const Item = styled.li`
   justify-content: space-between;
   width: 100%;
   box-shadow: 0 0 2px 1px #cfcfcf;
-  padding: 8px 10px;
+  padding: 10px;
   border-radius: 10px;
   background-color: ${({ $isDragging }) =>
     $isDragging === 'true' ? '#0066ff' : 'white'};
@@ -71,6 +71,12 @@ export const Item = styled.li`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    margin-bottom: 8px;
+  }
+
+  .address {
+    color: #656565;
+    font-size: 0.6rem;
   }
 
   .content {

@@ -1,7 +1,7 @@
 import usePlaceStore from '@zustands/plan/usePlaceStore';
 import { useEffect, useState } from 'react';
 
-const MINWIDTH = 37;
+const MINWIDTH = 30;
 
 const useReSizeWidth = () => {
   const [width, setWidth] = useState(MINWIDTH);

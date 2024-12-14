@@ -1,10 +1,10 @@
 import { FaBars as DragIcon } from '@react-icons/all-files/fa/FaBars';
 import { FaTrashAlt as RemoveIcon } from '@react-icons/all-files/fa/FaTrashAlt';
-import * as S from '@styles/plan/place/PlaceListItem.style';
+import * as S from '@styles/plan/place/PlaceItem.style';
 import usePlaceStore from '@zustands/plan/usePlaceStore';
 
-const PlaceListItem = ({ day, place, index, provided }) => {
-  const { place_name } = place;
+const PlaceItem = ({ day, place, index, provided }) => {
+  const { place_name, address_name } = place;
   const { removePlace, setDay, placeList } = usePlaceStore();
 
   const remveItem = () => {
@@ -13,6 +13,7 @@ const PlaceListItem = ({ day, place, index, provided }) => {
   };
 
   const colors = ['#156bf0', '#f01562', '#15f062', '#f0d215'];
+
   const getColor = (day) =>
     colors[Object.keys(placeList).indexOf(day) % colors.length];
 
@@ -29,7 +30,10 @@ const PlaceListItem = ({ day, place, index, provided }) => {
       <S.Item>
         <div className="content">
           <div className="array-number">{index}</div>
-          <div className="title">{place_name}</div>
+          <div>
+            <div className="title">{place_name}</div>
+            <div className="address">{address_name}</div>
+          </div>
         </div>
         <button className="remove" onClick={remveItem}>
           <RemoveIcon />
@@ -39,4 +43,4 @@ const PlaceListItem = ({ day, place, index, provided }) => {
   );
 };
 
-export default PlaceListItem;
+export default PlaceItem;

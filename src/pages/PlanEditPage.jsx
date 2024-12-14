@@ -11,7 +11,7 @@ import { useParams } from 'react-router-dom';
 import api from '@axios/api';
 import EditDayList from '@components/plan/board/edit/EditDayList';
 import EditPlanList from '@components/plan/board/edit/EditPlanList';
-import useReSizeWidth from '@hooks/plan/useReSizeWidth';
+import useReSizeWidth from '@hooks/plan/place/useReSizeWidth';
 
 const PlanEditPage = () => {
   const { id } = useParams();
